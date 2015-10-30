@@ -3,7 +3,9 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.Service;
 /**
  * Created by aman on 23-10-2015 in Galgotias University(mSim).
  */
+
 import android.app.IntentService;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -11,6 +13,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
+import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.IonMethods;
+import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -42,9 +46,9 @@ public class RegistrationIntentService extends IntentService {
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
-
-            // TODO: Implement this method to send any registration to your app's servers.
-            sendRegistrationToServer(token);
+            boolean sentToken = sharedPreferences
+                    .getBoolean(AppConstants.SENT_TOKEN_TO_SERVER, false);
+            boolean result = sentToken || sendRegistrationToServer(token);
 
             // Subscribe to topic channels
             subscribeTopics(token);
@@ -52,7 +56,7 @@ public class RegistrationIntentService extends IntentService {
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,
             // otherwise your server should have already received the token.
-            sharedPreferences.edit().putBoolean(AppConstants.SENT_TOKEN_TO_SERVER, true).apply();
+            sharedPreferences.edit().putBoolean(AppConstants.SENT_TOKEN_TO_SERVER, result).apply();
             // [END register_for_gcm]
         } catch (Exception e) {
             Log.d(TAG, "Failed to complete token refresh", e);
@@ -67,14 +71,25 @@ public class RegistrationIntentService extends IntentService {
 
     /**
      * Persist registration to third-party servers.
-     *
+     * <p/>
      * Modify this method to associate the user's GCM registration token with any server-side account
      * maintained by your application.
      *
      * @param token The new token.
      */
-    private void sendRegistrationToServer(String token) {
-        // Add custom implementation, as needed.
+    private boolean sendRegistrationToServer(String token) throws Exception {
+        ContentValues cv = new ContentValues();
+        String admno = PrefUtils.getFromPrefs(RegistrationIntentService.this, PrefUtils.PREFS_USER_ADMNO_KEY, PrefUtils.DEFAULT_ADMNO);
+        String name = PrefUtils.getFromPrefs(RegistrationIntentService.this, PrefUtils.PREFS_USER_NAME_KEY, PrefUtils.DEFAULT_NAME);
+        String email = PrefUtils.getFromPrefs(RegistrationIntentService.this, PrefUtils.PREFS_USER_EMAIL_KEY, PrefUtils.DEFAULT_EMAIL);
+        if (!admno.equals(PrefUtils.DEFAULT_ADMNO))
+            cv.put("adm_no", admno);
+        if (!name.equals(PrefUtils.DEFAULT_NAME))
+            cv.put("name", name);
+        if (!email.equals(PrefUtils.DEFAULT_EMAIL))
+            cv.put("email", email);
+        cv.put("gcm_id", token);
+        return IonMethods.postBasicstoServer(cv);
     }
 
     /**
@@ -86,7 +101,11 @@ public class RegistrationIntentService extends IntentService {
     // [START subscribe_topics]
     private void subscribeTopics(String token) throws IOException {
         GcmPubSub pubSub = GcmPubSub.getInstance(this);
+        String admno = PrefUtils.getFromPrefs(RegistrationIntentService.this, PrefUtils.PREFS_USER_ADMNO_KEY, PrefUtils.DEFAULT_ADMNO);
         for (String topic : AppConstants.TOPICS) {
+            if (topic.equals("Placements") && !admno.startsWith("12")) {
+                continue;
+            }
             pubSub.subscribe(token, "/topics/" + topic, null);
         }
     }

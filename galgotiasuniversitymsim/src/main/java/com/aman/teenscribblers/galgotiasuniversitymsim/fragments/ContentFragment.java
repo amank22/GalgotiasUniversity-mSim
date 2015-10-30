@@ -19,7 +19,6 @@ public class ContentFragment extends Fragment implements AdapterView.OnItemClick
     private static final String KEY_TITLE = "title";
     private ListView list;
     String type, typevalue;
-//    CharSequence ftype;
 
     /**
      * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and

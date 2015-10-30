@@ -24,7 +24,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:hint="Username"
+            android:hint="@string/username"
             android:inputType="textCapCharacters"
             android:maxLines="1"
             android:padding="10dp"
@@ -66,7 +66,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/flat_selector"
-            android:text="Login" />
+            android:text="@string/login" />
 
     </RelativeLayout>
 
@@ -93,7 +93,7 @@
         android:layout_above="@+id/gu_logo_text"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:text="TEENSCRIBBLERS"
+        android:text="@string/string_qurux"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/ts_grey_dark"
         android:textSize="20sp" />
@@ -105,7 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Galgotias\nUniversity"
+        android:text="@string/gu_name_two_lines"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/ts_red"
         android:textSize="38sp" />

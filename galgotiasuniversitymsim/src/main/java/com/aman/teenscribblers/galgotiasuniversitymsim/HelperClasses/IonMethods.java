@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
+import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.Response;
 import com.koushikdutta.ion.builder.Builders.Any.B;
@@ -13,15 +14,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class IonMethods {
+
+    private static final String TAG = "ION METHODS";
 
     public static boolean simlogin(String username, String pass)
             throws Exception {
 
-        boolean status = false;
-        status = get(AppConstants.LoginString);
+        boolean status = get(AppConstants.LoginString);
         if (status) {
             B base = Ion.with(GUApp.getInstance()).load(AppConstants.LoginString);
             base.setBodyParameter("__LASTFOCUS", "")
@@ -36,11 +37,10 @@ public class IonMethods {
                     .setBodyParameter("txtUserId", username)
                     .setBodyParameter("txtPass", pass)
                     .setBodyParameter("btnLogin_", "");
-            Response<String> result = base.followRedirect(true)
-                    .setLogging("GU", Log.DEBUG)
+            Response<String> result;
+            result = base.followRedirect(true)
+//                        .setLogging("GU", Log.DEBUG)
                     .asString().withResponse().get();
-            if (result.getException()!=null)
-               throw result.getException();
             if (result.getHeaders().code() != 200) {
                 status = false;
             } else if (result.getHeaders().code() == 200) {
@@ -55,9 +55,9 @@ public class IonMethods {
             throws Exception {
         Boolean status = false;
         B base = Ion.with(GUApp.getInstance()).load(url);
-        Response<String> result = base.followRedirect(true).asString().withResponse().get();
-        if ((result.getException() != null)
-                || (result.getHeaders().code() == 302)) {
+        Response<String> result;
+        result = base.followRedirect(true).asString().withResponse().get();
+        if ((result.getHeaders().code() == 302)) {
             status = false;
         } else if (result.getHeaders().code() == 200) {
             status = true;
@@ -66,24 +66,15 @@ public class IonMethods {
         return status;
     }
 
-    public static String getString(String url) {
+    public static String getString(String url) throws Exception {
         String status = null;
         B base = Ion.with(GUApp.getInstance()).load(url);
         Response<String> result;
-        try {
-            result = base.followRedirect(true)
-                    .setLogging("GET", Log.DEBUG)
-                    .asString().withResponse().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return "error";
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            return "error";
-        }
+        result = base.followRedirect(true)
+//                    .setLogging("GET", Log.DEBUG)
+                .asString().withResponse().get();
         System.out.println(result.getHeaders().code());
-        if (result.getException() != null
-                || result.getHeaders().code() == 302) {
+        if (result.getHeaders().code() == 302) {
             status = "error";
         } else if (result.getHeaders().code() == 200) {
             status = result.getResult();
@@ -102,22 +93,20 @@ public class IonMethods {
         for (Map.Entry<String, Object> entry : nvp.valueSet()) {
             base.setBodyParameter(entry.getKey(), entry.getValue().toString());
         }
-
-        Response<String> result = base.followRedirect(true)
+        Response<String> result;
+        result = base.followRedirect(true)
                 .setLogging("POST", Log.DEBUG)
                 .asString().withResponse().get();
-        System.out.println(result);
+//        System.out.println(result);
         Uri timeout = Uri
                 .parse("http://182.71.87.38/iSIM/msg.htm");
         if (result.getRequest().getUri().getPath().contains(timeout.getPath())) {
             return "expired";
         }
-        if (result.getException() != null
-                || result.getHeaders().code() == 302) {
+        if (result.getHeaders().code() == 302) {
             status = "error";
         } else if (result.getHeaders().code() == 200) {
             status = result.getResult();
-            // setvsev(result.getResult());
         }
         return status;
     }
@@ -131,5 +120,28 @@ public class IonMethods {
         Log.d("ViewState", AppConstants.viewstate);
         Log.d("EventStates", AppConstants.eventvalidate);
 
+    }
+
+    public static boolean postBasicstoServer(ContentValues nvp) throws Exception {
+
+        boolean status = false;
+
+        B base = Ion.with(GUApp.getInstance().getApplicationContext())
+                .load("https://galgotiasuniversity.herokuapp.com/v1/student/register");
+        for (Map.Entry<String, Object> entry : nvp.valueSet()) {
+            base.setBodyParameter(entry.getKey(), entry.getValue().toString());
+        }
+        Response<JsonObject> result;
+        result = base
+                .setLogging("POST", Log.DEBUG)
+                .asJsonObject().withResponse().get();
+        System.out.println(result);
+        if (result.getHeaders().code() != 200) {
+            status = false;
+        } else if (result.getHeaders().code() == 200) {
+            Log.d(TAG,result.getResult().toString());
+            status = true;
+        }
+        return status;
     }
 }

@@ -4,23 +4,17 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,14 +26,11 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstant
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.Rebound;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Service.RegistrationIntentService;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.ContentFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentPersonalInfo;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.TimeTableContent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.transform.CircleTransform;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends BaseActivity
@@ -49,12 +40,10 @@ public class HomeActivity extends BaseActivity
 
     Fragment afrag = null, tfrag = null;
     ImageView image;
-    private Integer colorFrom=R.color.ts_red;
+    private Integer colorFrom = R.color.ts_red;
 
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "HomeActivity";
 
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
     private CoordinatorLayout frame;
     private DrawerLayout drawer;
     private final FragmentManager fragmentManager = getFragmentManager();
@@ -108,23 +97,6 @@ public class HomeActivity extends BaseActivity
                 Rebound.AddRebound(image);
             }
         });
-        //GCM
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(AppConstants.SENT_TOKEN_TO_SERVER, false);
-                if (!sentToken)
-                    Snackbar.make(frame, "Notification Registration failed.You will not recieve any messages.", Snackbar.LENGTH_LONG).show();
-            }
-        };
-        if (checkPlayServices()) {
-            // Start IntentService to register this application with GCM.
-            Intent intent = new Intent(this, RegistrationIntentService.class);
-            startService(intent);
-        }
     }
 
     @Override
@@ -242,8 +214,9 @@ public class HomeActivity extends BaseActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_about) {
-//            AlertDialogManager.showAboutDialog(LogedInActivity.this);
-            Snackbar.make(frame, "Created By Aman Kapoor", Snackbar.LENGTH_INDEFINITE).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(R.layout.activity_about_me);
+            builder.show();
             return true;
         } else if (id == R.id.action_logout) {
             PrefUtils.deleteuser(HomeActivity.this);
@@ -255,47 +228,5 @@ public class HomeActivity extends BaseActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
-            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                    new IntentFilter(AppConstants.REGISTRATION_COMPLETE));
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        try {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-        super.onPause();
-    }
-
-    /**
-     * Check the device to make sure it has the Google Play Services APK. If
-     * it doesn't, display a dialog that allows users to download the APK from
-     * the Google Play Store or enable it in the device's system settings.
-     */
-    private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
-                        .show();
-            } else {
-                Log.i(TAG, "This device is not supported.");
-                Snackbar.make(frame, "This device is not supported for Notifications.", Snackbar.LENGTH_LONG).show();
-            }
-            return false;
-        }
-        return true;
     }
 }

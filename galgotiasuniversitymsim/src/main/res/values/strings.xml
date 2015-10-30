@@ -21,5 +21,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
+    <string name="string_qurux">QURUX</string>
+    <string name="gu_name_two_lines">Galgotias\nUniversity</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="credits">Credits:\nAman Kapoor\n(Developer,Designer)</string>
 
 </resources>

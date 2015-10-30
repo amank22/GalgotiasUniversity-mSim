@@ -1,38 +1,45 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/aman">
 
-    <TextView
-        android:id="@+id/textView"
-        style="@style/CustomStrongFont"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:singleLine="true"
-        android:text="TEENSCRIBBLERS"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/ts_blue"
-        android:textSize="26sp" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/aman" />
-
-    <TextView
-        android:id="@+id/textView2"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="Credits:\nAman Kapoor\n(Developer,\nDesigner)\nKriti Doneria\n(Promotion)"
-        android:textColor="@color/ts_grey_dark"
-        android:textSize="20sp" />
+        android:layout_alignParentBottom="true"
+        android:background="@color/ts_grey_dark"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_header_about"
+            style="@style/CustomStrongFont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:singleLine="true"
+            android:text="@string/string_qurux"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/ts_yellow"
+            android:textSize="26sp"
+            android:paddingTop="10dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.25dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@color/ts_white" />
+
+        <TextView
+            android:id="@+id/textView_credits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/credits"
+            android:textColor="@color/ts_white"
+            android:textSize="18sp" />
+    </LinearLayout>
 </RelativeLayout>
