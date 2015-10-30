@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eaeb74"
+    tools:context=".LoginActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#17a5de"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/username"
+            style="@style/CustomNormalFont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:hint="Username"
+            android:inputType="textCapCharacters"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="#fff"
+            android:textColorHint="#fff" />
+
+        <EditText
+            android:id="@+id/password"
+            style="@style/CustomNormalFont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/username"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:hint="@string/prompt_password"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="#fff"
+            android:textColorHint="#fff" />
+
+        <Button
+            android:id="@+id/sign_in_button"
+            style="@style/CustomNormalFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/password"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/flat_selector"
+            android:text="Login" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="@dimen/login_logo"
+        android:layout_height="@dimen/login_logo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="top"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/logo" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/form"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/teenscribblers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/gu_logo_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="TEENSCRIBBLERS"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/ts_grey_dark"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/gu_logo_text"
+        style="@style/CustomStrongFont"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Galgotias\nUniversity"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/ts_red"
+        android:textSize="38sp" />
+</RelativeLayout>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg">
+
+    <TextView
+        android:id="@+id/textView_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@+id/h_divider"
+        android:text="Subject"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/ts_blue"
+        android:textSize="22sp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
+
+
+    <RelativeLayout
+        android:id="@+id/h_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:background="@color/ts_grey_dark"
+        android:layout_below="@+id/linear_f"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp" />
+
+
+    <TextView
+        android:id="@+id/textView_timeslot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:layout_toEndOf="@+id/textView_group"
+        android:text="Time Slot"
+        android:textColor="@color/ts_white"
+        android:textSize="16sp"
+        android:padding="5dp"
+        android:background="@color/ts_grey_dark" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/textView_timeslot"
+        android:id="@+id/linear_f"
+        android:layout_toEndOf="@+id/textView_group"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/textView_faculty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Faculty Name"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/ts_grey_dark"
+            android:textSize="18sp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="0.7" />
+
+        <View
+            android:id="@+id/v_divider"
+            android:layout_width="0.25dp"
+            android:layout_height="match_parent"
+            android:background="@color/ts_grey_dark"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
+
+        <TextView
+            android:id="@+id/textView_hall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Hall no"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/ts_grey_dark"
+            android:textSize="20sp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="0.3" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:text="A1"
+        android:textColor="@color/ts_white"
+        android:textSize="20sp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:background="@drawable/group_banner" />
+
+</RelativeLayout>

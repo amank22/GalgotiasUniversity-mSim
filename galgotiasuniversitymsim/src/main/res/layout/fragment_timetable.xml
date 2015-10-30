@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffe9e9e9">
+
+    <ListView
+        android:id="@+id/listView_attendance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_head"
+        android:dividerHeight="5dp"
+        android:divider="#00000000"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loading..."
+        android:id="@+id/textView_att_loading"
+        android:layout_centerInParent="true"
+        android:textSize="24sp"
+        android:textColor="@color/ts_grey" />
+
+</RelativeLayout>

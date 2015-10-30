@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/ts_red"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.AppCompat">
+
+    <ImageView
+        android:id="@+id/imageView_nav"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:src="@drawable/loading" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Galgotias University"
+        android:textAppearance="@style/CustomStrongFont"
+        android:textColor="#fff"
+        android:textSize="24sp" />
+
+    <!--<TextView-->
+    <!--style="@style/CustomNormalFont"-->
+    <!--android:id="@+id/textView_subtitle"-->
+    <!--android:textSize="22sp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Welcome" />-->
+
+</LinearLayout>

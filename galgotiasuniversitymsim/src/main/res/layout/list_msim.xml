@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:text="Key"
+        android:textColor="@color/ts_grey_dark" />
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="0.25dp"
+        android:background="@color/ts_grey_dark"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        style="@style/CustomStrongFont"
+        android:id="@+id/value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="Value"
+        android:gravity="center"
+        android:textColor="#4caf50" />
+
+</LinearLayout>

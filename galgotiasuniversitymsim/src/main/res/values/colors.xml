@@ -1,0 +1,45 @@
+<!--
+  ~ Copyright (C) 2014 Antonio Leiva Gordillo.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <color name="colorPrimary">@color/ts_primary</color>
+    <color name="colorPrimaryDark">@color/ts_primary_dark</color>
+
+    <color name="colorSecondary">@color/ts_sec</color>
+    <color name="colorSecondaryDark">@color/ts_sec_dark</color>
+
+    <color name="windowBackgroundColor">#333333</color>
+    <color name="black_translucent">#80000000</color>
+    <color name="ts_background">#cfd8dc</color>
+    <color name="ts_primary">#8c6239</color>
+    <color name="ts_primary_dark">#ff73532e</color>
+    <color name="ts_sec">#fdc689</color>
+    <color name="ts_sec_dark">#ffd59f6b</color>
+    <!-- color palettes -->
+    <color name="ts_pink">#f50057</color>
+    <color name="ts_red">#ff4444</color>
+    <color name="ts_red_dark">#ffff281e</color>
+    <color name="ts_yellow">#ffbb33</color>
+    <color name="ts_blue">#33b5e5</color>
+    <color name="ts_purple">#aa66cc</color>
+    <color name="ts_black">#000000</color>
+    <color name="ts_grey">#414141</color>
+    <color name="ts_grey_dark">#303030</color>
+    <color name="ts_white">#ffffff</color>
+    <color name="ts_green">#ff33c352</color>
+    <color name="ts_pink_light">#ff75e9</color>
+
+</resources>

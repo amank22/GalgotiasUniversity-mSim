@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_personal"
+            android:icon="@drawable/user"
+            android:title="@string/title_section1"
+            android:checked="true"/>
+        <item
+            android:id="@+id/nav_att"
+            android:icon="@drawable/attendance"
+            android:title="@string/title_section2" />
+        <item
+            android:id="@+id/nav_tt"
+            android:icon="@drawable/timetable"
+            android:title="@string/title_section3" />
+        <item
+            android:id="@+id/nav_news"
+            android:icon="@drawable/news"
+            android:title="@string/title_section4" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/mail"
+                android:title="Contact Us" />
+        </menu>
+    </item>
+
+</menu>
