@@ -1,7 +1,6 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 
 import de.greenrobot.event.EventBus;

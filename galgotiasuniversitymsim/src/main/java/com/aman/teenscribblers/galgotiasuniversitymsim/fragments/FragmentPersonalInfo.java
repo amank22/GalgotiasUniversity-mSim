@@ -32,7 +32,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by aman on 26-12-2014.
@@ -91,6 +90,89 @@ public class FragmentPersonalInfo extends Fragment {
 
     void addtotitlelist(String s) {
         AppConstants.titletext.add(s);
+    }
+
+    private void setadapter() {
+        CardsAdapter adapter = new CardsAdapter(getActivity(),
+                android.R.layout.simple_list_item_1);
+        ScaleInAnimationAdapter scaleAnimationAdapter = new ScaleInAnimationAdapter(
+                adapter);
+        scaleAnimationAdapter.setAbsListView(list);
+        assert scaleAnimationAdapter.getViewAnimator() != null;
+        scaleAnimationAdapter.getViewAnimator().setInitialDelayMillis(
+                300);
+        list.setAdapter(scaleAnimationAdapter);
+    }
+
+    private void titles() {
+        // TODO Auto-generated method stub
+        addtotitlelist("Admission No");
+        addtotitlelist("Reg. Form No");
+        addtotitlelist("Name");
+        addtotitlelist("Gender");
+        addtotitlelist("Blood Group");
+        addtotitlelist("DOB");
+        addtotitlelist("Present Address");
+        addtotitlelist("City");
+        addtotitlelist("State");
+        addtotitlelist("Pin code");
+        addtotitlelist("Phone");
+        addtotitlelist("Email ID");
+        addtotitlelist("Remark");
+        addtotitlelist("Local Guardian Name");
+        addtotitlelist("Local Guardian Address");
+        addtotitlelist("Local Guardian Phone No");
+        addtotitlelist("Father Name");
+        addtotitlelist("Father's Mobile");
+        addtotitlelist("Father's E-Mail");
+        addtotitlelist("Mother Name");
+        addtotitlelist("Mother's Mobile");
+        addtotitlelist("Mother's E-Mail");
+        addtotitlelist("Occupation");
+        addtotitlelist("Designation");
+        addtotitlelist("Monthly Income");
+        addtotitlelist("Permanent Address");
+        addtotitlelist("City");
+        addtotitlelist("State");
+        addtotitlelist("Pin code");
+        addtotitlelist("Phone");
+        addtotitlelist("Mobile No");
+    }
+
+    private void idlist() {
+        // TODO Auto-generated method stub
+        addtolist("MCPH1_SCPH_lblAdmNo");
+        addtolist("MCPH1_SCPH_lblRegNo");
+        addtolist("MCPH1_SCPH_lblName");
+        addtolist("MCPH1_SCPH_lblGender");
+        addtolist("MCPH1_SCPH_lblBG");
+        addtolist("MCPH1_SCPH_lblDOB");
+        addtolist("MCPH1_SCPH_lblPresentAdd");
+        addtolist("MCPH1_SCPH_lblCity1");
+        addtolist("MCPH1_SCPH_lblstate1");
+        addtolist("MCPH1_SCPH_lblPin1");
+        addtolist("MCPH1_SCPH_lblPhone1");
+        addtolist("MCPH1_SCPH_lblEmail1");
+        addtolist("MCPH1_SCPH_lblRemark");
+        addtolist("MCPH1_SCPH_lblLGuard");
+        addtolist("MCPH1_SCPH_lblAddress1");
+        addtolist("MCPH1_SCPH_lblPhone");
+        addtolist("MCPH1_SCPH_lblfather");
+        addtolist("MCPH1_SCPH_lblfmob");
+        addtolist("MCPH1_SCPH_lblFEmail");
+        addtolist("MCPH1_SCPH_lblmother");
+        addtolist("MCPH1_SCPH_lblMobile");
+        addtolist("MCPH1_SCPH_lblMEmail");
+        addtolist("MCPH1_SCPH_lblOccupation");
+        addtolist("MCPH1_SCPH_lblDesi");
+        addtolist("MCPH1_SCPH_lblMon");
+        addtolist("MCPH1_SCPH_lblParmanantAdd");
+        addtolist("MCPH1_SCPH_lblCity2");
+        addtolist("MCPH1_SCPH_lblState2");
+        addtolist("MCPH1_SCPH_lblpin2");
+        addtolist("MCPH1_SCPH_lblPhone2");
+        addtolist("MCPH1_SCPH_lblmob");
+
     }
 
     public class Info extends AsyncTask<String, Void, String> {
@@ -162,18 +244,6 @@ public class FragmentPersonalInfo extends Fragment {
         }
     }
 
-    private void setadapter() {
-        CardsAdapter adapter = new CardsAdapter(getActivity(),
-                android.R.layout.simple_list_item_1);
-        ScaleInAnimationAdapter scaleAnimationAdapter = new ScaleInAnimationAdapter(
-                adapter);
-        scaleAnimationAdapter.setAbsListView(list);
-        assert scaleAnimationAdapter.getViewAnimator() != null;
-        scaleAnimationAdapter.getViewAnimator().setInitialDelayMillis(
-                300);
-        list.setAdapter(scaleAnimationAdapter);
-    }
-
     public class CardsAdapter extends ArrayAdapter<String> {
 
         public TextView text, textvalue;
@@ -211,77 +281,6 @@ public class FragmentPersonalInfo extends Fragment {
                 textvalue.setText("-");
             return row;
         }
-
-    }
-
-    private void titles() {
-        // TODO Auto-generated method stub
-        addtotitlelist("Admission No");
-        addtotitlelist("Reg. Form No");
-        addtotitlelist("Name");
-        addtotitlelist("Gender");
-        addtotitlelist("Blood Group");
-        addtotitlelist("DOB");
-        addtotitlelist("Present Address");
-        addtotitlelist("City");
-        addtotitlelist("State");
-        addtotitlelist("Pin code");
-        addtotitlelist("Phone");
-        addtotitlelist("Email ID");
-        addtotitlelist("Remark");
-        addtotitlelist("Local Guardian Name");
-        addtotitlelist("Local Guardian Address");
-        addtotitlelist("Local Guardian Phone No");
-        addtotitlelist("Father Name");
-        addtotitlelist("Father's Mobile");
-        addtotitlelist("Father's E-Mail");
-        addtotitlelist("Mother Name");
-        addtotitlelist("Mother's Mobile");
-        addtotitlelist("Mother's E-Mail");
-        addtotitlelist("Occupation");
-        addtotitlelist("Designation");
-        addtotitlelist("Monthly Income");
-        addtotitlelist("Permanent Address");
-        addtotitlelist("City");
-        addtotitlelist("State");
-        addtotitlelist("Pin code");
-        addtotitlelist("Phone");
-        addtotitlelist("Mobile No");
-    }
-
-    private void idlist() {
-        // TODO Auto-generated method stub
-        addtolist("MCPH1_SCPH_lblAdmNo");
-        addtolist("MCPH1_SCPH_lblRegNo");
-        addtolist("MCPH1_SCPH_lblName");
-        addtolist("MCPH1_SCPH_lblGender");
-        addtolist("MCPH1_SCPH_lblBG");
-        addtolist("MCPH1_SCPH_lblDOB");
-        addtolist("MCPH1_SCPH_lblPresentAdd");
-        addtolist("MCPH1_SCPH_lblCity1");
-        addtolist("MCPH1_SCPH_lblstate1");
-        addtolist("MCPH1_SCPH_lblPin1");
-        addtolist("MCPH1_SCPH_lblPhone1");
-        addtolist("MCPH1_SCPH_lblEmail1");
-        addtolist("MCPH1_SCPH_lblRemark");
-        addtolist("MCPH1_SCPH_lblLGuard");
-        addtolist("MCPH1_SCPH_lblAddress1");
-        addtolist("MCPH1_SCPH_lblPhone");
-        addtolist("MCPH1_SCPH_lblfather");
-        addtolist("MCPH1_SCPH_lblfmob");
-        addtolist("MCPH1_SCPH_lblFEmail");
-        addtolist("MCPH1_SCPH_lblmother");
-        addtolist("MCPH1_SCPH_lblMobile");
-        addtolist("MCPH1_SCPH_lblMEmail");
-        addtolist("MCPH1_SCPH_lblOccupation");
-        addtolist("MCPH1_SCPH_lblDesi");
-        addtolist("MCPH1_SCPH_lblMon");
-        addtolist("MCPH1_SCPH_lblParmanantAdd");
-        addtolist("MCPH1_SCPH_lblCity2");
-        addtolist("MCPH1_SCPH_lblState2");
-        addtolist("MCPH1_SCPH_lblpin2");
-        addtolist("MCPH1_SCPH_lblPhone2");
-        addtolist("MCPH1_SCPH_lblmob");
 
     }
 

@@ -1,9 +1,7 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.activities;
 
 import android.content.Context;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 

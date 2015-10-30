@@ -1,40 +1,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textView"
         style="@style/CustomStrongFont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="TEENSCRIBBLERS"
-        android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:singleLine="true"
-        android:textSize="26sp"
-        android:textColor="@color/ts_blue" />
+        android:text="TEENSCRIBBLERS"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/ts_blue"
+        android:textSize="26sp" />
 
     <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView2"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:src="@drawable/aman" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Credits:\nAman Kapoor\n(Developer,\nDesigner)\nKriti Doneria\n(Promotion)"
-        android:id="@+id/textView2"
-        android:textSize="20sp"
-        android:gravity="center"
         android:layout_below="@+id/textView"
         android:layout_marginTop="10dp"
-        android:textColor="@color/ts_grey_dark" />
+        android:gravity="center"
+        android:text="Credits:\nAman Kapoor\n(Developer,\nDesigner)\nKriti Doneria\n(Promotion)"
+        android:textColor="@color/ts_grey_dark"
+        android:textSize="20sp" />
 </RelativeLayout>

@@ -3,7 +3,6 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.BroadCastReciever;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Service.SimService;
 

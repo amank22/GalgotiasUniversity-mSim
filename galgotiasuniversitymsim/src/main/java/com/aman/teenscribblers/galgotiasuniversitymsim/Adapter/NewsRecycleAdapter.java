@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,8 +13,6 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import static android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
 
 /**
  * Created by aman on 24-10-2015 in Galgotias University(mSim).
@@ -27,26 +24,10 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
     private Context context;
 
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public TextView mTextView;
-        public ImageView mImageView;
-
-        public ViewHolder(View v) {
-            super(v);
-            mTextView = (TextView) v.findViewById(R.id.news_item_note);
-            mImageView = (ImageView) v.findViewById(R.id.news_item_image);
-        }
-    }
-
     public NewsRecycleAdapter(List<NewsParcel> parcel, Context c) {
         this.parcel = parcel;
         context = c;
     }
-
 
     @Override
     public NewsRecycleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -81,6 +62,21 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
     @Override
     public int getItemCount() {
         return (parcel == null) ? 0 : parcel.size();
+    }
+
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        public TextView mTextView;
+        public ImageView mImageView;
+
+        public ViewHolder(View v) {
+            super(v);
+            mTextView = (TextView) v.findViewById(R.id.news_item_note);
+            mImageView = (ImageView) v.findViewById(R.id.news_item_image);
+        }
     }
 
 }
