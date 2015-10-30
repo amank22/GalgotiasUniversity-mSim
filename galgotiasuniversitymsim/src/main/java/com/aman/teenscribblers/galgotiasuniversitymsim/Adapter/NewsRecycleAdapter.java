@@ -15,9 +15,9 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Created by aman on 24-10-2015 in Galgotias University(mSim).
+ * Created by Aman on 24-10-2015 in Galgotias University(mSim).
  */
-public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.ViewHolder>{
+public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.ViewHolder> {
 
     private static final String TAG = "NEWSADAPTER";
     private List<NewsParcel> parcel;
@@ -63,6 +63,7 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
     public int getItemCount() {
         return (parcel == null) ? 0 : parcel.size();
     }
+    
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and

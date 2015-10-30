@@ -1,5 +1,6 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -16,9 +17,11 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.Adapter.NewsRecycleAdapte
 import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.NewsEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.DbSimHelper;
+import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.RecyclerItemClickListener;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.NewsDBJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.NewsParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.aman.teenscribblers.galgotiasuniversitymsim.activities.NewsDetailActivity;
 
 import java.util.List;
 
@@ -69,7 +72,9 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                ItemTouchHelper.LEFT
+//                        | ItemTouchHelper.RIGHT
+        ) {
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
@@ -108,7 +113,17 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
-
+        //Adding onclick listener
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent newsIntent = new Intent(getActivity(), NewsDetailActivity.class);
+                        newsIntent.putExtra("newsContent", parcel.get(position));
+                        getActivity().startActivity(newsIntent);
+                    }
+                })
+        );
 
     }
 

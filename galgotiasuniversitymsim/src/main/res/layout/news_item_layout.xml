@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/news_string_image"
         android:scaleType="center"
+        android:minHeight="100dp"
         android:src="@drawable/rect_grey" />
     <View
         android:layout_width="match_parent"
