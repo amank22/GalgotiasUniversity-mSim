@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.NewsParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.aman.teenscribblers.galgotiasuniversitymsim.view.PhotographicPrintAnimator;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -37,7 +39,7 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
     }
 
     @Override
-    public void onBindViewHolder(NewsRecycleAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final NewsRecycleAdapter.ViewHolder holder, int position) {
         holder.mTextView.setText(parcel.get(position).getNote());
         String url = parcel.get(position).getImage_url();
         if (url == null || url.equals("")) {
@@ -48,10 +50,26 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
             picasso.setIndicatorsEnabled(false);
             picasso.load(url).placeholder(R.drawable.rect_grey)
                     .priority(Picasso.Priority.NORMAL)
-                    .into(holder.mImageView);
-//            holder.mImageView.
+                    .into(holder.mImageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            PhotographicPrintAnimator pa = new PhotographicPrintAnimator(holder.mImageView);
+                            pa.start(3000);
+                        }
+
+                        @Override
+                        public void onError() {
+                            holder.mImageView.setImageResource(R.color.ts_grey_dark);
+                        }
+                    });
         }
 
+    }
+
+    @Override
+    public boolean onFailedToRecycleView(ViewHolder holder) {
+        Picasso.with(context).cancelRequest(holder.mImageView);
+        return super.onFailedToRecycleView(holder);
     }
 
     @Override
