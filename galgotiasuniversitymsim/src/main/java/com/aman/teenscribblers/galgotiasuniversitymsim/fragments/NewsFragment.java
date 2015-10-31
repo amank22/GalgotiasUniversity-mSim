@@ -25,6 +25,9 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.activities.NewsDetailActi
 
 import java.util.List;
 
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
+
 public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "NEWSFRAGMENT";
@@ -72,9 +75,7 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT
-//                        | ItemTouchHelper.RIGHT
-        ) {
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
@@ -128,7 +129,7 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
 
-    @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(NewsEvent event) {
         mSwipeRefreshLayout.setRefreshing(false);
         if (event.isError()) {

@@ -80,13 +80,13 @@ public class TimeTableContent extends Fragment implements AdapterView.OnItemClic
     private ColorChangerTimeTable changer;
 
     public interface ColorChangerTimeTable {
-        public void changecolortt(int color);
+        void changecolortt(int color);
     }
 
     private FragmentOpenTimeTable flisten;
 
     public interface FragmentOpenTimeTable {
-        public void ttopened(Fragment frag, String tag);
+        void ttopened(Fragment frag, String tag);
     }
 
     @Override

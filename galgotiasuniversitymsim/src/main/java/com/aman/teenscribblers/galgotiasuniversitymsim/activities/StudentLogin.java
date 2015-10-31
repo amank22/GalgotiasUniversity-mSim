@@ -19,6 +19,8 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.LoginJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 /**
  * Created by aman on 24-10-2015 in Galgotias University(mSim).
@@ -100,7 +102,7 @@ public class StudentLogin extends BaseActivity {
         GUApp.getJobManager().addJobInBackground(new LoginJob(mUsername, mPassword, "MainLogin"));
     }
 
-    @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(LoginEvent event) {
         CurrentlyRunning = false;
         p.setVisibility(View.INVISIBLE);

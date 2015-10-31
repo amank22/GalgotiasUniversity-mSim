@@ -24,6 +24,9 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingRightInAnimationAd
 
 import java.util.List;
 
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
+
 /**
  * Created by aman on 25-12-2014 in ${PROJECT_NAME}.
  */
@@ -160,6 +163,7 @@ public class FragmentTimeTable extends BaseFragment {
     }
 
     @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(TimeTableErrorEvent event) {
         loading.setVisibility(View.VISIBLE);
         loading.setText(event.getResponse());
@@ -175,12 +179,14 @@ public class FragmentTimeTable extends BaseFragment {
     }
 
     @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(TimeTableStartEvent event) {
         loading.setVisibility(View.VISIBLE);
         loading.setText(event.getResponse());
     }
 
     @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(TimeTableSuccessEvent event) {
         if (event.getParcel() == null) {
             GUApp.getJobManager().addJobInBackground(new TTFindParcel(day_type));

@@ -30,6 +30,9 @@ import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter
 
 import java.util.List;
 
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
+
 
 public class AttendanceFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
     // ProgressDialog p;
@@ -346,6 +349,7 @@ public class AttendanceFragment extends BaseFragment implements SwipeRefreshLayo
     }
 
     @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(AttendanceErrorEvent event) {
         loading.setVisibility(View.VISIBLE);
         loading.setText(event.getError());
@@ -358,7 +362,7 @@ public class AttendanceFragment extends BaseFragment implements SwipeRefreshLayo
         }
     }
 
-    @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(LoginEvent event) {
         mSwipeRefreshLayout.setRefreshing(false);
         if (event.getReason().equals("Username-Invalid")) {
@@ -374,14 +378,14 @@ public class AttendanceFragment extends BaseFragment implements SwipeRefreshLayo
         }
     }
 
-    @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(AttendanceFetchingEvent event) {
         loading.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setRefreshing(true);
         loading.setText(event.getIsNetwork() ? "Fetching from Network..." : "Fetching Locally...");
     }
 
-    @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(AttendanceProccesedEvent event) {
         mSwipeRefreshLayout.setRefreshing(false);
         if (event.getParcel() != null) {

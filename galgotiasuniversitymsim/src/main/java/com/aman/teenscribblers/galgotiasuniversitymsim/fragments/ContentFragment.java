@@ -108,6 +108,7 @@ public class ContentFragment extends Fragment implements AdapterView.OnItemClick
         public void changecolor(int color);
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
