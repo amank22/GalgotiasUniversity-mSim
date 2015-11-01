@@ -57,17 +57,15 @@ public class HomeActivity extends BaseActivity
         }
         frame.setClipToPadding(true);
         frame.setDrawingCacheEnabled(true);
-//        frame.setPivotY(0.0f);
         frame.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-//                super.onDrawerSlide(drawerView, slideOffset);
+                super.onDrawerSlide(drawerView, slideOffset);
                 frame.setScaleX(1 - slideOffset / 10);
                 frame.setScaleY(1 - slideOffset / 10);
-//                frame.setRotationY(slideOffset*13);
             }
         };
         drawer.setDrawerListener(toggle);
@@ -126,9 +124,7 @@ public class HomeActivity extends BaseActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, NewsFragment.newInstance())
                     .commit();
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        }  else if (id == R.id.nav_send) {
 
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");

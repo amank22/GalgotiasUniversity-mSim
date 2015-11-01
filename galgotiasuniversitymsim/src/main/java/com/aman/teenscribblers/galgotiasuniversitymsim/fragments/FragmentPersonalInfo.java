@@ -60,6 +60,7 @@ public class FragmentPersonalInfo extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        GCMCalls();
         return inflater.inflate(R.layout.frag_personalinfo, container, false);
     }
 
@@ -95,7 +96,6 @@ public class FragmentPersonalInfo extends Fragment {
             din.close();
             pb.setVisibility(View.GONE);
             AddGCMregtoPref();
-            GCMCalls();
             setadapter();
 
         } catch (FileNotFoundException e) {
@@ -110,6 +110,12 @@ public class FragmentPersonalInfo extends Fragment {
         PrefUtils.saveToPrefs(getActivity(), PrefUtils.PREFS_USER_ADMNO_KEY, admno);
         PrefUtils.saveToPrefs(getActivity(), PrefUtils.PREFS_USER_EMAIL_KEY, email);
         PrefUtils.saveToPrefs(getActivity(), PrefUtils.PREFS_USER_NAME_KEY, name);
+        try {
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mRegistrationBroadcastReceiver,
+                    new IntentFilter(AppConstants.REGISTRATION_COMPLETE));
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
     }
 
     void addtolist(String s) {
@@ -272,7 +278,7 @@ public class FragmentPersonalInfo extends Fragment {
             } else {
                 setadapter();
                 AddGCMregtoPref();
-                GCMCalls();
+
             }
         }
     }
@@ -298,24 +304,13 @@ public class FragmentPersonalInfo extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        try {
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mRegistrationBroadcastReceiver,
-                    new IntentFilter(AppConstants.REGISTRATION_COMPLETE));
-        } catch (Exception e) {
-            e.fillInStackTrace();
-        }
-    }
-
-    @Override
-    public void onPause() {
+    public void onStop() {
+        super.onStop();
         try {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mRegistrationBroadcastReceiver);
         } catch (Exception e) {
             e.fillInStackTrace();
         }
-        super.onPause();
     }
 
     /**

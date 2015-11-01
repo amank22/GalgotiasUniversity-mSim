@@ -8,14 +8,13 @@ android {
         applicationId "com.aman.teenscribblers.galgotiasuniversitymsim"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 10
-        versionName "3"
+        versionCode 11
+        versionName "3.0.1"
         multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

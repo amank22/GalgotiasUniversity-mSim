@@ -24,10 +24,6 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/share"
-                android:title="Share" />
-            <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/mail"
                 android:title="Contact Us" />
