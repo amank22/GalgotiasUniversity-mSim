@@ -22,12 +22,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.Rebound;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.ContentFragment;
-import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentPersonalInfo;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentPersonalNew;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.TimeTableContent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.transform.CircleTransform;
@@ -38,21 +36,24 @@ public class HomeActivity extends BaseActivity
         ContentFragment.FragmentOpenAtt {
 
 
-    Fragment afrag = null, tfrag = null;
-    ImageView image;
-    private Integer colorFrom = R.color.ts_red;
-
     private static final String TAG = "HomeActivity";
-
+    private final FragmentManager fragmentManager = getFragmentManager();
+    public ImageView image;
+    Fragment afrag = null, tfrag = null;
+    private Integer colorFrom = R.color.ts_red;
     private CoordinatorLayout frame;
     private DrawerLayout drawer;
-    private final FragmentManager fragmentManager = getFragmentManager();
+
+    public ImageView getImage() {
+        return image;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         frame = (CoordinatorLayout) findViewById(R.id.mainbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            assert frame != null;
             frame.setClipToOutline(true);
         }
         frame.setClipToPadding(true);
@@ -68,33 +69,28 @@ public class HomeActivity extends BaseActivity
                 frame.setScaleY(1 - slideOffset / 10);
             }
         };
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_main, null);
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_main, navigationView, false);
         navigationView.addHeaderView(header);
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager.beginTransaction()
-                .replace(R.id.container, new FragmentPersonalInfo())
+                .replace(R.id.container, new FragmentPersonalNew())
                 .commit();
-        String mUsername = PrefUtils.getFromPrefs(HomeActivity.this,
-                PrefUtils.PREFS_LOGIN_USERNAME_KEY, "Username");
         image = (ImageView) header.findViewById(R.id.imageView_nav);
+        String url = PrefUtils.getFromPrefs(this, PrefUtils.PREFS_USER_IMAGE, "");
+        if (!url.equals("")) {
         Picasso picasso = Picasso.with(this);
         picasso.setIndicatorsEnabled(false);
-        picasso.load(AppConstants.StudentImagebase + mUsername + ".jpg")
+            picasso.load(url)
                 .noPlaceholder()
-                .resize(500, 500)
                 .centerInside()
+                    .resize(400, 400)
                 .transform(new CircleTransform())
                 .priority(Picasso.Priority.HIGH)
                 .into(image);
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Rebound.AddRebound(image);
-            }
-        });
+        }
     }
 
     @Override
@@ -110,7 +106,7 @@ public class HomeActivity extends BaseActivity
         FragmentManager fragmentManager = getFragmentManager();
         if (id == R.id.nav_personal) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, new FragmentPersonalInfo())
+                    .replace(R.id.container, new FragmentPersonalNew())
                     .commit();
         } else if (id == R.id.nav_att) {
             fragmentManager.beginTransaction()
@@ -169,28 +165,26 @@ public class HomeActivity extends BaseActivity
     @Override
     public void attopened(Fragment frag, String tag) {
         afrag = frag;
-        if (tag.equals("Subject+Wise+Attendance")) {
-            tag = "Subject+Attendance";
-        }
-//        tophead.setText(tag.replace("+", "\n"));
     }
 
     @Override
     public void ttopened(Fragment frag, String tag) {
         tfrag = frag;
-//        tophead.setText(tag.replace("+", "\n"));
     }
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else if (afrag != null && afrag.isVisible()) {
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else
+        if (afrag != null && afrag.isVisible()) {
             getFragmentManager().beginTransaction().replace(R.id.container, ContentFragment.newInstance()).commit();
             startcolorchange(ContextCompat.getColor(HomeActivity.this, R.color.ts_red));
         } else if (tfrag != null && tfrag.isVisible()) {
             getFragmentManager().beginTransaction().replace(R.id.container, TimeTableContent.newInstance()).commit();
             startcolorchange(ContextCompat.getColor(HomeActivity.this, R.color.ts_red));
+        } else if (!drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.openDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }

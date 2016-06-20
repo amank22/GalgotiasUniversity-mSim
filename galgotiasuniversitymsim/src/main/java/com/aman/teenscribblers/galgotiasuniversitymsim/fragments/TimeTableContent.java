@@ -17,6 +17,8 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.R;
  */
 public class TimeTableContent extends Fragment implements AdapterView.OnItemClickListener {
     Fragment frag;
+    private ColorChangerTimeTable changer;
+    private FragmentOpenTimeTable flisten;
 
     /**
      * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
@@ -77,18 +79,6 @@ public class TimeTableContent extends Fragment implements AdapterView.OnItemClic
         flisten.ttopened(frag, day);
     }
 
-    private ColorChangerTimeTable changer;
-
-    public interface ColorChangerTimeTable {
-        void changecolortt(int color);
-    }
-
-    private FragmentOpenTimeTable flisten;
-
-    public interface FragmentOpenTimeTable {
-        void ttopened(Fragment frag, String tag);
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -107,6 +97,14 @@ public class TimeTableContent extends Fragment implements AdapterView.OnItemClic
             throw new ClassCastException(activity.toString()
                     + " must implement attendance Fragment backstack Listener");
         }
+    }
+
+    public interface ColorChangerTimeTable {
+        void changecolortt(int color);
+    }
+
+    public interface FragmentOpenTimeTable {
+        void ttopened(Fragment frag, String tag);
     }
 
 }

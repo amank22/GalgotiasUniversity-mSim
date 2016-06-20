@@ -7,6 +7,18 @@ import android.os.Parcelable;
  * Created by aman on 24-03-2015 in Galgotias University(mSim).
  */
 public class NewsParcel implements Parcelable {
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<NewsParcel> CREATOR = new Parcelable.Creator<NewsParcel>() {
+        @Override
+        public NewsParcel createFromParcel(Parcel in) {
+            return new NewsParcel(in);
+        }
+
+        @Override
+        public NewsParcel[] newArray(int size) {
+            return new NewsParcel[size];
+        }
+    };
     public int id;
     public String note;
     public String image_url;
@@ -38,19 +50,6 @@ public class NewsParcel implements Parcelable {
         dest.writeString(image_url);
         dest.writeString(author);
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<NewsParcel> CREATOR = new Parcelable.Creator<NewsParcel>() {
-        @Override
-        public NewsParcel createFromParcel(Parcel in) {
-            return new NewsParcel(in);
-        }
-
-        @Override
-        public NewsParcel[] newArray(int size) {
-            return new NewsParcel[size];
-        }
-    };
 
     public int getId() {
         return id;

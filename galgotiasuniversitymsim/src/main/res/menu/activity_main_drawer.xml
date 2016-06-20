@@ -4,9 +4,9 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_personal"
+            android:checked="true"
             android:icon="@drawable/user"
-            android:title="@string/title_section1"
-            android:checked="true"/>
+            android:title="@string/title_section1" />
         <item
             android:id="@+id/nav_att"
             android:icon="@drawable/attendance"

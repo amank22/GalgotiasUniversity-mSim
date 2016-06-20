@@ -10,17 +10,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.Events.SessionExpiredEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableErrorEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableStartEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableSuccessEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.LoginJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.TTFindParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.TimeTableJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.TimeTableParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
-import com.nhaarman.listviewanimations.appearance.simple.SwingRightInAnimationAdapter;
 
 import java.util.List;
 
@@ -32,18 +30,12 @@ import de.greenrobot.event.ThreadMode;
  */
 public class FragmentTimeTable extends BaseFragment {
 
-    TextView loading;
     private static final int INITIAL_DELAY_MILLIS = 200;
-    private List<TimeTableParcel> parcel;
+    TextView loading;
     ListView list;
     String day_type;
     ViewHolderTT holder;
-
-    static class ViewHolderTT {
-        TextView subject;
-        TextView group, faculty, timeslot, hallno;
-    }
-
+    private List<TimeTableParcel> parcel;
 
     public static FragmentTimeTable newInstance(String day) {
         Bundle bundle = new Bundle();
@@ -81,13 +73,7 @@ public class FragmentTimeTable extends BaseFragment {
 
     private void uselist() {
         if (getActivity() != null) {
-            SwingRightInAnimationAdapter swingBottomInAnimationAdapter = new SwingRightInAnimationAdapter(
-                    new CardsAdapter(getActivity()));
-            swingBottomInAnimationAdapter.setAbsListView(list);
-            assert swingBottomInAnimationAdapter.getViewAnimator() != null;
-            swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(
-                    INITIAL_DELAY_MILLIS);
-            list.setAdapter(swingBottomInAnimationAdapter);
+            list.setAdapter(new CardsAdapter(getActivity()));
         }
     }
 
@@ -95,6 +81,52 @@ public class FragmentTimeTable extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("day", day_type);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onEventMainThread(TimeTableErrorEvent event) {
+        loading.setVisibility(View.VISIBLE);
+        loading.setText(event.getResponse());
+        switch (event.getResponse()) {
+            case "Loading From Network":
+                GUApp.getJobManager().addJobInBackground(new TimeTableJob(day_type));
+                break;
+            case AppConstants.ERROR_CONTENT_FETCH:
+                loading.setText(AppConstants.ERROR_TIME_TABLE);
+                break;
+        }
+
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onEventMainThread(SessionExpiredEvent event) {
+        //TODO: switch to login activity or captcha
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onEventMainThread(TimeTableStartEvent event) {
+        loading.setVisibility(View.VISIBLE);
+        loading.setText(event.getResponse());
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onEventMainThread(TimeTableSuccessEvent event) {
+        if (event.getParcel() == null) {
+            GUApp.getJobManager().addJobInBackground(new TTFindParcel(day_type));
+        } else {
+            loading.setVisibility(View.GONE);
+            parcel = event.getParcel();
+            uselist();
+        }
+    }
+
+    static class ViewHolderTT {
+        TextView subject;
+        TextView group, faculty, timeslot, hallno;
     }
 
     public class CardsAdapter extends ArrayAdapter {
@@ -122,7 +154,7 @@ public class FragmentTimeTable extends BaseFragment {
             holder = null;
             if (row == null) {
                 row = mInflater
-                        .inflate(R.layout.timetable_list_item, null);
+                        .inflate(R.layout.timetable_list_item, parent, false);
                 holder = new ViewHolderTT();
                 holder.subject = (TextView) row
                         .findViewById(R.id.textView_subject);
@@ -159,41 +191,6 @@ public class FragmentTimeTable extends BaseFragment {
                 }
             }
             return row;
-        }
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onEventMainThread(TimeTableErrorEvent event) {
-        loading.setVisibility(View.VISIBLE);
-        loading.setText(event.getResponse());
-        if (event.getResponse().equals("Expired") || event.getResponse().equals("Error")) {
-            String mUsername = PrefUtils.getFromPrefs(getActivity(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, "user");
-            String mPassword = PrefUtils.getFromPrefs(getActivity(), PrefUtils.PREFS_LOGIN_PASSWORD_KEY, "pass");
-            GUApp.getJobManager().addJobInBackground(new LoginJob(mUsername, mPassword, AppConstants.GroupTimeTable));
-            GUApp.getJobManager().addJobInBackground(new TimeTableJob(day_type));
-        } else if (event.getResponse().equals("Loading From Network")) {
-            GUApp.getJobManager().addJobInBackground(new TimeTableJob(day_type));
-        }
-
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onEventMainThread(TimeTableStartEvent event) {
-        loading.setVisibility(View.VISIBLE);
-        loading.setText(event.getResponse());
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onEventMainThread(TimeTableSuccessEvent event) {
-        if (event.getParcel() == null) {
-            GUApp.getJobManager().addJobInBackground(new TTFindParcel(day_type));
-        } else {
-            loading.setVisibility(View.GONE);
-            parcel = event.getParcel();
-            uselist();
         }
     }
 

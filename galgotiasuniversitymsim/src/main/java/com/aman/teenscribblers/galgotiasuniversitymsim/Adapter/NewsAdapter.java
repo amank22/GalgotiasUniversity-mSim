@@ -19,11 +19,6 @@ import java.util.List;
  */
 public class NewsAdapter extends ArrayAdapter<NewsParcel> {
 
-    private class ViewHolder {
-        public TextView note;
-        public ImageView image;
-    }
-
     List<NewsParcel> parcel;
 
     public NewsAdapter(Context context, List<NewsParcel> objects) {
@@ -62,5 +57,10 @@ public class NewsAdapter extends ArrayAdapter<NewsParcel> {
     @Override
     public int getCount() {
         return (parcel == null) ? 0 : parcel.size();
+    }
+
+    private class ViewHolder {
+        public TextView note;
+        public ImageView image;
     }
 }

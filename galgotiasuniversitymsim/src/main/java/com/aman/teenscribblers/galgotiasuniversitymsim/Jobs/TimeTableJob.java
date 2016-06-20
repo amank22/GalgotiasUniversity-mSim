@@ -1,15 +1,21 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.Jobs;
 
 import android.content.ContentValues;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.aman.teenscribblers.galgotiasuniversitymsim.Events.SessionExpiredEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableErrorEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableStartEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableSuccessEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
+import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.Connection_detect;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.DbSimHelper;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.IonMethods;
-import com.path.android.jobqueue.Job;
-import com.path.android.jobqueue.Params;
+import com.birbit.android.jobqueue.CancelReason;
+import com.birbit.android.jobqueue.Job;
+import com.birbit.android.jobqueue.Params;
+import com.birbit.android.jobqueue.RetryConstraint;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,12 +32,11 @@ import de.greenrobot.event.EventBus;
  */
 public class TimeTableJob extends Job {
 
+    private static List<String> days = null;
     String day;
-    private DbSimHelper dbhelper;
     int count = 0;
     String[][] data;
-    String error = "NULL";
-    private static List<String> days = null;
+    private DbSimHelper dbhelper;
     private int current_day = 0;
 
 
@@ -54,13 +59,10 @@ public class TimeTableJob extends Job {
 
     @Override
     public void onRun() throws Throwable {
+        if (!Connection_detect.isConnectingToInternet(getApplicationContext())) {
+            throw new Exception(AppConstants.ERROR_NETWORK);
+        }
         String s = GetTTData();
-        if (s.equals("error")) {
-            EventBus.getDefault().post(new TimeTableErrorEvent("Error"));
-        }
-        if (s.equals("expired")) {
-            EventBus.getDefault().post(new TimeTableErrorEvent("Expired"));
-        }
         Document doc = Jsoup.parse(s);
         Elements table = doc.select("table");
         for (Element row : table.select("tr")) {
@@ -96,28 +98,29 @@ public class TimeTableJob extends Job {
     }
 
     @Override
-    protected void onCancel() {
-        EventBus.getDefault().post(new TimeTableErrorEvent("Error"));
+    protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
+        if (cancelReason == CancelReason.REACHED_RETRY_LIMIT)
+            EventBus.getDefault().post(new TimeTableErrorEvent(AppConstants.ERROR_CONTENT_FETCH));
     }
 
     @Override
-    protected boolean shouldReRunOnThrowable(Throwable throwable) {
-        error = throwable.getLocalizedMessage();
-        EventBus.getDefault().post(new TimeTableErrorEvent("Retrying for " + super.getCurrentRunCount() + " time"));
-        return true;
+    protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
+        EventBus.getDefault().post(new TimeTableErrorEvent("Retrying for " + runCount + " time"));
+        if (throwable.getMessage().equals(AppConstants.ERROR_NETWORK)) {
+            EventBus.getDefault().post(new TimeTableErrorEvent(throwable.getMessage()));
+            return RetryConstraint.CANCEL;
+        } else if (throwable.getMessage().equals(AppConstants.ERROR_SESSION_EXPIRED)) {
+            EventBus.getDefault().post(new SessionExpiredEvent());
+            return RetryConstraint.CANCEL;
+        }
+        return RetryConstraint.RETRY;
     }
 
-    private String GetTTData() {
-        String s = "error";
-        try {
-            if (IonMethods.get(AppConstants.TimeTableString))
-                s = IonMethods.post(AppConstants.TimeTableString,
-                        getnvp());
-        } catch (Exception e) {
-            s = "error";
-            e.printStackTrace();
-        }
-        return s;
+
+    private String GetTTData() throws Exception {
+        IonMethods.get(AppConstants.TimeTableString);
+        return IonMethods.post(AppConstants.TimeTableString,
+                getnvp());
     }
 
     private ContentValues getnvp() {

@@ -10,15 +10,21 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Adapter.ListAdapter;
+import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.borax12.materialdaterangepicker.date.DatePickerDialog;
+
+import java.util.Calendar;
 
 /**
  * Created by aman on 16-11-2014.
  */
-public class ContentFragment extends Fragment implements AdapterView.OnItemClickListener {
-    private static final String KEY_TITLE = "title";
+public class ContentFragment extends Fragment implements AdapterView.OnItemClickListener, DatePickerDialog.OnDateSetListener {
+    Fragment frag;
+    String type;
     private ListView list;
-    String type, typevalue;
+    private FragmentOpenAtt flisten;
+    private ColorChanger changer;
 
     /**
      * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
@@ -37,10 +43,10 @@ public class ContentFragment extends Fragment implements AdapterView.OnItemClick
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String[] att = {"Todays Attendance", "Semester Attendance", "Subjects Attendance", "Monthly Attendance"};
+//        String[] att = {"Todays Attendance" ,"Subjects Attendance", "Date-Wise Attendance"};
+        String[] att = {"Subjects Attendance", "Date-Wise Attendance"};
         list = (ListView) view.findViewById(R.id.listView_choice);
         ListAdapter adapter;
-//            ftype = args.getCharSequence(KEY_TITLE);
         adapter = new ListAdapter(getActivity(), att);
         setadapter(adapter);
         list.setOnItemClickListener(this);
@@ -53,61 +59,38 @@ public class ContentFragment extends Fragment implements AdapterView.OnItemClick
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.show(getFragmentManager(), "Datepickerdialog");
         switch (i) {
+//            case 0:
+//                replaceToAttendance(AppConstants.ATT_TODAY, getcolor(R.color.ts_yellow));
+//                break;
             case 0:
-//                if (ftype.equals("Attendance")) {
-                type = "ctl00$ctl00$MCPH1$SCPH$btntodayAtt";
-                typevalue = "Today+Attendance";
-                gooon(type, typevalue, getcolor(R.color.ts_yellow));
-//                }
+                type = AppConstants.ATT_SUBJECT;
                 break;
             case 1:
-//                if (ftype.equals("Attendance")) {
-                type = "ctl00$ctl00$MCPH1$SCPH$btnSemAtt";
-                typevalue = "Semester+Attendance";
-                gooon(type, typevalue, getcolor(R.color.ts_blue));
-//                }
-                break;
-            case 2:
-                type = "ctl00$ctl00$MCPH1$SCPH$btnSubjectWiseAtt";
-                typevalue = "Subject+Wise+Attendance";
-                gooon(type, typevalue, getcolor(R.color.ts_pink));
-                break;
-            case 3:
-                type = "ctl00$ctl00$MCPH1$SCPH$btnMonthlyAtt";
-                typevalue = "Monthly+Attendance";
-                gooon(type, typevalue, getcolor(R.color.ts_purple));
+                type = AppConstants.ATT_DATE;
                 break;
         }
     }
-
-    Fragment frag;
 
     private int getcolor(int c) {
         return getResources().getColor(c);
     }
 
-    protected void gooon(String type, String typevalue, int color) {
-        String[] content = {type, typevalue};
-        frag = AttendanceFragment.newInstance(content);
+    protected void replaceToAttendance(String type, int color, String fromDate, String toDate) {
+        frag = NewAttendanceFragment.newInstance(type, fromDate, toDate);
         getFragmentManager().beginTransaction().replace(R.id.frame, frag, "attendance")
                 .commit();
         changer.changecolor(color);
-        flisten.attopened(frag, typevalue);
+        flisten.attopened(frag, type);
     }
-
-    private FragmentOpenAtt flisten;
-
-    public interface FragmentOpenAtt {
-        public void attopened(Fragment frag, String tag);
-    }
-
-    private ColorChanger changer;
-
-    public interface ColorChanger {
-        public void changecolor(int color);
-    }
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -127,6 +110,26 @@ public class ContentFragment extends Fragment implements AdapterView.OnItemClick
             throw new ClassCastException(activity.toString()
                     + " must implement TimeTable Fragment backstack Listener");
         }
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth, int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
+        String fromDate = dayOfMonth + "/" + monthOfYear + "/" + year;
+        String toDate = dayOfMonthEnd + "/" + monthOfYearEnd + "/" + yearEnd;
+        int color = R.color.ts_blue;
+        if (type.equals(AppConstants.ATT_DATE)) {
+            color = R.color.ts_green;
+        }
+        replaceToAttendance(type, color, fromDate, toDate);
+    }
+
+    public interface FragmentOpenAtt {
+        void attopened(Fragment frag, String tag);
+    }
+
+
+    public interface ColorChanger {
+        void changecolor(int color);
     }
 
 }

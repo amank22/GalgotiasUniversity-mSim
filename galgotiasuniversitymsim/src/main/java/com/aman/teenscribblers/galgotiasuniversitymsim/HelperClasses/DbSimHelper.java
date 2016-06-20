@@ -95,9 +95,12 @@ public class DbSimHelper extends SQLiteOpenHelper {
             + colImageUrl + " TEXT, " + colAuthor
             + " TEXT);";
     private static final String TAG = "DBHelperClass";
-
-    private static DbSimHelper mInstance = null;
     private static final int DATABASE_VERSION = 12;
+    private static DbSimHelper mInstance = null;
+
+    private DbSimHelper(Context context) {
+        super(context, dbName, null, DATABASE_VERSION);
+    }
 
     public static DbSimHelper getInstance() {
 
@@ -108,10 +111,6 @@ public class DbSimHelper extends SQLiteOpenHelper {
             mInstance = new DbSimHelper(GUApp.getInstance());
         }
         return mInstance;
-    }
-
-    private DbSimHelper(Context context) {
-        super(context, dbName, null, DATABASE_VERSION);
     }
 
     @Override

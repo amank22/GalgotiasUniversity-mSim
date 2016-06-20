@@ -1,11 +1,15 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.Jobs;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.NewsEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.DbSimHelper;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.NewsParcel;
-import com.path.android.jobqueue.Job;
-import com.path.android.jobqueue.Params;
+import com.birbit.android.jobqueue.Job;
+import com.birbit.android.jobqueue.Params;
+import com.birbit.android.jobqueue.RetryConstraint;
 
 import java.util.List;
 
@@ -36,12 +40,13 @@ public class NewsDBJob extends Job {
     }
 
     @Override
-    protected void onCancel() {
+    protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
 
     }
 
     @Override
-    protected boolean shouldReRunOnThrowable(Throwable throwable) {
-        return false;
+    protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
+        return RetryConstraint.CANCEL;
     }
+
 }

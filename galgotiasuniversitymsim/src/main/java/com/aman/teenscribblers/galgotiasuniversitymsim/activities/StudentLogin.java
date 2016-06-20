@@ -1,26 +1,17 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.activities;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
-import com.aman.teenscribblers.galgotiasuniversitymsim.BroadCastReciever.SimScheduleReceiver;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.LoginEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.Connection_detect;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.LoginJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
-
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.Subscribe;
-import de.greenrobot.event.ThreadMode;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.CaptchaDialogFragment;
 
 /**
  * Created by aman on 24-10-2015 in Galgotias University(mSim).
@@ -28,8 +19,6 @@ import de.greenrobot.event.ThreadMode;
 public class StudentLogin extends BaseActivity {
 
     RelativeLayout container;
-    private SimScheduleReceiver myreceiver;
-    private ProgressBar p;
     // Values for email and password at the time of the login attempt.
     private String mUsername;
     private String mPassword;
@@ -47,34 +36,26 @@ public class StudentLogin extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         container = (RelativeLayout) findViewById(R.id.login_container);
-        Connection_detect cd = new Connection_detect(getApplicationContext());
-        Boolean isInternetPresent = cd.isConnectingToInternet();
-        myreceiver = new SimScheduleReceiver();
-        String BROADCAST = "com.teenscribblers.GU.Broadcast";
-        IntentFilter inf = new IntentFilter(BROADCAST);
         mUsername = PrefUtils.getFromPrefs(this, PrefUtils.PREFS_LOGIN_USERNAME_KEY, "Username");
         mPassword = PrefUtils.getFromPrefs(this, PrefUtils.PREFS_LOGIN_PASSWORD_KEY, "Password");
-        if (isInternetPresent && checkValidity())
-            registerReceiver(myreceiver, inf);
-        if (checkValidity()) {
+        if (checkValidity() && !mPassword.equals("PASSWORD_INCORRECT")) {
             Intent i = new Intent(StudentLogin.this, HomeActivity.class);
             startActivity(i);
             finish();
+        } else if (mPassword.equals("PASSWORD_INCORRECT")) {
+            mUserView.setText(mUsername);
+            alert("Re-enter Login Details");
         }
-        p = (ProgressBar) findViewById(R.id.progressBar_login);
         mUserView = (EditText) findViewById(R.id.username);
         mPasswordView = (EditText) findViewById(R.id.password);
-        mUserView.setHint(mUsername);
-        findViewById(R.id.sign_in_button).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        attemptLogin();
-
-                    }
-
-                });
-
+        Button signInButton = (Button) findViewById(R.id.sign_in_button);
+        assert signInButton != null;
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptLogin();
+            }
+        });
     }
 
     private void attemptLogin() {
@@ -98,27 +79,12 @@ public class StudentLogin extends BaseActivity {
             CurrentlyRunning = false;
             return;
         }
-        p.setVisibility(View.VISIBLE);
-        GUApp.getJobManager().addJobInBackground(new LoginJob(mUsername, mPassword, "MainLogin"));
-    }
-
-    @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onEventMainThread(LoginEvent event) {
-        CurrentlyRunning = false;
-        p.setVisibility(View.INVISIBLE);
-        if (event.isError()) {
-            alert(event.getReason());
-        } else {
-            alert(event.getReason());
-            PrefUtils.saveToPrefs(StudentLogin.this,
-                    PrefUtils.PREFS_LOGIN_USERNAME_KEY, mUsername);
-            PrefUtils.saveToPrefs(StudentLogin.this,
-                    PrefUtils.PREFS_LOGIN_PASSWORD_KEY, mPassword);
-            Intent i = new Intent(StudentLogin.this, HomeActivity.class);
-            startActivity(i);
-            finish();
-
-        }
+        PrefUtils.saveToPrefs(StudentLogin.this,
+                PrefUtils.PREFS_LOGIN_USERNAME_KEY, mUsername);
+        PrefUtils.saveToPrefs(StudentLogin.this,
+                PrefUtils.PREFS_LOGIN_PASSWORD_KEY, mPassword);
+        CaptchaDialogFragment captchaDialogFragment = new CaptchaDialogFragment();
+        captchaDialogFragment.show(getSupportFragmentManager(), "captchaFrag");
     }
 
     private void alert(String s) {
@@ -127,33 +93,5 @@ public class StudentLogin extends BaseActivity {
 
     private boolean checkValidity() {
         return (!mUsername.equals("Username") && !mUsername.equals("") && !mPassword.equals("") && !mPassword.equals("Password"));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        CurrentlyRunning = false;
-        try {
-            unregisterReceiver(myreceiver);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        try {
-            EventBus.getDefault().unregister(this);
-        } catch (Throwable t) {
-            //this may crash if registration did not go through. just be safe
-            t.printStackTrace();
-        }
     }
 }

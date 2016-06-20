@@ -5,13 +5,13 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.Events;
  */
 public class AttendanceErrorEvent {
 
-    public String getError() {
-        return proccessed;
-    }
-
     private String proccessed;
 
     public AttendanceErrorEvent(String error) {
         this.proccessed = error;
+    }
+
+    public String getError() {
+        return proccessed;
     }
 }

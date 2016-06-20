@@ -13,6 +13,12 @@ public class NewsEvent {
     List<NewsParcel> parcel;
     boolean error;
 
+    public NewsEvent(String result, List<NewsParcel> parcel, boolean error) {
+        this.result = result;
+        this.parcel = parcel;
+        this.error = error;
+    }
+
     public boolean isError() {
         return error;
     }
@@ -23,11 +29,5 @@ public class NewsEvent {
 
     public List<NewsParcel> getParcel() {
         return parcel;
-    }
-
-    public NewsEvent(String result, List<NewsParcel> parcel, boolean error) {
-        this.result = result;
-        this.parcel = parcel;
-        this.error = error;
     }
 }

@@ -8,29 +8,29 @@
         android:id="@+id/textView_subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_below="@+id/h_divider"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
         android:text="Subject"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/ts_blue"
-        android:textSize="22sp"
-        android:layout_marginBottom="10dp" />
+        android:textSize="22sp" />
 
 
     <RelativeLayout
         android:id="@+id/h_divider"
         android:layout_width="match_parent"
         android:layout_height="0.25dp"
-        android:background="@color/ts_grey"
         android:layout_below="@+id/textView_perc"
+        android:layout_marginEnd="25dp"
         android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp" />
+        android:background="@color/ts_grey" />
 
     <View
+        android:id="@+id/p_indicator"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:layout_alignParentTop="true"
-        android:id="@+id/p_indicator"
         android:background="@color/ts_red" />
 
     <TextView
@@ -39,78 +39,78 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/p_indicator"
-        android:gravity="center"
-        android:text="75.54"
-        android:layout_marginTop="10dp"
-        android:textColor="#fff"
-        android:textSize="24sp"
-        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rect_grey"
+        android:gravity="center"
         android:padding="20dp"
-        android:background="@drawable/rect_grey" />
+        android:text="75.54"
+        android:textColor="#fff"
+        android:textSize="24sp" />
 
     <LinearLayout
         android:id="@+id/attcon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/p_indicator"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
         android:layout_toStartOf="@id/textView_perc"
         android:orientation="horizontal"
-        android:layout_below="@id/p_indicator"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
         android:weightSum="3">
 
         <TextView
             android:id="@+id/textView_present"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:text="200"
-            android:textColor="#fff"
-            android:textSize="24sp"
-            android:paddingTop="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/rect_purple"
+            android:gravity="center"
+            android:paddingBottom="5dp"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
-            android:paddingBottom="5dp"
-            android:background="@drawable/rect_purple" />
+            android:paddingTop="5dp"
+            android:text="200"
+            android:textColor="#fff"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/textView_absent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="120"
-            android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:textColor="#fff"
-            android:textSize="24sp"
+            android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:paddingTop="5dp"
+            android:background="@drawable/rect_blue"
+            android:gravity="center"
+            android:paddingBottom="5dp"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
-            android:paddingBottom="5dp"
-            android:background="@drawable/rect_blue" />
+            android:paddingTop="5dp"
+            android:text="120"
+            android:textColor="#fff"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/textView_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:paddingTop="5dp"
+            android:layout_marginStart="5dp"
             android:layout_weight="1"
+            android:background="@drawable/rect_green"
+            android:gravity="center"
+            android:paddingBottom="5dp"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
             android:text="360"
             android:textColor="#fff"
-            android:textSize="24sp"
-            android:background="@drawable/rect_green" />
+            android:textSize="24sp" />
 
     </LinearLayout>
 

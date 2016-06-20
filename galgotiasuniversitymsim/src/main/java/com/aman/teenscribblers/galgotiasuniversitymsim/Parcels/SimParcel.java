@@ -5,6 +5,17 @@ import android.os.Parcelable;
 
 public class SimParcel implements Parcelable {
 
+	public static final Creator<SimParcel> CREATOR = new Creator<SimParcel>() {
+		@Override
+		public SimParcel createFromParcel(Parcel in) {
+			return new SimParcel(in);
+		}
+
+		@Override
+		public SimParcel[] newArray(int size) {
+			return new SimParcel[size];
+		}
+	};
 	private String subject;
 	private String month;
 	private String sem;
@@ -16,9 +27,18 @@ public class SimParcel implements Parcelable {
 	private String status;
 	private String classtype;
 
+	public SimParcel(String subject, String sem, int present, int absent, int total, float percent) {
+		this.subject = subject;
+		this.sem = sem;
+		this.present = present;
+		this.absent = absent;
+		this.total = total;
+		this.percent = percent;
+	}
+
 	public SimParcel(String subject, String month, String sem, int present,
-			int absent, int total, float percent, String timeslot,
-			String status, String classtype) {
+					 int absent, int total, float percent, String timeslot,
+					 String status, String classtype) {
 		this.subject = subject;
 		this.month = month;
 		this.sem = sem;
@@ -62,18 +82,6 @@ public class SimParcel implements Parcelable {
 		dest.writeString(status);
 		dest.writeString(classtype);
 	}
-
-	public static final Creator<SimParcel> CREATOR = new Creator<SimParcel>() {
-		@Override
-		public SimParcel createFromParcel(Parcel in) {
-			return new SimParcel(in);
-		}
-
-		@Override
-		public SimParcel[] newArray(int size) {
-			return new SimParcel[size];
-		}
-	};
 
 	public String getSubject() {
 		return subject;

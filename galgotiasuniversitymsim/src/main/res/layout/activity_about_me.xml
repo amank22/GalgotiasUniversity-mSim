@@ -17,12 +17,12 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:singleLine="true"
             android:text="@string/string_qurux"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/ts_yellow"
-            android:textSize="26sp"
-            android:paddingTop="10dp"/>
+            android:textSize="26sp" />
 
         <View
             android:layout_width="match_parent"
@@ -36,8 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="@string/credits"
             android:textColor="@color/ts_white"
             android:textSize="18sp" />

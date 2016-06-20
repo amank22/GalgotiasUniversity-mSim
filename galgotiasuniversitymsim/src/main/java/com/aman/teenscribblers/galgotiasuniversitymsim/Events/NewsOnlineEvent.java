@@ -8,16 +8,16 @@ public class NewsOnlineEvent {
     String result;
     boolean error;
 
+    public NewsOnlineEvent(String result, boolean error) {
+        this.result = result;
+        this.error = error;
+    }
+
     public boolean isError() {
         return error;
     }
 
     public String getResult() {
         return result;
-    }
-
-    public NewsOnlineEvent(String result, boolean error) {
-        this.result = result;
-        this.error = error;
     }
 }

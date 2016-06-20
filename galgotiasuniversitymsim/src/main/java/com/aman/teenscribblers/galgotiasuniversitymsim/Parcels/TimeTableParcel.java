@@ -8,6 +8,18 @@ import android.os.Parcelable;
  */
 public class TimeTableParcel implements Parcelable {
 
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<TimeTableParcel> CREATOR = new Parcelable.Creator<TimeTableParcel>() {
+        @Override
+        public TimeTableParcel createFromParcel(Parcel in) {
+            return new TimeTableParcel(in);
+        }
+
+        @Override
+        public TimeTableParcel[] newArray(int size) {
+            return new TimeTableParcel[size];
+        }
+    };
     private String subject;
     private String day;
     private String group;
@@ -47,19 +59,6 @@ public class TimeTableParcel implements Parcelable {
         dest.writeString(timeslot);
         dest.writeString(hallno);
     }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<TimeTableParcel> CREATOR = new Parcelable.Creator<TimeTableParcel>() {
-        @Override
-        public TimeTableParcel createFromParcel(Parcel in) {
-            return new TimeTableParcel(in);
-        }
-
-        @Override
-        public TimeTableParcel[] newArray(int size) {
-            return new TimeTableParcel[size];
-        }
-    };
 
     public String getSubject() {
         return subject;

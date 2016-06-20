@@ -5,7 +5,7 @@
         <item name="android:windowBackground">@null</item>
     </style>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme.Base" parent="Theme.AppCompat.DayNight">
         <item name="colorPrimary">@color/ts_red</item>
         <item name="colorPrimaryDark">@color/ts_red_dark</item>
         <item name="colorAccent">@color/ts_yellow</item>
@@ -15,6 +15,7 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.Widget" />

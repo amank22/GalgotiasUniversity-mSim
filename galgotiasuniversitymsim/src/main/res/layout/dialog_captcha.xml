@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ts_white"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView_captcha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        android:src="@color/ts_grey_dark" />
+
+    <EditText
+        android:id="@+id/captcha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter the Captcha" />
+
+    <Button
+        android:id="@+id/authorize_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:text="Authorize" />
+
+    <TextView
+        android:id="@+id/captcha_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Captcha is loading"
+        android:textColor="@color/ts_grey_dark"
+        android:textSize="14sp" />
+
+
+</LinearLayout>

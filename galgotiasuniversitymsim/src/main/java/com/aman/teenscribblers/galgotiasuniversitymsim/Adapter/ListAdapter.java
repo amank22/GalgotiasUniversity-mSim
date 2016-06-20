@@ -15,12 +15,15 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.R;
  */
 public class ListAdapter extends ArrayAdapter<String> {
     String[] a;
-    int[] color = {getcolor(R.color.ts_yellow),
+    int[] color = {
             getcolor(R.color.ts_blue),
+            getcolor(R.color.ts_green),
+            getcolor(R.color.ts_yellow),
             getcolor(R.color.ts_pink),
             getcolor(R.color.ts_purple),
-            getcolor(R.color.ts_green),
+
     };
+    int[] icons = {R.drawable.subjects, R.drawable.date_icon};
 
     public ListAdapter(Context context, String[] objects) {
         super(context, android.R.layout.simple_list_item_1, objects);
@@ -38,7 +41,7 @@ public class ListAdapter extends ArrayAdapter<String> {
         ViewHolder viewHolder;
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(R.layout.list_item_choice_1, null);
+            v = inflater.inflate(R.layout.list_item_choice_1, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.name = (TextView) v.findViewById(R.id.textView_grid);
             viewHolder.card = (ImageView) v.findViewById(R.id.image_color_block);

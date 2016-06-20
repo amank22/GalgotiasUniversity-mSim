@@ -5,14 +5,14 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.Events;
  */
 public class AttendanceFetchingEvent {
 
-    private Boolean isNetwork;
+    private Boolean fromNetwork;
 
     public AttendanceFetchingEvent(Boolean network) {
-        this.isNetwork = network;
+        this.fromNetwork = network;
     }
 
-    public Boolean getIsNetwork() {
-        return isNetwork;
+    public Boolean getFromNetwork() {
+        return fromNetwork;
     }
 
 }

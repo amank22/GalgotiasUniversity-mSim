@@ -31,17 +31,17 @@ import de.greenrobot.event.ThreadMode;
 public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "NEWSFRAGMENT";
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    SwipeRefreshLayout mSwipeRefreshLayout;
     private List<NewsParcel> parcel = null;
+
+    public NewsFragment() {
+    }
 
     public static NewsFragment newInstance() {
         return new NewsFragment();
-    }
-
-    public NewsFragment() {
     }
 
     @Override

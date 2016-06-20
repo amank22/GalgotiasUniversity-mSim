@@ -10,6 +10,7 @@ public class PrefUtils {
     public static final String PREFS_USER_ADMNO_KEY = "__ADMNO__";
     public static final String PREFS_USER_NAME_KEY = "__NAME__";
     public static final String PREFS_USER_EMAIL_KEY = "__EMAIL__";
+    public static final String PREFS_USER_IMAGE = "__IMAGE__";
     public static final String DEFAULT_ADMNO = "";
     public static final String DEFAULT_NAME = "";
     public static final String DEFAULT_EMAIL = "";

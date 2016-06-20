@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg"
     android:orientation="vertical">
 
     <TextView
@@ -12,26 +11,32 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:maxLines="1"
-        android:textSize="20sp"
         android:text="Key"
-        android:textColor="@color/ts_grey_dark" />
+        android:textColor="@color/ts_grey_dark"
+        android:textSize="20sp" />
 
     <View
         android:layout_width="40dp"
         android:layout_height="0.25dp"
-        android:background="@color/ts_grey_dark"
-        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="5dp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_marginTop="5dp"
+        android:background="@color/ts_grey_dark" />
 
     <TextView
-        style="@style/CustomStrongFont"
         android:id="@+id/value"
+        style="@style/CustomStrongFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="Value"
         android:gravity="center"
-        android:textColor="#4caf50" />
+        android:text="Value"
+        android:textColor="#4caf50"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:layout_margin="2dp"
+        android:background="@color/ts_grey" />
 
 </LinearLayout>

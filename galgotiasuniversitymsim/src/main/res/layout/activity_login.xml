@@ -1,18 +1,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#eaeb74"
-    tools:context=".LoginActivity">
+    android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/form"
+        android:background="@color/ts_red"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/gu_logo_text"
+            style="@style/CustomStrongFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="@string/gu_name_two_lines"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/ts_white"
+            android:textSize="38sp" />
+
+        <TextView
+            android:id="@+id/teenscribblers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gu_logo_text"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="@string/string_qurux"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/ts_yellow"
+            android:textSize="20sp" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#17a5de"
+        android:background="@color/ts_white"
         android:orientation="vertical">
 
         <EditText
@@ -29,8 +58,8 @@
             android:maxLines="1"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="#fff"
-            android:textColorHint="#fff" />
+            android:textColor="@color/ts_grey"
+            android:textColorHint="@color/ts_grey" />
 
         <EditText
             android:id="@+id/password"
@@ -42,25 +71,21 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:hint="@string/prompt_password"
-            android:imeActionId="@+id/login"
-            android:imeActionLabel="@string/action_sign_in_short"
-            android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
             android:maxLines="1"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="#fff"
-            android:textColorHint="#fff" />
+            android:textColor="@color/ts_grey"
+            android:textColorHint="@color/ts_grey" />
 
         <Button
             android:id="@+id/sign_in_button"
             style="@style/CustomNormalFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/password"
-            android:layout_gravity="end"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
@@ -69,44 +94,4 @@
             android:text="@string/login" />
 
     </RelativeLayout>
-
-    <ImageView
-        android:layout_width="@dimen/login_logo"
-        android:layout_height="@dimen/login_logo"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="top"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/logo" />
-
-    <ProgressBar
-        android:id="@+id/progressBar_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/form"
-        android:visibility="invisible" />
-
-    <TextView
-        android:id="@+id/teenscribblers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/gu_logo_text"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:text="@string/string_qurux"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/ts_grey_dark"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/gu_logo_text"
-        style="@style/CustomStrongFont"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/gu_name_two_lines"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/ts_red"
-        android:textSize="38sp" />
 </RelativeLayout>
