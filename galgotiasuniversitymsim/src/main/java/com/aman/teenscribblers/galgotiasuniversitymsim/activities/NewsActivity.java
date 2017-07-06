@@ -13,7 +13,7 @@ public class NewsActivity extends BaseActivity {
         toolbar.setNavigationIcon(null);
         toolbar.setTitle("");
         toolbar.setSubtitle("");
-        getFragmentManager().beginTransaction().replace(R.id.news_container, NewsFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.news_container, NewsFragment.newInstance()).commit();
     }
 
     @Override

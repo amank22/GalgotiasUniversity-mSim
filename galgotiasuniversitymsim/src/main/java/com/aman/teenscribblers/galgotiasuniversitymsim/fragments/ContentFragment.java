@@ -1,8 +1,8 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +66,7 @@ public class ContentFragment extends Fragment implements AdapterView.OnItemClick
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH)
         );
-        dpd.show(getFragmentManager(), "Datepickerdialog");
+        dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
         switch (i) {
 //            case 0:
 //                replaceToAttendance(AppConstants.ATT_TODAY, getcolor(R.color.ts_yellow));
@@ -85,11 +85,11 @@ public class ContentFragment extends Fragment implements AdapterView.OnItemClick
     }
 
     protected void replaceToAttendance(String type, int color, String fromDate, String toDate) {
-        frag = NewAttendanceFragment.newInstance(type, fromDate, toDate);
-        getFragmentManager().beginTransaction().replace(R.id.frame, frag, "attendance")
-                .commit();
-        changer.changecolor(color);
-        flisten.attopened(frag, type);
+//        frag = NewAttendanceFragment.newInstance(type, fromDate, toDate);
+//        getFragmentManager().beginTransaction().replace(R.id.frame, frag, "attendance")
+//                .commit();
+//        changer.changecolor(color);
+//        flisten.attopened(frag, type);// TODO: 07/07/17 Send proper arguments and change the attendance fragment for proper parameters
     }
 
     @Override

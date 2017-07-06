@@ -54,7 +54,7 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
                         @Override
                         public void onSuccess() {
                             PhotographicPrintAnimator pa = new PhotographicPrintAnimator(holder.mImageView);
-                            pa.start(3000);
+                            pa.start();
                         }
 
                         @Override

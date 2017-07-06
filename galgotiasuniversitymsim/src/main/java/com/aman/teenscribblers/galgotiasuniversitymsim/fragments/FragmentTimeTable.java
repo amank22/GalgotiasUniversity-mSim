@@ -1,6 +1,7 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +11,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.Events.AttendanceErrorEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.Events.LoginEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.SessionExpiredEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableErrorEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableStartEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableSuccessEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
+import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.TTFindParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.TimeTableJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.TimeTableParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.aman.teenscribblers.galgotiasuniversitymsim.activities.StudentLogin;
 
 import java.util.List;
 
@@ -30,7 +35,6 @@ import de.greenrobot.event.ThreadMode;
  */
 public class FragmentTimeTable extends BaseFragment {
 
-    private static final int INITIAL_DELAY_MILLIS = 200;
     TextView loading;
     ListView list;
     String day_type;
@@ -89,7 +93,7 @@ public class FragmentTimeTable extends BaseFragment {
         loading.setVisibility(View.VISIBLE);
         loading.setText(event.getResponse());
         switch (event.getResponse()) {
-            case "Loading From Network":
+            case AppConstants.ERROR_LOCAL_CACHE_NOT_FOUND:
                 GUApp.getJobManager().addJobInBackground(new TimeTableJob(day_type));
                 break;
             case AppConstants.ERROR_CONTENT_FETCH:
@@ -102,7 +106,23 @@ public class FragmentTimeTable extends BaseFragment {
     @SuppressWarnings("UnusedDeclaration")
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(SessionExpiredEvent event) {
-        //TODO: switch to login activity or captcha
+        CaptchaDialogFragment captchaDialogFragment = new CaptchaDialogFragment();
+        captchaDialogFragment.show(getActivity().getSupportFragmentManager(), "captchaFrag");
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onEventMainThread(LoginEvent event) {
+        if (event.isError()) {
+            PrefUtils.deleteuser(getActivity());
+            GUApp app = GUApp.getInstance();
+            app.clearApplicationData();
+            Intent i = new Intent(getActivity(), StudentLogin.class);
+            startActivity(i);
+            getActivity().finish();
+        } else {
+            onEventMainThread(new TimeTableErrorEvent(AppConstants.ERROR_LOCAL_CACHE_NOT_FOUND));
+        }
     }
 
     @SuppressWarnings("UnusedDeclaration")

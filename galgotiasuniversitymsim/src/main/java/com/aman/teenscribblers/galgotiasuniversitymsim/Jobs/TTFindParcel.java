@@ -40,7 +40,7 @@ public class TTFindParcel extends Job {
     public void onRun() throws Throwable {
         List<TimeTableParcel> parcel = dbhelper.getTimeTable(day);
         if (parcel.isEmpty()) {
-            throw new Exception("Loading From Network");
+            throw new Exception(AppConstants.ERROR_LOCAL_CACHE_NOT_FOUND);
         }
         EventBus.getDefault().post(new TimeTableSuccessEvent("Loaded offline", parcel));
     }

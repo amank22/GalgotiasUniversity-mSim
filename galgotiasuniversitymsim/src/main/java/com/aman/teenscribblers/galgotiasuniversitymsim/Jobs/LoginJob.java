@@ -19,8 +19,8 @@ import de.greenrobot.event.EventBus;
  */
 public class LoginJob extends Job {
 
-    String mUsername, mPassword, mCaptcha;
-    Map<String, String> params;
+    private String mUsername, mPassword, mCaptcha;
+    private Map<String, String> params;
 
     public LoginJob(String user, String pass, String captcha, Map<String, String> params, String GroupBy) {
         super(new Params(AppConstants.PRIORITY4).groupBy(GroupBy).requireNetwork());
@@ -33,14 +33,14 @@ public class LoginJob extends Job {
     @Override
     public void onAdded() {
         if (mUsername.equals("user") || mUsername.equals("")) {
-            EventBus.getDefault().post(new LoginEvent("Username-Invalid",true));
+            EventBus.getDefault().post(new LoginEvent("Username-Invalid", true));
         }
     }
 
     @Override
     public void onRun() throws Throwable {
         IonMethods.simLogin(mUsername, mPassword, mCaptcha, params);
-            EventBus.getDefault().post(new LoginEvent("Login Success",false));
+        EventBus.getDefault().post(new LoginEvent("Login Success", false));
     }
 
     @Override

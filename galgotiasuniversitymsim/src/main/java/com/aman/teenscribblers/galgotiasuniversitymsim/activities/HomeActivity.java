@@ -2,14 +2,14 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.activities;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -36,7 +36,7 @@ public class HomeActivity extends BaseActivity
 
 
     private static final String TAG = "HomeActivity";
-    private final FragmentManager fragmentManager = getFragmentManager();
+    private final FragmentManager fragmentManager = getSupportFragmentManager();
     public ImageView image;
     Fragment afrag = null, tfrag = null;
     private Integer colorFrom = R.color.ts_red;
@@ -80,15 +80,15 @@ public class HomeActivity extends BaseActivity
         image = (ImageView) header.findViewById(R.id.imageView_nav);
         String url = PrefUtils.getFromPrefs(this, PrefUtils.PREFS_USER_IMAGE, "");
         if (!url.equals("")) {
-        Picasso picasso = Picasso.with(this);
-        picasso.setIndicatorsEnabled(false);
+            Picasso picasso = Picasso.with(this);
+            picasso.setIndicatorsEnabled(false);
             picasso.load(url)
-                .noPlaceholder()
-                .centerInside()
+                    .noPlaceholder()
+                    .centerInside()
                     .resize(400, 400)
-                .transform(new CircleTransform())
-                .priority(Picasso.Priority.HIGH)
-                .into(image);
+                    .transform(new CircleTransform())
+                    .priority(Picasso.Priority.HIGH)
+                    .into(image);
         }
     }
 
@@ -102,7 +102,7 @@ public class HomeActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         if (id == R.id.nav_personal) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, ContentFragment.newInstance())// TODO: 04/07/17 replaced personal fragment temporary to run
@@ -119,7 +119,7 @@ public class HomeActivity extends BaseActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, NewsFragment.newInstance())
                     .commit();
-        }  else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_send) {
 
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
@@ -177,10 +177,10 @@ public class HomeActivity extends BaseActivity
 //            drawer.closeDrawer(GravityCompat.START);
 //        } else
         if (afrag != null && afrag.isVisible()) {
-            getFragmentManager().beginTransaction().replace(R.id.container, ContentFragment.newInstance()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, ContentFragment.newInstance()).commit();
             startcolorchange(ContextCompat.getColor(HomeActivity.this, R.color.ts_red));
         } else if (tfrag != null && tfrag.isVisible()) {
-            getFragmentManager().beginTransaction().replace(R.id.container, TimeTableContent.newInstance()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, TimeTableContent.newInstance()).commit();
             startcolorchange(ContextCompat.getColor(HomeActivity.this, R.color.ts_red));
         } else if (!drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.openDrawer(GravityCompat.START);
