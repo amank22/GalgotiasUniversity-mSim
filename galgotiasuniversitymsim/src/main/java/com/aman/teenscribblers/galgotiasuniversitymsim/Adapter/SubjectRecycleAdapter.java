@@ -29,30 +29,29 @@ public class SubjectRecycleAdapter extends RecyclerView.Adapter<SubjectRecycleAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.subject_list_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.support_simple_spinner_dropdown_item, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String present = subParcel.get(position).Present;
-        String absent = subParcel.get(position).Absent;
-        String total = subParcel.get(position).Total;
-        String percent = subParcel.get(position).Percentage;
-        percent = format(Double.parseDouble(percent));
-        String subject = subParcel.get(position).Subject;
-//        Log.d(TAG, "onBindViewHolder: "+percent);
-        holder.present.setText(String.format(res.getString(R.string.present), present));
-        holder.absent.setText(String.format(res.getString(R.string.absent), absent));
-        holder.total.setText(String.format(res.getString(R.string.total), total));
-        holder.percentage.setText(String.format(res.getString(R.string.percentage), percent));
-        holder.subject.setText(subject);
-        if (Double.parseDouble(percent) >= 75.00) {
-            holder.percentage.setTextColor(res.getColor(R.color.ts_green));
-        } else {
-            holder.percentage.setTextColor(res.getColor(R.color.ts_red));
-        }
+//         String present = subParcel.get(position).Present;
+//         String absent = subParcel.get(position).Absent;
+//         String total = subParcel.get(position).Total;
+//         String percent = subParcel.get(position).Percentage;
+//         percent = format(Double.parseDouble(percent));
+//         String subject = subParcel.get(position).Subject;
+//         Log.d(TAG, "onBindViewHolder: "+percent);
+//         holder.present.setText(String.format(res.getString(R.string.present), present));
+//         holder.absent.setText(String.format(res.getString(R.string.absent), absent));
+//        holder.total.setText(String.format(res.getString(R.string.total), total));
+//        holder.percentage.setText(String.format(res.getString(R.string.percentage), percent));
+//        holder.subject.setText(subject);
+//        if (Double.parseDouble(percent) >= 75.00) {
+//            holder.percentage.setTextColor(res.getColor(R.color.ts_green));
+//        } else {
+//            holder.percentage.setTextColor(res.getColor(R.color.ts_red));
+//        }
     }
 
     private String format(double d) {

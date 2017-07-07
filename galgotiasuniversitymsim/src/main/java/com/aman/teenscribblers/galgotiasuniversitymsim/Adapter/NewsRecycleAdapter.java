@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.NewsParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
-import com.aman.teenscribblers.galgotiasuniversitymsim.view.PhotographicPrintAnimator;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -53,8 +52,8 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
                     .into(holder.mImageView, new Callback() {
                         @Override
                         public void onSuccess() {
-                            PhotographicPrintAnimator pa = new PhotographicPrintAnimator(holder.mImageView);
-                            pa.start(3000);
+//                            PhotographicPrintAnimator pa = new PhotographicPrintAnimator(holder.mImageView);
+//                            pa.start(3000);
                         }
 
                         @Override

@@ -85,7 +85,7 @@ public class ContentFragment extends Fragment implements AdapterView.OnItemClick
     }
 
     protected void replaceToAttendance(String type, int color, String fromDate, String toDate) {
-        frag = NewAttendanceFragment.newInstance(type, fromDate, toDate);
+//        frag = NewAttendanceFragment.newInstance(type, fromDate, toDate);
         getFragmentManager().beginTransaction().replace(R.id.frame, frag, "attendance")
                 .commit();
         changer.changecolor(color);
