@@ -61,16 +61,7 @@ public class PersonalInfoLocal extends Job {
         for (String row : split) {
             String[] keyPair = row.split(":");
             if (keyPair.length == 2) {
-
-                if (keyPair[0].equals("Admission No")) {
-                    PrefUtils.saveToPrefs(context, PrefUtils.PREFS_USER_ADMNO_KEY, keyPair[1]);
-                }
-                if (keyPair[0].equals("Email ID")) {
-                    PrefUtils.saveToPrefs(context, PrefUtils.PREFS_USER_EMAIL_KEY, keyPair[1]);
-                }
-                if (keyPair[0].equals("Name")) {
-                    PrefUtils.saveToPrefs(context, PrefUtils.PREFS_USER_NAME_KEY, keyPair[1]);
-                }
+                PrefUtils.saveToPrefs(context, keyPair[0], keyPair[1]);
                 list.add(new InfoParcel(keyPair[0], keyPair[1]));
             }
         }

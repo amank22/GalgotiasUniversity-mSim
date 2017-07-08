@@ -90,6 +90,11 @@ public class HomeActivity extends BaseActivity
                     .transform(new CircleTransform())
                     .priority(Picasso.Priority.HIGH)
                     .into(image);
+        } else {
+            String gender = PrefUtils.getFromPrefs(this, PrefUtils.PREFS_USER_GENDER_KEY, "Male");
+            if (gender.equals("Female")) {
+                image.setImageResource(R.drawable.ic_avatar_girl);
+            }
         }
     }
 

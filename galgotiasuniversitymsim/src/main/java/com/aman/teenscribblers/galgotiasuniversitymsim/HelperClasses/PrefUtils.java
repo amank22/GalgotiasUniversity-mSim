@@ -7,9 +7,10 @@ import android.preference.PreferenceManager;
 public class PrefUtils {
     public static final String PREFS_LOGIN_USERNAME_KEY = "__USERNAME__";
     public static final String PREFS_LOGIN_PASSWORD_KEY = "__PASSWORD__";
-    public static final String PREFS_USER_ADMNO_KEY = "__ADMNO__";
-    public static final String PREFS_USER_NAME_KEY = "__NAME__";
-    public static final String PREFS_USER_EMAIL_KEY = "__EMAIL__";
+    public static final String PREFS_USER_ADMNO_KEY = "Admission No";
+    public static final String PREFS_USER_NAME_KEY = "Name";
+    public static final String PREFS_USER_EMAIL_KEY = "Email ID";
+    public static final String PREFS_USER_GENDER_KEY = "Gender";
     public static final String PREFS_USER_IMAGE = "__IMAGE__";
     public static final String DEFAULT_ADMNO = "";
     public static final String DEFAULT_NAME = "";
