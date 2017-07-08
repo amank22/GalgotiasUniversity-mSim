@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/ts_red"
+    android:background="@color/ts_white"
     android:gravity="bottom"
     android:orientation="vertical"
+    android:paddingTop="32dp"
     android:theme="@style/ThemeOverlay.AppCompat">
 
     <ImageView
         android:id="@+id/imageView_nav"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
-        android:padding="10dp"
-        android:src="@drawable/loading" />
+        android:padding="16dp"
+        app:srcCompat="@drawable/ic_avatar" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Galgotias University"
+        android:text="@string/galgotias_university"
         android:textAppearance="@style/CustomStrongFont"
-        android:textColor="#fff"
+        android:textColor="@color/ts_red"
         android:textSize="24sp" />
 
     <!--<TextView-->

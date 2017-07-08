@@ -15,19 +15,13 @@
   -->
 
 <resources>
-    <color name="colorPrimary">@color/ts_primary</color>
-    <color name="colorPrimaryDark">@color/ts_primary_dark</color>
+    <color name="colorPrimary">@color/ts_red</color>
+    <color name="colorPrimaryDark">@color/ts_red_dark</color>
 
-    <color name="colorSecondary">@color/ts_sec</color>
-    <color name="colorSecondaryDark">@color/ts_sec_dark</color>
+    <color name="colorAccent">@color/ts_yellow</color>
 
     <color name="windowBackgroundColor">#333333</color>
     <color name="black_translucent">#80000000</color>
-    <color name="ts_background">#cfd8dc</color>
-    <color name="ts_primary">#8c6239</color>
-    <color name="ts_primary_dark">#ff73532e</color>
-    <color name="ts_sec">#fdc689</color>
-    <color name="ts_sec_dark">#ffd59f6b</color>
     <!-- color palettes -->
     <color name="ts_pink">#f50057</color>
     <color name="ts_red">#ff4444</color>

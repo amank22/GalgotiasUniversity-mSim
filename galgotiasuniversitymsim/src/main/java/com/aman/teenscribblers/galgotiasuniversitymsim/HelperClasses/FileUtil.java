@@ -3,7 +3,6 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses;
 import android.content.Context;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.DateParcel;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Pojo.SubjectBean;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -39,7 +38,7 @@ public class FileUtil {
         try {
             fos = c.openFileOutput(FILENAME, Context.MODE_PRIVATE);
         } catch (FileNotFoundException e) {
-            throw new Exception("Sorry,File couldnot be found to store your data.");
+            throw new Exception("Sorry,I could not store your data.");
         }
         try {
             fos.write(input.getBytes());
@@ -60,14 +59,14 @@ public class FileUtil {
         }
         return sb.toString();
     }
-
-    public static synchronized List<SubjectBean> filetoSubsList(Context c, String FILENAME) throws Exception {
-        String input = readFile(c, FILENAME);
-        Type listType = new TypeToken<List<SubjectBean>>() {
-        }.getType();
-        Gson gson = new Gson();
-        return gson.fromJson(input, listType);
-    }
+//
+//    public static synchronized List<SubjectBean> filetoSubsList(Context c, String FILENAME) throws Exception {
+//        String input = readFile(c, FILENAME);
+//        Type listType = new TypeToken<List<SubjectBean>>() {
+//        }.getType();
+//        Gson gson = new Gson();
+//        return gson.fromJson(input, listType);
+//    }
 
     public static synchronized List<DateParcel> filetoDateList(Context c, String FILENAME) throws Exception {
         String input = readFile(c, FILENAME);

@@ -10,17 +10,18 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstant
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.InfoParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by aman on 10/6/16.
  */
-public class HeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PersonalInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
-    List<InfoParcel> parsedList;
+    private List<InfoParcel> parsedList;
 
-    public HeaderAdapter(List<InfoParcel> parsedList) {
+    public PersonalInfoAdapter(List<InfoParcel> parsedList) {
         this.parsedList = parsedList;
     }
 
@@ -43,14 +44,14 @@ public class HeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        InfoParcel dataItem = getItem(position);
+        InfoParcel parcel=getItem(position);
         if (holder instanceof VHItem) {
-            ((VHItem) holder).key.setText(dataItem.getKey());
-            ((VHItem) holder).value.setText(dataItem.getValue());
+            ((VHItem) holder).key.setText(parcel.getKey());
+            ((VHItem) holder).value.setText(parcel.getValue());
             //cast holder to VHItem and set data
         } else if (holder instanceof VHHeader) {
             //cast holder to VHHeader and set data for header.
-            ((VHHeader) holder).header.setText(dataItem.getKey());
+            ((VHHeader) holder).header.setText(parcel.getKey());
         }
     }
 

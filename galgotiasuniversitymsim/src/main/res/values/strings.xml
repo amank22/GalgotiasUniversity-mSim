@@ -31,5 +31,6 @@
     <string name="absent">A: %1$s</string>
     <string name="total">T: %1$s</string>
     <string name="percentage">%1$s %%</string>
+    <string name="galgotias_university">Galgotias University</string>
 
 </resources>

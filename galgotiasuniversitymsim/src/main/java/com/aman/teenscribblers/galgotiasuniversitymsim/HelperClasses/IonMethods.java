@@ -43,7 +43,7 @@ public class IonMethods {
         result = base.followRedirect(true)
                 .setLogging("GU", Log.DEBUG)
                 .asString().withResponse().get();
-        if (result.getRequest().getUri().toString().equals(AppConstants.HomeString)) {
+        if (result.getRequest().getUri().toString().equalsIgnoreCase(AppConstants.HomeString)) {
             setvsev(result.getResult());
         } else if (result.getHeaders().code() == 200) {
             throw new Exception("Sorry,Something's just didn't match up.Let's try again");
@@ -81,7 +81,8 @@ public class IonMethods {
         Response<String> result;
         result = base.followRedirect(true).asString().withResponse().get();
         //TODO: check if session is expired and check for remaining code also like 500,404 etc
-        if (result.getHeaders().code() == 200) {
+        final String path = result.getRequest().getUri().toString();
+        if (result.getHeaders().code() == 200 && !path.contains(AppConstants.ERROR_BASE_URL)) {
             setvsev(result.getResult());
         } else {
             //Considering all remaining cases for re-authorisation
@@ -95,9 +96,9 @@ public class IonMethods {
         result = base.followRedirect(true)
 //                    .setLogging("GET", Log.DEBUG)
                 .asString().withResponse().get();
-        System.out.println(result.getHeaders().code());
         //TODO: check if session is expired and check for remaining code also like 500,404 etc
-        if (result.getHeaders().code() == 200) {
+        final String path = result.getRequest().getUri().toString();
+        if (result.getHeaders().code() == 200 && !path.contains(AppConstants.ERROR_BASE_URL)) {
             setvsev(result.getResult());
             return result.getResult();
         } else {
@@ -128,9 +129,8 @@ public class IonMethods {
 //                .setLogging("POST", Log.DEBUG)
                 .asString().withResponse().get();
 
-        Uri timeout = Uri
-                .parse("http://182.71.87.38/iSIM/msg.htm");
-        if (result.getRequest().getUri().getPath().contains(timeout.getPath())) {
+        final String path = result.getRequest().getUri().toString();
+        if (path.contains(AppConstants.ERROR_BASE_URL)) {
             throw new Exception(AppConstants.ERROR_SESSION_EXPIRED);
         }
         if (result.getHeaders().code() == 302) {

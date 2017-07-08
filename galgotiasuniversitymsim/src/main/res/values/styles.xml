@@ -6,9 +6,9 @@
     </style>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.DayNight">
-        <item name="colorPrimary">@color/ts_red</item>
-        <item name="colorPrimaryDark">@color/ts_red_dark</item>
-        <item name="colorAccent">@color/ts_yellow</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>

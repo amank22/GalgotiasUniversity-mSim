@@ -3,6 +3,8 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses;
 import java.util.List;
 
 public class AppConstants {
+    public static final String BaseUrl = "http://182.71.87.38/";
+    public static final String ERROR_BASE_URL = "http://182.71.87.38/ISIM/msg.htm";
     public static final String LoginString = "http://182.71.87.38/iSIM/Login";
     public static final String HomeString = "http://182.71.87.38/iSIM/Home";
     public static final String AttendanceString = "http://182.71.87.38/iSIM/Student/TodayAttendence";
@@ -39,8 +41,5 @@ public class AppConstants {
     public static final String[] TOPICS = {"Admin","TechOnly","StudioD","Placements","BfuBox","Kalakriti"};
     public static String viewstate = "";
     public static String eventvalidate = "";
-    public static List<String> ids = null;
-    public static List<String> idvalues = null;
-    public static List<String> titletext = null;
 
 }

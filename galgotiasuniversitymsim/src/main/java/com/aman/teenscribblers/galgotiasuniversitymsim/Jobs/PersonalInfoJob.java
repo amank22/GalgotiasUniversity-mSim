@@ -62,7 +62,6 @@ public class PersonalInfoJob extends Job {
             EventBus.getDefault().post(new SessionExpiredEvent());
             return RetryConstraint.CANCEL;
         }
-        EventBus.getDefault().post(new InfoEvent(false, throwable.getMessage(), true));
         return RetryConstraint.RETRY;
     }
 
@@ -86,8 +85,10 @@ public class PersonalInfoJob extends Job {
             }
         }
         Element image = doc.select(".collegelogo1 img").first();
-        String src = "http://182.71.87.38" + image.attr("src");
-        PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_IMAGE, src);
+        if (image != null) {
+            String src = AppConstants.BaseUrl + image.attr("src");
+            PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_IMAGE, src);
+        }
         return sb.toString();
     }
 }

@@ -25,6 +25,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.ContentFragment;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentPersonalInfo;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.TimeTableContent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.transform.CircleTransform;
@@ -75,7 +76,7 @@ public class HomeActivity extends BaseActivity
         navigationView.addHeaderView(header);
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager.beginTransaction()
-                .replace(R.id.container, ContentFragment.newInstance())
+                .replace(R.id.container, new FragmentPersonalInfo())
                 .commit();
         image = (ImageView) header.findViewById(R.id.imageView_nav);
         String url = PrefUtils.getFromPrefs(this, PrefUtils.PREFS_USER_IMAGE, "");
@@ -105,7 +106,7 @@ public class HomeActivity extends BaseActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (id == R.id.nav_personal) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, ContentFragment.newInstance())// TODO: 04/07/17 replaced personal fragment temporary to run
+                    .replace(R.id.container, new FragmentPersonalInfo())
                     .commit();
         } else if (id == R.id.nav_att) {
             fragmentManager.beginTransaction()

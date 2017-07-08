@@ -3,7 +3,6 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.Application;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
-import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
@@ -60,7 +59,7 @@ public class GUApp extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        MultiDex.install(this);
+//        MultiDex.install(this);
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/ts_normal.ttf")
                 .setFontAttrId(R.attr.fontPath)

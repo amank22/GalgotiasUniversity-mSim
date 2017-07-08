@@ -38,6 +38,8 @@ public class StudentLogin extends BaseActivity {
         container = (RelativeLayout) findViewById(R.id.login_container);
         mUsername = PrefUtils.getFromPrefs(this, PrefUtils.PREFS_LOGIN_USERNAME_KEY, "Username");
         mPassword = PrefUtils.getFromPrefs(this, PrefUtils.PREFS_LOGIN_PASSWORD_KEY, "Password");
+        mUserView = (EditText) findViewById(R.id.username);
+        mPasswordView = (EditText) findViewById(R.id.password);
         if (checkValidity() && !mPassword.equals("PASSWORD_INCORRECT")) {
             Intent i = new Intent(StudentLogin.this, HomeActivity.class);
             startActivity(i);
@@ -46,8 +48,6 @@ public class StudentLogin extends BaseActivity {
             mUserView.setText(mUsername);
             alert("Re-enter Login Details");
         }
-        mUserView = (EditText) findViewById(R.id.username);
-        mPasswordView = (EditText) findViewById(R.id.password);
         Button signInButton = (Button) findViewById(R.id.sign_in_button);
         assert signInButton != null;
         signInButton.setOnClickListener(new View.OnClickListener() {
