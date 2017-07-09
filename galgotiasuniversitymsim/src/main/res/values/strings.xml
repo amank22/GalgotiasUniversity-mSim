@@ -2,11 +2,6 @@
 <resources>
 
     <string name="app_name">Galgotias University mSim</string>
-    <string name="title_activity_login">Login</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="service_name">Sim Service</string>
-    <string name="title_activity_about_me">About Me</string>
     <string name="news_string_image">NEWS ITEM IMAGE</string>
     <string name="news_string_note">News Note</string>
     <string name="title_activity_news">News</string>
@@ -15,22 +10,18 @@
     <string name="title_section1">Personal Info</string>
     <string name="title_section2">Attendance</string>
     <string name="title_section3">Time-Table</string>
-    <string name="title_section4">News</string>
+    <string name="title_section4">Exam Result</string>
+    <string name="title_section5">News</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_example">Example action</string>
     <string name="string_qurux">QURUX</string>
     <string name="gu_name_two_lines">Galgotias\nUniversity</string>
     <string name="login">Login</string>
     <string name="username">Username</string>
     <string name="credits">Credits:\nAman Kapoor\n(Developer,Designer)</string>
     <string name="title_activity_news_detail">Check Your News</string>
-    <string name="present">P: %1$s</string>
-    <string name="absent">A: %1$s</string>
-    <string name="total">T: %1$s</string>
-    <string name="percentage">%1$s %%</string>
     <string name="galgotias_university">Galgotias University</string>
 
 </resources>

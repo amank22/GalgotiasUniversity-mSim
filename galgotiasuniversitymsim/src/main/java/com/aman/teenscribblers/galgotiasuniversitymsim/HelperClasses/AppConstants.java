@@ -1,7 +1,5 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses;
 
-import java.util.List;
-
 public class AppConstants {
     public static final String BaseUrl = "http://182.71.87.38/";
     public static final String ERROR_BASE_URL = "http://182.71.87.38/ISIM/msg.htm";

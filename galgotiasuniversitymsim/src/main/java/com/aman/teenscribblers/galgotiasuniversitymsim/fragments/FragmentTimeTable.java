@@ -11,10 +11,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.AttendanceErrorEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.LoginEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.SessionExpiredEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableErrorEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.Events.LocalErrorEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableStartEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableSuccessEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
@@ -89,7 +88,7 @@ public class FragmentTimeTable extends BaseFragment {
 
     @SuppressWarnings("UnusedDeclaration")
     @Subscribe(threadMode = ThreadMode.MainThread)
-    public void onEventMainThread(TimeTableErrorEvent event) {
+    public void onEventMainThread(LocalErrorEvent event) {
         loading.setVisibility(View.VISIBLE);
         loading.setText(event.getResponse());
         switch (event.getResponse()) {
@@ -121,7 +120,7 @@ public class FragmentTimeTable extends BaseFragment {
             startActivity(i);
             getActivity().finish();
         } else {
-            onEventMainThread(new TimeTableErrorEvent(AppConstants.ERROR_LOCAL_CACHE_NOT_FOUND));
+            onEventMainThread(new LocalErrorEvent(AppConstants.ERROR_LOCAL_CACHE_NOT_FOUND));
         }
     }
 

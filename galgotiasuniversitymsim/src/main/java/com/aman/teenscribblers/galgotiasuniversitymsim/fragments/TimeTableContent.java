@@ -15,13 +15,13 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 /**
  * Created by aman on 26-11-2014.
  */
-public class TimeTableContent extends Fragment implements AdapterView.OnItemClickListener {
+public class TimeTableContent extends BaseFragment implements AdapterView.OnItemClickListener {
     Fragment frag;
     private ColorChangerTimeTable changer;
     private FragmentOpenTimeTable flisten;
 
     /**
-     * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
+     * @return a new instance of {@link AttendanceContentFragment}, adding the parameters into a bundle and
      * setting them as arguments.
      */
     public static TimeTableContent newInstance() {
@@ -31,14 +31,14 @@ public class TimeTableContent extends Fragment implements AdapterView.OnItemClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return getActivity().getLayoutInflater().inflate(R.layout.pager_item_tt, container, false);
+        return getActivity().getLayoutInflater().inflate(R.layout.fragment_category_chooser, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String[] tt = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
-        ListView list = (ListView) view.findViewById(R.id.gridView_tt);
+        ListView list = (ListView) view.findViewById(R.id.listView_choice);
         ListAdapter adapter;
         adapter = new ListAdapter(getActivity(), tt);
         list.setAdapter(adapter);
@@ -73,7 +73,7 @@ public class TimeTableContent extends Fragment implements AdapterView.OnItemClic
 
     protected void gotimetable(String day, int color) {
         frag = FragmentTimeTable.newInstance(day);
-        getFragmentManager().beginTransaction().replace(R.id.frame_tt, frag, "timetable")
+        getFragmentManager().beginTransaction().replace(R.id.frame_options_chooser, frag, "timetable")
                 .commit();
         changer.changecolortt(color);
         flisten.ttopened(frag, day);

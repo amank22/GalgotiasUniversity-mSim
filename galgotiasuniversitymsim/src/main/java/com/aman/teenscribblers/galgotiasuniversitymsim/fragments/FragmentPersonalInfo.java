@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Adapter.PersonalInfoAdapter;
@@ -23,13 +24,16 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.InfoEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.SessionExpiredEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
+import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.PersonalInfoJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.PersonalInfoLocal;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.InfoParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Service.RegistrationIntentService;
+import com.aman.teenscribblers.galgotiasuniversitymsim.transform.CircleTransform;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,6 +48,7 @@ public class FragmentPersonalInfo extends BaseFragment {
     private static final String TAG = "PersonalInfo Fragment";
     private RecyclerView list;
     private ProgressBar pb;
+    public ImageView image;
     private View rootview;
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -61,11 +66,33 @@ public class FragmentPersonalInfo extends BaseFragment {
         rootview = view;
         pb = (ProgressBar) view.findViewById(R.id.progressBar_personal);
         list = (RecyclerView) view.findViewById(R.id.listView_personal);
+        image = (ImageView) view.findViewById(R.id.imageView_nav);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         list.setLayoutManager(linearLayoutManager);
         list.setHasFixedSize(true);
         GUApp.getJobManager().addJobInBackground(new PersonalInfoLocal(getActivity()));
+        setProfilePicture();
 
+    }
+
+    private void setProfilePicture() {
+        String url = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_IMAGE, "");
+        if (!url.equals("")) {
+            Picasso picasso = Picasso.with(getContext());
+            picasso.setIndicatorsEnabled(false);
+            picasso.load(url)
+                    .noPlaceholder()
+                    .centerInside()
+                    .resize(400, 400)
+                    .transform(new CircleTransform())
+                    .priority(Picasso.Priority.HIGH)
+                    .into(image);
+        } else {
+            String gender = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_GENDER_KEY, "Male");
+            if (gender.equals("Female")) {
+                image.setImageResource(R.drawable.ic_avatar_girl);
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)
@@ -101,6 +128,7 @@ public class FragmentPersonalInfo extends BaseFragment {
             AddGcmRegistrationToPref();
             List<InfoParcel> parsedList = event.getParsedList();
             setAdapter(parsedList);
+            setProfilePicture();
         }
     }
 

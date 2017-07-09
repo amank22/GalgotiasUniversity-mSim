@@ -3,12 +3,11 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.Jobs;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.aman.teenscribblers.galgotiasuniversitymsim.Events.ResultSuccessEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.LocalErrorEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableStartEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.TimeTableSuccessEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.DbSimHelper;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.TimeTableParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.ResultParcel;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
@@ -18,40 +17,40 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 
 /**
- * Created by aman on 20-02-2015 in Galgotias University(mSim).
+ * Created by aman on 8-July-2017 in Galgotias University(mSim).
  */
-public class TTFindParcel extends Job {
+public class ResultLocalJob extends Job {
 
-    String day;
     DbSimHelper dbhelper;
+    String semester;
 
-    public TTFindParcel(String day) {
+    public ResultLocalJob(String semester) {
         super(new Params(AppConstants.PRIORITY4));
-        this.day = day;
+        this.semester = semester;
         dbhelper = DbSimHelper.getInstance();
     }
 
     @Override
     public void onAdded() {
-        EventBus.getDefault().post(new TimeTableStartEvent("Fetching TimeTable Locally"));
     }
 
     @Override
     public void onRun() throws Throwable {
-        List<TimeTableParcel> parcel = dbhelper.getTimeTable(day);
+        List<ResultParcel> parcel = dbhelper.getResults(semester);
         if (parcel.isEmpty()) {
             throw new Exception(AppConstants.ERROR_LOCAL_CACHE_NOT_FOUND);
         }
-        EventBus.getDefault().post(new TimeTableSuccessEvent("Loaded offline", parcel));
+        EventBus.getDefault().post(new ResultSuccessEvent(parcel, semester));
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
+//        EventBus.getDefault().post(new ResultSuccessEvent(null));
+        EventBus.getDefault().post(new LocalErrorEvent(throwable == null ? null : throwable.getLocalizedMessage()));
     }
 
     @Override
     protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
-        EventBus.getDefault().post(new LocalErrorEvent(throwable.getLocalizedMessage()));
         return RetryConstraint.CANCEL;
     }
 

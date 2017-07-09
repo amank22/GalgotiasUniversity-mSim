@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_options_item">24sp</dimen>
-    <dimen name="login_logo">120dp</dimen>
 </resources>

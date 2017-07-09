@@ -23,7 +23,6 @@
             android:textSize="38sp" />
 
         <TextView
-            android:id="@+id/teenscribblers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/gu_logo_text"

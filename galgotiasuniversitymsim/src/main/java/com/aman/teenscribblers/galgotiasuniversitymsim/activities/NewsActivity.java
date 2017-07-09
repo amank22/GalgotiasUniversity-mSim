@@ -10,9 +10,9 @@ public class NewsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toolbar.setNavigationIcon(null);
-        toolbar.setTitle("");
-        toolbar.setSubtitle("");
+//        toolbar.setNavigationIcon(null);
+//        toolbar.setTitle("");
+//        toolbar.setSubtitle("");
         getSupportFragmentManager().beginTransaction().replace(R.id.news_container, NewsFragment.newInstance()).commit();
     }
 

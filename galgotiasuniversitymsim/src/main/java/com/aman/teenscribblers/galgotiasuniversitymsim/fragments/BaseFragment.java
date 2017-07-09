@@ -1,7 +1,14 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+
+import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.aman.teenscribblers.galgotiasuniversitymsim.activities.HomeActivity;
 
 import de.greenrobot.event.EventBus;
 
@@ -10,10 +17,28 @@ import de.greenrobot.event.EventBus;
  */
 public class BaseFragment extends Fragment {
 
+    protected Toolbar toolbar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception ignored) {
+
+        }
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        }
+        if (getActivity() instanceof HomeActivity) {
+            ((HomeActivity) getActivity()).setToggleToDrawer(toolbar);
+        }
     }
 
     @Override

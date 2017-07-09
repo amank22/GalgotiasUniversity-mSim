@@ -19,7 +19,7 @@ import java.util.Calendar;
 /**
  * Created by aman on 16-11-2014.
  */
-public class ContentFragment extends Fragment implements AdapterView.OnItemClickListener, DatePickerDialog.OnDateSetListener {
+public class AttendanceContentFragment extends BaseFragment implements AdapterView.OnItemClickListener, DatePickerDialog.OnDateSetListener {
     Fragment frag;
     String type;
     private ListView list;
@@ -27,17 +27,17 @@ public class ContentFragment extends Fragment implements AdapterView.OnItemClick
     private ColorChanger changer;
 
     /**
-     * @return a new instance of {@link ContentFragment}, adding the parameters into a bundle and
+     * @return a new instance of {@link AttendanceContentFragment}, adding the parameters into a bundle and
      * setting them as arguments.
      */
-    public static ContentFragment newInstance() {
-        return new ContentFragment();
+    public static AttendanceContentFragment newInstance() {
+        return new AttendanceContentFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return getActivity().getLayoutInflater().inflate(R.layout.pager_item, container, false);
+        return getActivity().getLayoutInflater().inflate(R.layout.fragment_category_chooser, container, false);
     }
 
     @Override

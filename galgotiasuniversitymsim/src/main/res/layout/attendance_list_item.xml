@@ -50,7 +50,6 @@
         android:textSize="24sp" />
 
     <LinearLayout
-        android:id="@+id/attcon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/p_indicator"

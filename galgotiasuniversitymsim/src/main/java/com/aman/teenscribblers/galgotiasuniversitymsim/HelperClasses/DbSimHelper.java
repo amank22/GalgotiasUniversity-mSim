@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.NewsParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.ResultParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.SimParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.TimeTableParcel;
 
@@ -26,6 +27,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
     static final String MonthlyTableName = "Monthly_Attendance";
     static final String TimeTableTableName = "TimeTable_Attendance";
     static final String NewsTableName = "News_Table";
+    static final String ResultTableName = "Result_Table";
 
     // columns-common
     static final String colID = "ID";
@@ -60,6 +62,10 @@ public class DbSimHelper extends SQLiteOpenHelper {
     static final String colImageUrl = "image_url";
     static final String colAuthor = "author";
 
+    /*for Results Table*/
+    static final String colGrade = "grade";
+    //semester is the 3rd column
+
     static final String subjtablesql = "CREATE TABLE " + SubjTableName + " ("
             + colID + " INTEGER PRIMARY KEY , " + colSubj + " TEXT, "
             + colPresent + " INTEGER DEFAULT 0, " + colAbsent
@@ -90,12 +96,16 @@ public class DbSimHelper extends SQLiteOpenHelper {
             + " TEXT, " + colFaculty + " TEXT, " + colTimeSlot
             + " TEXT, " + colHallno + " TEXT);";
 
+    static final String resulttablesql = "CREATE TABLE " + ResultTableName + " ("
+            + colID + " INTEGER PRIMARY KEY , " + colSubj + " TEXT, "
+            + colGrade + " TEXT, " + colSem + " TEXT);";
+
     static final String Newssql = "CREATE TABLE " + NewsTableName + " ("
             + colID + " INTEGER PRIMARY KEY, " + colNote + " TEXT, "
             + colImageUrl + " TEXT, " + colAuthor
             + " TEXT);";
     private static final String TAG = "DBHelperClass";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 15;
     private static DbSimHelper mInstance = null;
 
     private DbSimHelper(Context context) {
@@ -120,6 +130,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
         db.execSQL(semtablesql);
         db.execSQL(todaystablesql);
         db.execSQL(timetablesql);
+        db.execSQL(resulttablesql);
         db.execSQL(Newssql);
     }
 
@@ -130,6 +141,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + SemTableName);
         db.execSQL("DROP TABLE IF EXISTS " + TodayTableName);
         db.execSQL("DROP TABLE IF EXISTS " + TimeTableTableName);
+        db.execSQL("DROP TABLE IF EXISTS " + ResultTableName);
         db.execSQL("DROP TABLE IF EXISTS " + NewsTableName);
         onCreate(db);
     }
@@ -196,6 +208,16 @@ public class DbSimHelper extends SQLiteOpenHelper {
         cv.put(colFaculty, faculty);
         cv.put(colHallno, hallno);
         db.insert(TimeTableTableName, colSubj, cv);
+        db.close();
+    }
+
+    public void addNewResult(String subject, String grade, String semester) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(colSubj, subject);
+        cv.put(colGrade, grade);
+        cv.put(colSem, semester);
+        db.insert(ResultTableName, colSubj, cv);
         db.close();
     }
 
@@ -319,6 +341,39 @@ public class DbSimHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public List<String> getSemestersForResult() {
+        List<String> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("Select DISTINCT " + colSem + " FROM " + ResultTableName, null);
+        // looping through all rows and adding to list
+        if (cur.moveToLast()) {
+            do {
+                list.add(cur.getString(0));
+            } while (cur.moveToPrevious());
+        }
+        // closing connection
+        cur.close();
+        db.close();
+        return list;
+    }
+
+    public List<ResultParcel> getResults(String semester) {
+        List<ResultParcel> list = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.rawQuery("Select * FROM " + ResultTableName
+                + " WHERE " + colSem + "='" + semester + "'", null);
+        // looping through all rows and adding to list
+        if (cur.moveToLast()) {
+            do {
+                list.add(new ResultParcel(cur.getString(1), cur.getString(2), cur.getString(3)));
+            } while (cur.moveToPrevious());
+        }
+        // closing connection
+        cur.close();
+        db.close();
+        return list;
+    }
+
     public List<NewsParcel> getAllNews() {
         List<NewsParcel> list = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -327,7 +382,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cur.moveToLast()) {
             do {
-                Log.d("Database", "id=" + cur.getInt(0) + ":note=" + cur.getString(1)+ ":imageUrl=" + cur.getString(2));
+                Log.d("Database", "id=" + cur.getInt(0) + ":note=" + cur.getString(1) + ":imageUrl=" + cur.getString(2));
                 list.add(new NewsParcel(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3)));
             } while (cur.moveToPrevious());
         }
@@ -338,13 +393,17 @@ public class DbSimHelper extends SQLiteOpenHelper {
     }
 
     //---deletes a particular News---
-    public boolean deleteNews(String id)
-    {
-        Log.d(TAG,id);
+    public boolean deleteNews(String id) {
+        Log.d(TAG, id);
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(NewsTableName, colID + "=" + id, null) > 0;
     }
 
+
+    public void deleteResult() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(ResultTableName, null, null);
+    }
 
     public void deletesubj() {
         SQLiteDatabase db = this.getWritableDatabase();
