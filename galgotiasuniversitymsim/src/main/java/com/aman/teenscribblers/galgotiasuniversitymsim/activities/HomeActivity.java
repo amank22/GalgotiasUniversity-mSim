@@ -27,6 +27,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AttendanceContentFragment;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentOfficialInfo;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentPersonalInfo;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentResultBase;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsFragment;
@@ -100,7 +101,12 @@ public class HomeActivity extends BaseActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, new FragmentPersonalInfo())
                     .commit();
-        } else if (id == R.id.nav_att) {
+        }else if (id == R.id.nav_official) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, new FragmentOfficialInfo())
+                    .commit();
+        }
+        else if (id == R.id.nav_att) {
             fragmentManager.beginTransaction()
                     .replace(R.id.container, AttendanceContentFragment.newInstance())
                     .commit();
