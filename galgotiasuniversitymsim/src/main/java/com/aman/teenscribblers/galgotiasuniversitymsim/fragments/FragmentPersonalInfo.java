@@ -31,6 +31,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.InfoParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Service.RegistrationIntentService;
 import com.aman.teenscribblers.galgotiasuniversitymsim.transform.CircleTransform;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.squareup.picasso.Picasso;
@@ -116,9 +117,23 @@ public class FragmentPersonalInfo extends BaseFragment {
             pb.setVisibility(View.GONE);
             Snackbar.make(rootview, event.getData(), Snackbar.LENGTH_INDEFINITE).show();
         } else {
+            logUser();
             GUApp.getJobManager().addJobInBackground(new PersonalInfoLocal(getActivity()));
         }
     }
+
+    private void logUser() {
+        String admNo = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_ADMNO_KEY, null);
+        String email = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_EMAIL_KEY, null);
+        String name = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_NAME_KEY, null);
+        if (admNo != null)
+            Crashlytics.setUserIdentifier(admNo);
+        if (email != null)
+            Crashlytics.setUserEmail(email);
+        if (name != null)
+            Crashlytics.setUserName(name);
+    }
+
 
     private void handleLocalEvent(InfoEvent event) {
         if (event.getError()) {
