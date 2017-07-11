@@ -26,6 +26,8 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.AttendanceJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.SimParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.StudentLogin;
+import com.birbit.android.jobqueue.CancelResult;
+import com.birbit.android.jobqueue.TagConstraint;
 
 import java.util.List;
 
@@ -38,7 +40,11 @@ import de.greenrobot.event.ThreadMode;
 
 public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private String type, typevalue, fromDate, toDate;
+    private static final String ARG_TYPE = "att_type";
+    private static final String ARG_FROM_DATE = "from_date";
+    private static final String ARG_TO_DATE = "to_date";
+
+    private String type, fromDate, toDate;
     private ListView list;
     private List<SimParcel> parcel;
     private TextView loading;
@@ -46,8 +52,12 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        GUApp.getJobManager().clear();
-        GUApp.getJobManager().addJobInBackground(new AttendanceJob(type, typevalue, false));
+        GUApp.getJobManager().cancelJobsInBackground(new CancelResult.AsyncCancelCallback() {
+            @Override
+            public void onCancelled(CancelResult cancelResult) {
+                GUApp.getJobManager().addJobInBackground(new AttendanceJob(false, type, fromDate, toDate));
+            }
+        }, TagConstraint.ALL);
 
     }
 
@@ -80,9 +90,11 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
     }
 
 
-    public static NewAttendanceFragment newInstance(String[] ttype) {
+    public static NewAttendanceFragment newInstance(String type, String fromDate, String toDate) {
         Bundle bundle = new Bundle();
-        bundle.putStringArray("type_key", ttype);
+        bundle.putString(ARG_TYPE, type);
+        bundle.putString(ARG_FROM_DATE, fromDate);
+        bundle.putString(ARG_TO_DATE, toDate);
         NewAttendanceFragment fragment = new NewAttendanceFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -93,10 +105,9 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            String[] content = args.getStringArray("type_key");
-            assert content != null;
-            type = content[0];
-            typevalue = content[1];
+            type = args.getString(ARG_TYPE);
+            fromDate = args.getString(ARG_FROM_DATE);
+            toDate = args.getString(ARG_TO_DATE);
         }
     }
 
@@ -110,7 +121,7 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
         super.onViewCreated(view, savedInstanceState);
         LinearLayout header = (LinearLayout) view.findViewById(R.id.layout_head);
         loading = (TextView) view.findViewById(R.id.textView_att_loading);
-        if (typevalue.equals("Today+Attendance")) {
+        if (type.equals(AppConstants.ATT_TODAY)) {
             header.setVisibility(View.GONE);
         } else {
             header.setVisibility(View.VISIBLE);
@@ -121,10 +132,11 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
         mSwipeRefreshLayout.setRefreshing(true);
         list = (ListView) view.findViewById(R.id.listView_attendance);
         if (savedInstanceState != null) {
-            type = savedInstanceState.getString("att_type");
-            typevalue = savedInstanceState.getString("att_value");
+            type = savedInstanceState.getString(ARG_TYPE);
+            fromDate = savedInstanceState.getString(ARG_FROM_DATE);
+            toDate = savedInstanceState.getString(ARG_TO_DATE);
         }
-        GUApp.getJobManager().addJobInBackground(new AttFindParcel(typevalue));
+        GUApp.getJobManager().addJobInBackground(new AttFindParcel(type, fromDate, toDate));
     }
 
     private void uselist() {
@@ -138,8 +150,9 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("att_type", type);
-        outState.putString("att_value", typevalue);
+        outState.putString(ARG_TYPE, type);
+        outState.putString(ARG_FROM_DATE, fromDate);
+        outState.putString(ARG_TO_DATE, toDate);
     }
 
 
@@ -165,8 +178,8 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View row = convertView;
-            switch (typevalue) {
-                case "Subject+Wise+Attendance":
+            switch (type) {
+                case AppConstants.ATT_SUBJECT:
                     ViewHolderSubj subholder = null;
                     if (row == null) {
                         row = mInflater
@@ -209,54 +222,7 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
 
                     }
                     break;
-                case "Monthly+Attendance":
-                    ViewHolderMonth mholder = null;
-                    if (row == null) {
-                        row = mInflater
-                                .inflate(R.layout.attendance_list_item, parent, false);
-                        mholder = new ViewHolderMonth();
-                        mholder.subject = (TextView) row
-                                .findViewById(R.id.textView_subject);
-                        mholder.percentage = (TextView) row
-                                .findViewById(R.id.textView_perc);
-                        mholder.indcator = row.findViewById(R.id.p_indicator);
-                        // setting font
-//                    mholder.subject.setTypeface(newsfont);
-//                    mholder.percentage.setTypeface(newsfont);
-                        // Expanded View
-                        mholder.total = (TextView) row
-                                .findViewById(R.id.textView_total);
-                        mholder.present = (TextView) row
-                                .findViewById(R.id.textView_present);
-                        mholder.absent = (TextView) row
-                                .findViewById(R.id.textView_absent);
-//                    mholder.total.setTypeface(newsfont);
-//                    mholder.present.setTypeface(newsfont);
-//                    mholder.absent.setTypeface(newsfont);
-                        row.setTag(mholder);
-                    } else {
-                        mholder = (ViewHolderMonth) row.getTag();
-                    }
-                    // setting text data
-                    if (parcel != null && !parcel.isEmpty()) {
-                        Log.d("GU_DEBUG", "parcel nor null neither empty");
-                        mholder.subject.setText(parcel.get(position).getMonth());
-                        mholder.percentage.setText(String.valueOf(parcel.get(
-                                position).getPercnt()));
-                        if (parcel.get(position).getPercnt() < 75.0f) {
-                            mholder.indcator.setBackgroundColor(getResources().getColor(R.color.ts_red));
-                        } else {
-                            mholder.indcator.setBackgroundColor(getResources().getColor(R.color.ts_green));
-                        }
-                        mholder.total.setText(String.valueOf(parcel.get(position)
-                                .getTotal()));
-                        mholder.present.setText(String.valueOf(parcel.get(position)
-                                .getPresent()));
-                        mholder.absent.setText(String.valueOf(parcel.get(position)
-                                .getAbsent()));
-                    }
-                    break;
-                case "Today+Attendance":
+                case AppConstants.ATT_TODAY:
                     ViewHolderToday tholder = null;
                     if (row == null) {
                         row = mInflater
@@ -298,46 +264,6 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
                     }
 
                     break;
-                case "Semester+Attendance":
-                    ViewHolderSem semholder = null;
-                    if (row == null) {
-                        row = mInflater
-                                .inflate(R.layout.attendance_list_item, parent, false);
-                        semholder = new ViewHolderSem();
-                        semholder.sem = (TextView) row
-                                .findViewById(R.id.textView_subject);
-                        semholder.percentage = (TextView) row
-                                .findViewById(R.id.textView_perc);
-                        semholder.total = (TextView) row
-                                .findViewById(R.id.textView_total);
-                        semholder.present = (TextView) row
-                                .findViewById(R.id.textView_present);
-                        semholder.absent = (TextView) row
-                                .findViewById(R.id.textView_absent);
-                        semholder.indcator = row.findViewById(R.id.p_indicator);
-                        row.setTag(semholder);
-                    } else {
-                        semholder = (ViewHolderSem) row.getTag();
-                    }
-                    // setting text data
-                    if (parcel != null && !parcel.isEmpty()) {
-                        Log.d("GU_DEBUG", "parcel nor null neither empty");
-                        semholder.sem.setText(parcel.get(position).getSem());
-                        semholder.percentage.setText(String.valueOf(parcel.get(
-                                position).getPercnt()));
-                        if (parcel.get(position).getPercnt() < 75.0f) {
-                            semholder.indcator.setBackgroundColor(getResources().getColor(R.color.ts_red));
-                        } else {
-                            semholder.indcator.setBackgroundColor(getResources().getColor(R.color.ts_green));
-                        }
-                        semholder.total.setText(String.valueOf(parcel.get(position)
-                                .getTotal()));
-                        semholder.present.setText(String.valueOf(parcel.get(
-                                position).getPresent()));
-                        semholder.absent.setText(String.valueOf(parcel
-                                .get(position).getAbsent()));
-                    }
-                    break;
             }
             return row;
         }
@@ -349,10 +275,8 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
         loading.setVisibility(View.VISIBLE);
         loading.setText(event.getError());
         mSwipeRefreshLayout.setRefreshing(false);
-        if (!event.getError().equals(AppConstants.ERROR_LOCAL_CACHE_NOT_FOUND)) {
-            String mUsername = PrefUtils.getFromPrefs(getActivity(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, "user");
-            String mPassword = PrefUtils.getFromPrefs(getActivity(), PrefUtils.PREFS_LOGIN_PASSWORD_KEY, "pass");
-            GUApp.getJobManager().addJobInBackground(new AttendanceJob(type, typevalue, false));
+        if (event.getError().equals(AppConstants.ERROR_LOCAL_CACHE_NOT_FOUND)) {
+            GUApp.getJobManager().addJobInBackground(new AttendanceJob(false, type, fromDate, toDate));
         }
     }
 
@@ -376,7 +300,7 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
             startActivity(i);
             getActivity().finish();
         } else {
-            onEventMainThread(new AttendanceErrorEvent(AppConstants.ERROR_LOCAL_CACHE_NOT_FOUND));
+            GUApp.getJobManager().addJobInBackground(new AttendanceJob(false, type, fromDate, toDate));
         }
     }
 
@@ -395,7 +319,7 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
             parcel = event.getParcel();
             uselist();
         } else if (event.getProccessed().equals("FetchedFromNetwork")) {
-            GUApp.getJobManager().addJobInBackground(new AttFindParcel(typevalue));
+            GUApp.getJobManager().addJobInBackground(new AttFindParcel(type, fromDate, toDate));
         }
     }
 

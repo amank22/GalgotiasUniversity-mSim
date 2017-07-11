@@ -7,38 +7,69 @@ import android.os.Parcelable;
  * Created by aman on 10/6/16.
  */
 public class SubjectParcel implements Parcelable {
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<SubjectParcel> CREATOR = new Parcelable.Creator<SubjectParcel>() {
-        @Override
-        public SubjectParcel createFromParcel(Parcel in) {
-            return new SubjectParcel(in);
-        }
 
-        @Override
-        public SubjectParcel[] newArray(int size) {
-            return new SubjectParcel[size];
-        }
-    };
-    private String Present;
-    private String Absent;
-    private String Total;
-    private String Percentage;
-    private String Subject;
+    private String semester;
+    private String subject;
+    private int present;
+    private int absent;
+    private int total;
+    private float percentage;
 
-    public SubjectParcel(String present, String absent, String total, String percentage, String subject) {
-        Present = present;
-        Absent = absent;
-        Total = total;
-        Percentage = percentage;
-        Subject = subject;
+    public SubjectParcel(String semester, String subject, int present, int absent, int total, float percentage) {
+        this.semester = semester;
+        this.subject = subject;
+        this.present = present;
+        this.absent = absent;
+        this.total = total;
+        this.percentage = percentage;
     }
 
-    protected SubjectParcel(Parcel in) {
-        Present = in.readString();
-        Absent = in.readString();
-        Total = in.readString();
-        Percentage = in.readString();
-        Subject = in.readString();
+    public int getPresent() {
+        return present;
+    }
+
+    public void setPresent(int present) {
+        this.present = present;
+    }
+
+    public int getAbsent() {
+        return absent;
+    }
+
+    public void setAbsent(int absent) {
+        this.absent = absent;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public float getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(float percentage) {
+        this.percentage = percentage;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
     }
 
     @Override
@@ -48,50 +79,30 @@ public class SubjectParcel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(Present);
-        dest.writeString(Absent);
-        dest.writeString(Total);
-        dest.writeString(Percentage);
-        dest.writeString(Subject);
+        dest.writeInt(this.present);
+        dest.writeInt(this.absent);
+        dest.writeInt(this.total);
+        dest.writeFloat(this.percentage);
+        dest.writeString(this.subject);
+        dest.writeString(this.semester);
     }
 
-    public String getPresent() {
-        return Present;
+    protected SubjectParcel(Parcel in) {
+        this.present = in.readInt();
+        this.absent = in.readInt();
+        this.total = in.readInt();
+        this.percentage = in.readFloat();
+        this.subject = in.readString();
+        this.semester = in.readString();
     }
 
-    public void setPresent(String present) {
-        Present = present;
-    }
+    public static final Creator<SubjectParcel> CREATOR = new Creator<SubjectParcel>() {
+        public SubjectParcel createFromParcel(Parcel source) {
+            return new SubjectParcel(source);
+        }
 
-    public String getAbsent() {
-        return Absent;
-    }
-
-    public void setAbsent(String absent) {
-        Absent = absent;
-    }
-
-    public String getTotal() {
-        return Total;
-    }
-
-    public void setTotal(String total) {
-        Total = total;
-    }
-
-    public String getPercentage() {
-        return Percentage;
-    }
-
-    public void setPercentage(String percentage) {
-        Percentage = percentage;
-    }
-
-    public String getSubject() {
-        return Subject;
-    }
-
-    public void setSubject(String subject) {
-        Subject = subject;
-    }
+        public SubjectParcel[] newArray(int size) {
+            return new SubjectParcel[size];
+        }
+    };
 }

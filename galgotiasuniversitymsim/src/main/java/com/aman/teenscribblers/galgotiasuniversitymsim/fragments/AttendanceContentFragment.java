@@ -1,6 +1,6 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,7 +24,6 @@ public class AttendanceContentFragment extends BaseFragment implements AdapterVi
     String type;
     private ListView list;
     private FragmentOpenAtt flisten;
-    private ColorChanger changer;
 
     /**
      * @return a new instance of {@link AttendanceContentFragment}, adding the parameters into a bundle and
@@ -44,13 +43,12 @@ public class AttendanceContentFragment extends BaseFragment implements AdapterVi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //        String[] att = {"Todays Attendance" ,"Subjects Attendance", "Date-Wise Attendance"};
-        String[] att = {"Subjects Attendance", "Date-Wise Attendance"};
+        String[] att = {"Subjects Attendance", "Today Attendance"};
         list = (ListView) view.findViewById(R.id.listView_choice);
         ListAdapter adapter;
         adapter = new ListAdapter(getActivity(), att);
         setadapter(adapter);
         list.setOnItemClickListener(this);
-
     }
 
     private void setadapter(ListAdapter adapter) {
@@ -66,44 +64,39 @@ public class AttendanceContentFragment extends BaseFragment implements AdapterVi
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH)
         );
-        dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
         switch (i) {
-//            case 0:
-//                replaceToAttendance(AppConstants.ATT_TODAY, getcolor(R.color.ts_yellow));
-//                break;
             case 0:
                 type = AppConstants.ATT_SUBJECT;
+                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
                 break;
             case 1:
-                type = AppConstants.ATT_DATE;
+                type = AppConstants.ATT_TODAY;
+                replaceToAttendance(null,null);
                 break;
         }
     }
 
-    private int getcolor(int c) {
-        return getResources().getColor(c);
-    }
-
-    protected void replaceToAttendance(String type, int color, String fromDate, String toDate) {
-//        frag = NewAttendanceFragment.newInstance(type, fromDate, toDate);
-//        getFragmentManager().beginTransaction().replace(R.id.frame, frag, "attendance")
-//                .commit();
-//        changer.changecolor(color);
-//        flisten.attopened(frag, type);// TODO: 07/07/17 Send proper arguments and change the attendance fragment for proper parameters
+    protected void replaceToAttendance(String fromDate, String toDate) {
+        frag = NewAttendanceFragment.newInstance(type, fromDate, toDate);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, frag, "attendance")
+                .commit();
+        flisten.attopened(frag, type);
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth, int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
+        String fromDate = dayOfMonth + "/" + monthOfYear + "/" + year;
+        String toDate = dayOfMonthEnd + "/" + monthOfYearEnd + "/" + yearEnd;
+        replaceToAttendance(fromDate, toDate);
+    }
+
+
+    @Override
+    public void onAttach(Context activity) {
         super.onAttach(activity);
 
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
-        try {
-            changer = (ColorChanger) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement ColorChanger Listener");
-        }
         try {
             flisten = (FragmentOpenAtt) activity;
         } catch (ClassCastException e) {
@@ -112,24 +105,8 @@ public class AttendanceContentFragment extends BaseFragment implements AdapterVi
         }
     }
 
-    @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth, int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
-        String fromDate = dayOfMonth + "/" + monthOfYear + "/" + year;
-        String toDate = dayOfMonthEnd + "/" + monthOfYearEnd + "/" + yearEnd;
-        int color = R.color.ts_blue;
-        if (type.equals(AppConstants.ATT_DATE)) {
-            color = R.color.ts_green;
-        }
-        replaceToAttendance(type, color, fromDate, toDate);
-    }
-
     public interface FragmentOpenAtt {
         void attopened(Fragment frag, String tag);
-    }
-
-
-    public interface ColorChanger {
-        void changecolor(int color);
     }
 
 }

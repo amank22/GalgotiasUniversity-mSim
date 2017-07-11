@@ -33,7 +33,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.TimeTableContent;
 
 public class HomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AttendanceContentFragment.ColorChanger, TimeTableContent.ColorChangerTimeTable, TimeTableContent.FragmentOpenTimeTable,
+        implements NavigationView.OnNavigationItemSelectedListener, TimeTableContent.ColorChangerTimeTable, TimeTableContent.FragmentOpenTimeTable,
         AttendanceContentFragment.FragmentOpenAtt {
 
 
@@ -133,11 +133,6 @@ public class HomeActivity extends BaseActivity
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void changecolor(int color) {
-        startcolorchange(color);
     }
 
     @Override

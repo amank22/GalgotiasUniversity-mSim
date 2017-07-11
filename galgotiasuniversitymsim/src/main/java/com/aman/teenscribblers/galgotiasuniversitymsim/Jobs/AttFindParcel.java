@@ -22,14 +22,17 @@ import de.greenrobot.event.EventBus;
  */
 public class AttFindParcel extends Job {
 
-    String typevalue;
+    private String typevalue;
+    private String fromDate = "", toDate = "";
     private List<SimParcel> parcel;
-    DbSimHelper dbhelper;
+    private DbSimHelper dbhelper;
 
-    public AttFindParcel(String value) {
+    public AttFindParcel(String value, String fromDate, String toDate) {
         super(new Params(AppConstants.PRIORITY4));
         typevalue = value;
         dbhelper = DbSimHelper.getInstance();
+        this.fromDate = fromDate;
+        this.toDate = toDate;
     }
 
     @Override
@@ -40,14 +43,14 @@ public class AttFindParcel extends Job {
     @Override
     public void onRun() throws Throwable {
         switch (typevalue) {
-            case "Today+Attendance":
+            case AppConstants.ATT_TODAY:
                 parcel = dbhelper.getTodaysAttd();
                 break;
-            case "Monthly+Attendance":
+            case "Monthly+Attendance"://ignoring these and not even deleting
                 parcel = dbhelper.getMonthlyAttd();
                 break;
-            case "Subject+Wise+Attendance":
-                parcel = dbhelper.getSubjAttd();
+            case AppConstants.ATT_SUBJECT:
+                parcel = dbhelper.getSubjAttd(fromDate, toDate);
                 break;
             case "Semester+Attendance":
                 parcel = dbhelper.getSemAttd();

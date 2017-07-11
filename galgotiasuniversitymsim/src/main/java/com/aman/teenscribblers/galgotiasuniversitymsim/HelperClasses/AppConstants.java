@@ -15,7 +15,7 @@ public class AppConstants {
     public static final String PERSONAL_HEADING = "~Heading~";
     public static final String ATT_TODAY = "Today Attendance";
     public static final String ATT_SUBJECT = "Subject Wise Attendance";
-    public static final String ATT_DATE = "Date Wise";
+//    public static final String ATT_DATE = "Date Wise";
     public static final String FILE_NAME_SUBJECT = "subjectsAtt";
     public static final String FILE_NAME_DATE = "dateAtt";
     public static final String FILE_NAME_PERSONAL = "personal.txt";

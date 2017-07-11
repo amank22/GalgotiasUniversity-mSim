@@ -11,7 +11,9 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.NewsParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.ResultParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.SimParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.SubjectParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.TimeTableParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.TodayAttParcel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
 
     // columns-subjects
     static final String colSubj = "Subject";
+    static final String colSubjFromToDate = "fromToDate";
     // columns-monthly
     static final String colMonth = "Month";
     // for semester attendance
@@ -45,6 +48,8 @@ public class DbSimHelper extends SQLiteOpenHelper {
     static final String colPercnt = "Percentage";
     // change in pattern
     // for todays attendance
+    static final String colSession = "Session";
+    static final String colProgram = "Program";
     static final String colTimeSlot = "Time_Slot";
     static final String colClassType = "Class_Type";
     static final String colStatus = "Status";
@@ -67,7 +72,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
     //semester is the 3rd column
 
     static final String subjtablesql = "CREATE TABLE " + SubjTableName + " ("
-            + colID + " INTEGER PRIMARY KEY , " + colSubj + " TEXT, "
+            + colID + " INTEGER PRIMARY KEY , " + colSubjFromToDate + " TEXT UNIQUE, " + colSem + " TEXT," + colSubj + " TEXT, "
             + colPresent + " INTEGER DEFAULT 0, " + colAbsent
             + " INTEGER DEFAULT 0, " + colTotal + " INTEGER DEFAULT 0, "
             + colPercnt + " REAL);";
@@ -86,7 +91,8 @@ public class DbSimHelper extends SQLiteOpenHelper {
             + colPercnt + " REAL);";
 
     static final String todaystablesql = "CREATE TABLE " + TodayTableName
-            + " (" + colID + " INTEGER PRIMARY KEY , " + colSubj + " TEXT, "
+            + " (" + colID + " INTEGER PRIMARY KEY , " + colSession + " TEXT, " + colProgram + " TEXT, "
+            + colSem + " TEXT, " + colSubj + " TEXT, "
             + colTimeSlot + " TEXT, " + colClassType + " TEXT, " + colStatus
             + " TEXT);";
 
@@ -105,7 +111,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
             + colImageUrl + " TEXT, " + colAuthor
             + " TEXT);";
     private static final String TAG = "DBHelperClass";
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 17;
     private static DbSimHelper mInstance = null;
 
     private DbSimHelper(Context context) {
@@ -148,13 +154,16 @@ public class DbSimHelper extends SQLiteOpenHelper {
 
     // Adding new values
     // others table operations
-    public void addnewtoday(String subject, String timeslot, String type, String status) {
+    public void addnewtoday(TodayAttParcel parcel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(colSubj, subject);
-        cv.put(colTimeSlot, timeslot);
-        cv.put(colClassType, type);
-        cv.put(colStatus, status);
+        cv.put(colSubj, parcel.getSubject());
+        cv.put(colTimeSlot, parcel.getTimeSlot());
+        cv.put(colClassType, parcel.getAttendanceType());
+        cv.put(colStatus, parcel.getStatus());
+        cv.put(colSession, parcel.getSession());
+        cv.put(colProgram, parcel.getProgram());
+        cv.put(colSem, parcel.getSemester());
         db.insert(TodayTableName, colSubj, cv);
         db.close();
     }
@@ -172,15 +181,16 @@ public class DbSimHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addnewsubj(String subject, int present, int absent, int total,
-                           float perc) {
+    public void addnewsubj(SubjectParcel parcel, String subjFromToDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(colSubj, subject);
-        cv.put(colPresent, present);
-        cv.put(colAbsent, absent);
-        cv.put(colPercnt, perc);
-        cv.put(colTotal, total);
+        cv.put(colSubj, parcel.getSubject());
+        cv.put(colPresent, parcel.getPresent());
+        cv.put(colAbsent, parcel.getAbsent());
+        cv.put(colPercnt, parcel.getPercentage());
+        cv.put(colTotal, parcel.getTotal());
+        cv.put(colSem, parcel.getSemester());
+        cv.put(colSubjFromToDate, subjFromToDate);
         db.insert(SubjTableName, colSubj, cv);
         db.close();
     }
@@ -239,17 +249,18 @@ public class DbSimHelper extends SQLiteOpenHelper {
     // return x;
     // }
 
-    public List<SimParcel> getSubjAttd() {
+    public List<SimParcel> getSubjAttd(String fromDate, String toDate) {
         List<SimParcel> list = new ArrayList<SimParcel>();
+        final String fromToDate = String.format("%s-%s", fromDate, toDate);
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cur = db.rawQuery("Select * FROM " + SubjTableName
+        Cursor cur = db.rawQuery("Select * FROM " + SubjTableName + " WHERE " + colSubjFromToDate + " = '" + fromToDate + "'"
                 + " ORDER BY " + colID + " DESC", null);
         // looping through all rows and adding to list
         if (cur.moveToLast()) {
             do {
-                list.add(new SimParcel(cur.getString(1), null, null, cur
-                        .getInt(2), cur.getInt(3), cur.getInt(4), cur
-                        .getFloat(5), null, null, null));
+                list.add(new SimParcel(cur.getString(3), null, null, cur
+                        .getInt(4), cur.getInt(5), cur.getInt(6), cur
+                        .getFloat(7), null, null, null));
             } while (cur.moveToPrevious());
         }
         // closing connection

@@ -117,8 +117,7 @@ public class IonMethods {
         return captcha;
     }
 
-    public static String post(String url,
-                              ContentValues nvp) throws Exception {
+    public static String post(String url, ContentValues nvp) throws Exception {
 
         B base = Ion.with(GUApp.getInstance().getApplicationContext()).load(url);
         for (Map.Entry<String, Object> entry : nvp.valueSet()) {
@@ -142,7 +141,7 @@ public class IonMethods {
         }
     }
 
-    static void setvsev(String s) {
+    public static void setvsev(String s) {
         Document document = Jsoup.parse(s);
         AppConstants.viewstate = document.select("#__VIEWSTATE").attr(
                 "value");
