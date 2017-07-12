@@ -72,7 +72,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
     //semester is the 3rd column
 
     static final String subjtablesql = "CREATE TABLE " + SubjTableName + " ("
-            + colID + " INTEGER PRIMARY KEY , " + colSubjFromToDate + " TEXT UNIQUE, " + colSem + " TEXT," + colSubj + " TEXT, "
+            + colID + " INTEGER PRIMARY KEY , " + colSubjFromToDate + " TEXT, " + colSem + " TEXT," + colSubj + " TEXT, "
             + colPresent + " INTEGER DEFAULT 0, " + colAbsent
             + " INTEGER DEFAULT 0, " + colTotal + " INTEGER DEFAULT 0, "
             + colPercnt + " REAL);";
@@ -111,7 +111,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
             + colImageUrl + " TEXT, " + colAuthor
             + " TEXT);";
     private static final String TAG = "DBHelperClass";
-    private static final int DATABASE_VERSION = 17;
+    private static final int DATABASE_VERSION = 18;
     private static DbSimHelper mInstance = null;
 
     private DbSimHelper(Context context) {

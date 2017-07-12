@@ -19,6 +19,7 @@
     <color name="colorPrimaryDark">@color/ts_red_dark</color>
 
     <color name="colorAccent">@color/ts_yellow</color>
+    <color name="colorBackground">#ffe9e9e9</color>
 
     <!-- color palettes -->
     <color name="ts_pink">#f50057</color>

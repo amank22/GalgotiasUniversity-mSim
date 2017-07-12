@@ -1,21 +1,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffe9e9e9">
+    android:layout_height="match_parent">
+
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/att_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/layout_head"
-        >
-    <ListView
-        android:id="@+id/listView_attendance"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="2dp"
-        android:layout_marginStart="2dp"
-        android:divider="#00000000"
-        android:dividerHeight="5dp" />
+        android:layout_below="@+id/layout_head">
+
+        <ListView
+            android:id="@+id/listView_attendance"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:divider="#00000000"
+            android:dividerHeight="5dp" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout

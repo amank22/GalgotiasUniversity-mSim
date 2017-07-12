@@ -292,14 +292,7 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(LoginEvent event) {
         mSwipeRefreshLayout.setRefreshing(false);
-        if (event.isError()) {
-            PrefUtils.deleteuser(getActivity());
-            GUApp app = GUApp.getInstance();
-            app.clearApplicationData();
-            Intent i = new Intent(getActivity(), StudentLogin.class);
-            startActivity(i);
-            getActivity().finish();
-        } else {
+        if (!event.isError()) {
             GUApp.getJobManager().addJobInBackground(new AttendanceJob(false, type, fromDate, toDate));
         }
     }
