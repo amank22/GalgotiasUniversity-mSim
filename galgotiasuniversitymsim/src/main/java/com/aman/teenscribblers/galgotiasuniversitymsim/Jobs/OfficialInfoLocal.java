@@ -14,8 +14,6 @@ import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -23,12 +21,12 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by aman on 20-02-2015 in Galgotias University(mSim).
  */
-public class PersonalInfoLocal extends Job {
+public class OfficialInfoLocal extends Job {
 
-    private static final String TAG = "PersonalInfoLocal";
+    private static final String TAG = "OfficialInfoLocal";
     private Context context;
 
-    public PersonalInfoLocal(Context context) {
+    public OfficialInfoLocal(Context context) {
         super(new Params(AppConstants.PRIORITY4));
         this.context = context;
     }
@@ -40,14 +38,14 @@ public class PersonalInfoLocal extends Job {
 
     @Override
     public void onRun() throws Throwable {
-        String fileDate = FileUtil.readFile(getApplicationContext(), AppConstants.FILE_NAME_PERSONAL);
+        String fileDate = FileUtil.readFile(getApplicationContext(), AppConstants.FILE_NAME_OFFICIAL);
         List<InfoParcel> parsedList = parseFileToMap(fileDate);
-        EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_PERSONAL, parsedList));
+        EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_OFFICIAL,parsedList));
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
-        EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_PERSONAL, true, "Error", true));
+        EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_OFFICIAL,true, "Error", true));
     }
 
     @Override

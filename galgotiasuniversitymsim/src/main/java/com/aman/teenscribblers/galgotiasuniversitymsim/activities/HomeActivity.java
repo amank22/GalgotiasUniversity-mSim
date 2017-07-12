@@ -1,7 +1,5 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.activities;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,7 +8,6 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,13 +24,13 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AttendanceContentFragment;
-import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentPersonalInfo;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentResultBase;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.InformationFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.TimeTableContent;
 
 public class HomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, TimeTableContent.ColorChangerTimeTable, TimeTableContent.FragmentOpenTimeTable,
+        implements NavigationView.OnNavigationItemSelectedListener, TimeTableContent.FragmentOpenTimeTable,
         AttendanceContentFragment.FragmentOpenAtt {
 
 
@@ -41,7 +38,6 @@ public class HomeActivity extends BaseActivity
     private final FragmentManager fragmentManager = getSupportFragmentManager();
     public ImageView image;
     Fragment afrag = null, tfrag = null;
-    private Integer colorFrom = R.color.ts_red;
     private FrameLayout frame;
     private DrawerLayout drawer;
 
@@ -66,7 +62,7 @@ public class HomeActivity extends BaseActivity
         View header = LayoutInflater.from(this).inflate(R.layout.nav_header_main, navigationView, false);
         navigationView.addHeaderView(header);
         navigationView.setNavigationItemSelectedListener(this);
-        fragmentManager.beginTransaction().replace(R.id.container, new FragmentPersonalInfo()).commit();
+        fragmentManager.beginTransaction().replace(R.id.container, new InformationFragment()).commit();
         image = (ImageView) header.findViewById(R.id.imageView_nav);
     }
 
@@ -98,7 +94,7 @@ public class HomeActivity extends BaseActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (id == R.id.nav_personal) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, new FragmentPersonalInfo())
+                    .replace(R.id.container, new InformationFragment())
                     .commit();
         } else if (id == R.id.nav_att) {
             fragmentManager.beginTransaction()
@@ -136,24 +132,6 @@ public class HomeActivity extends BaseActivity
     }
 
     @Override
-    public void changecolortt(int color) {
-        startcolorchange(color);
-    }
-
-    private void startcolorchange(int colorTo) {
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.start();
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-//                toolbar.setBackgroundColor((Integer) animator.getAnimatedValue());
-            }
-
-        });
-        colorFrom = colorTo;
-    }
-
-    @Override
     public void attopened(Fragment frag, String tag) {
         afrag = frag;
     }
@@ -170,10 +148,8 @@ public class HomeActivity extends BaseActivity
 //        } else
         if (afrag != null && afrag.isVisible()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, AttendanceContentFragment.newInstance()).commit();
-            startcolorchange(ContextCompat.getColor(HomeActivity.this, R.color.ts_red));
         } else if (tfrag != null && tfrag.isVisible()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, TimeTableContent.newInstance()).commit();
-            startcolorchange(ContextCompat.getColor(HomeActivity.this, R.color.ts_red));
         } else if (!drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.openDrawer(GravityCompat.START);
         } else {

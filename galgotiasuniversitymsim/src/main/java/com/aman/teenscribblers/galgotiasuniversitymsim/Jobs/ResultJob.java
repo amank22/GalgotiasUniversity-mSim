@@ -59,22 +59,22 @@ public class ResultJob extends Job {
             parseResultForCgpaSgpa(semester, semResult);
         }
 //        FileUtil.createFile(getApplicationContext(), AppConstants.FILE_NAME_PERSONAL, parsedInfo);
-        EventBus.getDefault().post(new InfoEvent(false, null, false));
+        EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_RESULT, false, null, false));
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
         if (cancelReason == CancelReason.REACHED_RETRY_LIMIT)
-            EventBus.getDefault().post(new InfoEvent(false, AppConstants.ERROR_CONTENT_FETCH, true));
+            EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_RESULT, false, AppConstants.ERROR_CONTENT_FETCH, true));
     }
 
     @Override
     protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
         if (throwable.getMessage().equals(AppConstants.ERROR_NETWORK)) {
-            EventBus.getDefault().post(new InfoEvent(false, throwable.getMessage(), true));
+            EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_RESULT, false, throwable.getMessage(), true));
             return RetryConstraint.CANCEL;
         } else if (throwable.getMessage().equals(AppConstants.ERROR_NO_CONTENT)) {
-            EventBus.getDefault().post(new InfoEvent(false, throwable.getMessage(), true));
+            EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_RESULT, false, throwable.getMessage(), true));
             return RetryConstraint.CANCEL;
         } else if (throwable.getMessage().equals(AppConstants.ERROR_SESSION_EXPIRED)) {
             EventBus.getDefault().post(new SessionExpiredEvent());

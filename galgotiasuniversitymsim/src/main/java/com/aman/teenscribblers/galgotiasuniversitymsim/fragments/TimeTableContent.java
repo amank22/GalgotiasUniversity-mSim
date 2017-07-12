@@ -17,7 +17,6 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.R;
  */
 public class TimeTableContent extends BaseFragment implements AdapterView.OnItemClickListener {
     Fragment frag;
-    private ColorChangerTimeTable changer;
     private FragmentOpenTimeTable flisten;
 
     /**
@@ -75,7 +74,6 @@ public class TimeTableContent extends BaseFragment implements AdapterView.OnItem
         frag = FragmentTimeTable.newInstance(day);
         getFragmentManager().beginTransaction().replace(R.id.frame_options_chooser, frag, "timetable")
                 .commit();
-        changer.changecolortt(color);
         flisten.ttopened(frag, day);
     }
 
@@ -86,21 +84,11 @@ public class TimeTableContent extends BaseFragment implements AdapterView.OnItem
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            changer = (ColorChangerTimeTable) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement ColorChangerTimeTable Listener");
-        }
-        try {
             flisten = (FragmentOpenTimeTable) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement attendance Fragment backstack Listener");
         }
-    }
-
-    public interface ColorChangerTimeTable {
-        void changecolortt(int color);
     }
 
     public interface FragmentOpenTimeTable {

@@ -25,9 +25,9 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by aman on 10/6/16.
  */
-public class PersonalInfoJob extends Job {
+public class OfficialInfoJob extends Job {
 
-    public PersonalInfoJob() {
+    public OfficialInfoJob() {
         super(new Params(AppConstants.PRIORITY4).requireNetwork());
     }
 
@@ -41,22 +41,22 @@ public class PersonalInfoJob extends Job {
         if (!Connection_detect.isConnectingToInternet(getApplicationContext())) {
             throw new Exception(AppConstants.ERROR_NETWORK);
         }
-        String infoData = IonMethods.getString(AppConstants.PersonalInfoString);
+        String infoData = IonMethods.getString(AppConstants.OfficialInfoString);
         String parsedInfo = parsePersonalInfo(infoData);
-        FileUtil.createFile(getApplicationContext(), AppConstants.FILE_NAME_PERSONAL, parsedInfo);
-        EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_PERSONAL,false, parsedInfo, false));
+        FileUtil.createFile(getApplicationContext(), AppConstants.FILE_NAME_OFFICIAL, parsedInfo);
+        EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_OFFICIAL,false, parsedInfo, false));
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
         if (cancelReason == CancelReason.REACHED_RETRY_LIMIT)
-            EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_PERSONAL,false, AppConstants.ERROR_CONTENT_FETCH, true));
+            EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_OFFICIAL,false, AppConstants.ERROR_CONTENT_FETCH, true));
     }
 
     @Override
     protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
         if (throwable.getMessage().equals(AppConstants.ERROR_NETWORK)) {
-            EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_PERSONAL,false, throwable.getMessage(), true));
+            EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_OFFICIAL,false, throwable.getMessage(), true));
             return RetryConstraint.CANCEL;
         } else if (throwable.getMessage().equals(AppConstants.ERROR_SESSION_EXPIRED)) {
             EventBus.getDefault().post(new SessionExpiredEvent());
@@ -70,24 +70,18 @@ public class PersonalInfoJob extends Job {
         return 3;
     }
 
-    //TODO:Add a method for image link extraction
     private String parsePersonalInfo(String infoData) {
         Document doc = Jsoup.parse(infoData);
-        Elements rows = doc.select("table:not(table:only-child) tr");
+        Elements rows = doc.select("table tr");
         StringBuilder sb = new StringBuilder();
         for (Element row : rows) {
             if (sb.length() != 0)
                 sb.append("==");
             if (row.hasClass("top-heading")) {
-                sb.append(row.text()).append(":").append(AppConstants.PERSONAL_HEADING);
+                sb.append(row.text()).append(":").append(AppConstants.OFFICIAL_HEADING);
             } else {
                 sb.append(row.text());
             }
-        }
-        Element image = doc.select(".collegelogo1 img").first();
-        if (image != null) {
-            String src = AppConstants.BaseUrl + image.attr("src");
-            PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_IMAGE, src);
         }
         return sb.toString();
     }

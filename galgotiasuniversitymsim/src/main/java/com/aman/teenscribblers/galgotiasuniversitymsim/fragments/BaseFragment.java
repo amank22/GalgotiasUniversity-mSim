@@ -35,9 +35,9 @@ public class BaseFragment extends Fragment {
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         if (toolbar != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        }
-        if (getActivity() instanceof HomeActivity) {
-            ((HomeActivity) getActivity()).setToggleToDrawer(toolbar);
+            if (getActivity() instanceof HomeActivity) {
+                ((HomeActivity) getActivity()).setToggleToDrawer(toolbar);
+            }
         }
     }
 

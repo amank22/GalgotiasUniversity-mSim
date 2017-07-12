@@ -98,6 +98,9 @@ public class FragmentPersonalInfo extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(final InfoEvent event) {
+        if (!event.getType().equals(InfoEvent.TYPE_PERSONAL)) {
+            return;
+        }
         if (event.getLocal()) {
             handleLocalEvent(event);
         } else {

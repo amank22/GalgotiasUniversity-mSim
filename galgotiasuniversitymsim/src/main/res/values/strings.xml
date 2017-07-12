@@ -7,11 +7,14 @@
     <string name="title_activity_news">News</string>
     <string name="title_activity_home">GU mSim</string>
 
-    <string name="title_section1">Personal Info</string>
+    <string name="title_section1">My Info</string>
     <string name="title_section2">Attendance</string>
     <string name="title_section3">Time-Table</string>
     <string name="title_section4">Exam Result</string>
     <string name="title_section5">News</string>
+
+
+    <string name="title_official_info">Official Info</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
