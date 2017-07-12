@@ -25,7 +25,7 @@ public class PrefUtils {
      */
     public static void saveToPrefs(Context context, String key, String value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        final SharedPreferences.Editor editor = prefs.edit();
+        final SharedPreferences.Editor editor = prefs.edit();// TODO: 12/07/17 Encrypt the shared preference before adding to file
         editor.putString(key, value);
         editor.apply();
     }

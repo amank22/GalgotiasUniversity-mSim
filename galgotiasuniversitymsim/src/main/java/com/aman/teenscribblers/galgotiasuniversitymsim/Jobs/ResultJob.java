@@ -11,6 +11,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstant
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.Connection_detect;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.DbSimHelper;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.IonMethods;
+import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.ResultParcel;
 import com.birbit.android.jobqueue.CancelReason;
 import com.birbit.android.jobqueue.Job;
@@ -55,6 +56,7 @@ public class ResultJob extends Job {
         for (String semester : semestersList) {
             String semResult = GetResutForSemester(semester);
             parseResultForSpecificSemester(semester, semResult);
+            parseResultForCgpaSgpa(semester, semResult);
         }
 //        FileUtil.createFile(getApplicationContext(), AppConstants.FILE_NAME_PERSONAL, parsedInfo);
         EventBus.getDefault().post(new InfoEvent(false, null, false));
@@ -95,6 +97,20 @@ public class ResultJob extends Job {
                 String subject = columns.get(1).text();
                 String grade = columns.get(3).text();
                 dbhelper.addNewResult(subject, grade, semster);
+            }
+        }
+
+    }
+
+    private void parseResultForCgpaSgpa(String semster, String semesterResult) {
+        Document doc = Jsoup.parse(semesterResult);
+        Elements resultRows = doc.select("table").get(2).select("tbody > tr");
+        for (Element resultRow : resultRows) {
+            Elements columns = resultRow.select("td");
+            if (columns.size() > 1) {
+                String name = columns.get(0).text();
+                String value = columns.get(1).select("span").first().text();
+                PrefUtils.saveToPrefs(getApplicationContext(), semster + "-" + name, value);
             }
         }
 

@@ -71,7 +71,7 @@ public class AttendanceContentFragment extends BaseFragment implements AdapterVi
                 break;
             case 1:
                 type = AppConstants.ATT_TODAY;
-                replaceToAttendance(null,null);
+                replaceToAttendance(null, null);
                 break;
         }
     }
@@ -85,8 +85,8 @@ public class AttendanceContentFragment extends BaseFragment implements AdapterVi
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth, int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
-        String fromDate = dayOfMonth + "/" + monthOfYear + "/" + year;
-        String toDate = dayOfMonthEnd + "/" + monthOfYearEnd + "/" + yearEnd;
+        String fromDate = dayOfMonth + "/" + monthOfYear + 1 + "/" + year;
+        String toDate = dayOfMonthEnd + "/" + monthOfYearEnd + 1 + "/" + yearEnd;
         replaceToAttendance(fromDate, toDate);
     }
 
