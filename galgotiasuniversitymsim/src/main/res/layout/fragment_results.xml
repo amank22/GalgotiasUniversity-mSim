@@ -13,7 +13,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@drawable/gradient_bg"
             app:layout_scrollFlags="scroll"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
@@ -21,6 +21,7 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/gradient_bg"
             app:tabGravity="fill"
             app:tabMode="scrollable" />
     </android.support.design.widget.AppBarLayout>
