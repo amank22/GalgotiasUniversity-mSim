@@ -105,9 +105,9 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            type = args.getString(ARG_TYPE);
             fromDate = args.getString(ARG_FROM_DATE);
             toDate = args.getString(ARG_TO_DATE);
+            type = args.getString(ARG_TYPE);
         }
     }
 

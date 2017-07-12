@@ -3,6 +3,7 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,8 +86,9 @@ public class AttendanceContentFragment extends BaseFragment implements AdapterVi
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth, int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
-        String fromDate = dayOfMonth + "/" + monthOfYear + 1 + "/" + year;
-        String toDate = dayOfMonthEnd + "/" + monthOfYearEnd + 1 + "/" + yearEnd;
+
+        String fromDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+        String toDate = dayOfMonthEnd + "/" + (monthOfYearEnd + 1) + "/" + yearEnd;
         replaceToAttendance(fromDate, toDate);
     }
 
