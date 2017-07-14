@@ -147,8 +147,11 @@ public class IonMethods {
                 "value");
         AppConstants.eventvalidate = document
                 .select("#__EVENTVALIDATION").attr("value");
+        AppConstants.viewStateGenerator = document
+                .select("#__VIEWSTATEGENERATOR").attr("value");
         Log.d("ViewState", AppConstants.viewstate);
         Log.d("EventStates", AppConstants.eventvalidate);
+        Log.d("VIEWSTATEGENERATOR", AppConstants.viewStateGenerator);
     }
 
     private static Map<String, String> getLoginParams(String s) {
@@ -159,12 +162,18 @@ public class IonMethods {
             String name = input.attr("name");
             String value = input.attr("value");
             String title = input.attr("title");
-            if (!name.equals("btnValue"))
+            String checked = input.attr("checked");
+            String type = input.attr("type");
+            if(type.equals("radio") && checked.equals("checked")){
                 loginParams.put(name + "~" + title, value);
+            }else if (!type.equals("radio")) {
+                loginParams.put(name + "~" + title, value);
+            }
         }
         loginParams.put("__LASTFOCUS", "");
         loginParams.put("__EVENTTARGET", "");
         loginParams.put("__EVENTARGUMENT", "");
+        Log.d(TAG, "getLoginParams: " + loginParams.toString());
         return loginParams;
     }
 

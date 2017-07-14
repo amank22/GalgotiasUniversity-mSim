@@ -42,5 +42,6 @@ public class AppConstants {
     public static final String[] TOPICS = {"Admin","TechOnly","StudioD","Placements","BfuBox","Kalakriti"};
     public static String viewstate = "";
     public static String eventvalidate = "";
+    public static String viewStateGenerator = "";
 
 }
