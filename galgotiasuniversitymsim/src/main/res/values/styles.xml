@@ -22,15 +22,15 @@
     <style name="AppTheme.Widget" />
 
     <style name="AppTheme.Widget.TextView" parent="android:Widget.TextView">
-        <item name="fontPath">fonts/ts_normal.ttf</item>
+        <item name="fontPath">fonts/Brawler_Regular.ttf</item>
     </style>
 
     <style name="CustomStrongFont">
-        <item name="fontPath">fonts/ts_strong.otf</item>
+        <item name="fontPath">fonts/Comfortaa_Bold.ttf</item>
     </style>
 
     <style name="CustomNormalFont">
-        <item name="fontPath">fonts/ts_normal.ttf</item>
+        <item name="fontPath">fonts/Brawler_Regular.ttf</item>
     </style>
 
     <style name="PauseDialog" parent="@android:style/Theme.Dialog">

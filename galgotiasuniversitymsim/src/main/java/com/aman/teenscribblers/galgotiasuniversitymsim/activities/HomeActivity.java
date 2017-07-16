@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AboutDeveloperFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AttendanceContentFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentResultBase;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.InformationFragment;
@@ -64,6 +65,10 @@ public class HomeActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager.beginTransaction().replace(R.id.container, new InformationFragment()).commit();
         image = (ImageView) header.findViewById(R.id.imageView_nav);
+        String gender = PrefUtils.getFromPrefs(this, PrefUtils.PREFS_USER_GENDER_KEY, "Male");
+        if (gender.contains("Female")) {
+            image.setImageResource(R.drawable.ic_avatar_girl);
+        }
     }
 
     public void setToggleToDrawer(@Nullable Toolbar toolbar) {
@@ -116,16 +121,20 @@ public class HomeActivity extends BaseActivity
 
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
-            i.putExtra(Intent.EXTRA_EMAIL, new String[]{"kapoor.aman22@gmail.com", "teenscribblers@gmail.com"});
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{"kapoor.aman22@gmail.com"});
             i.putExtra(Intent.EXTRA_SUBJECT, "Report of Bugs,Improvements");
-            i.putExtra(Intent.EXTRA_TEXT, "I want to say that ");
+            i.putExtra(Intent.EXTRA_TEXT, "");
             try {
                 startActivity(Intent.createChooser(i, "Contact Us"));
             } catch (android.content.ActivityNotFoundException ex) {
                 Snackbar.make(frame, "There is no Email Client Installed", Snackbar.LENGTH_LONG).show();
             }
-
         }
+//        else if (id == R.id.nav_about_us) {
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.container, AboutDeveloperFragment.newInstance())
+//                    .commit();
+//        }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -137,7 +146,7 @@ public class HomeActivity extends BaseActivity
     }
 
     @Override
-    public void ttopened(Fragment frag, String tag) {
+    public void onTimeTableOpened(Fragment frag, String tag) {
         tfrag = frag;
     }
 
@@ -170,12 +179,7 @@ public class HomeActivity extends BaseActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_about) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setView(R.layout.activity_about_me);
-            builder.show();
-            return true;
-        } else if (id == R.id.action_logout) {
+        if (id == R.id.action_logout) {
             PrefUtils.deleteuser(HomeActivity.this);
             GUApp app = GUApp.getInstance();
             app.clearApplicationData();

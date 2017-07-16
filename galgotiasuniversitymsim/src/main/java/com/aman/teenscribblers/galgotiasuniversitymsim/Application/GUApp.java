@@ -61,7 +61,7 @@ public class GUApp extends Application {
         instance = this;
 //        MultiDex.install(this);
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/ts_normal.ttf")
+                .setDefaultFontPath("fonts/Brawler_Regular.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build());
         configureJobManager();

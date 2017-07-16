@@ -3,16 +3,18 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.Adapter.ListAdapter;
+import com.aman.teenscribblers.galgotiasuniversitymsim.Adapter.CategoryAdapter;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.aman.teenscribblers.galgotiasuniversitymsim.transform.RecyclerViewMargin;
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 
 import java.util.Calendar;
@@ -20,11 +22,13 @@ import java.util.Calendar;
 /**
  * Created by aman on 16-11-2014.
  */
-public class AttendanceContentFragment extends BaseFragment implements AdapterView.OnItemClickListener, DatePickerDialog.OnDateSetListener {
+public class AttendanceContentFragment extends BaseFragment implements DatePickerDialog.OnDateSetListener, CategoryAdapter.OnItemClickListener {
     Fragment frag;
     String type;
-    private ListView list;
     private FragmentOpenAtt flisten;
+
+    private static String[] itemTexts;
+    private final static int[] itemIcons = new int[]{R.drawable.ic_today, R.drawable.ic_subjects};
 
     /**
      * @return a new instance of {@link AttendanceContentFragment}, adding the parameters into a bundle and
@@ -37,44 +41,22 @@ public class AttendanceContentFragment extends BaseFragment implements AdapterVi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        itemTexts = getResources().getStringArray(R.array.attendance_content);
         return getActivity().getLayoutInflater().inflate(R.layout.fragment_category_chooser, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        String[] att = {"Todays Attendance" ,"Subjects Attendance", "Date-Wise Attendance"};
-        String[] att = {"Subjects Attendance", "Today Attendance"};
-        list = (ListView) view.findViewById(R.id.listView_choice);
-        ListAdapter adapter;
-        adapter = new ListAdapter(getActivity(), att);
-        setadapter(adapter);
-        list.setOnItemClickListener(this);
-    }
-
-    private void setadapter(ListAdapter adapter) {
+        RecyclerView list = (RecyclerView) view.findViewById(R.id.listView_choice);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerViewMargin itemDecoration = new RecyclerViewMargin(16, 1);
+        list.addItemDecoration(itemDecoration);
+        list.setLayoutManager(linearLayoutManager);
+        list.setHasFixedSize(true);
+        CategoryAdapter adapter = new CategoryAdapter(getActivity(), itemTexts, itemIcons);
+        adapter.addItemClickListener(this);
         list.setAdapter(adapter);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Calendar now = Calendar.getInstance();
-        DatePickerDialog dpd = DatePickerDialog.newInstance(
-                this,
-                now.get(Calendar.YEAR),
-                now.get(Calendar.MONTH),
-                now.get(Calendar.DAY_OF_MONTH)
-        );
-        switch (i) {
-            case 0:
-                type = AppConstants.ATT_SUBJECT;
-                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
-                break;
-            case 1:
-                type = AppConstants.ATT_TODAY;
-                replaceToAttendance(null, null);
-                break;
-        }
     }
 
     protected void replaceToAttendance(String fromDate, String toDate) {
@@ -104,6 +86,29 @@ public class AttendanceContentFragment extends BaseFragment implements AdapterVi
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement TimeTable Fragment backstack Listener");
+        }
+    }
+
+    @Override
+    public void onItemClick(int position, String text, int color) {
+        switch (position) {
+            case 1:
+                type = AppConstants.ATT_SUBJECT;
+                Calendar now = Calendar.getInstance();
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        AttendanceContentFragment.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.setAccentColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+                dpd.setMaxDate(now);
+                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+                break;
+            case 0:
+                type = AppConstants.ATT_TODAY;
+                replaceToAttendance(null, null);
+                break;
         }
     }
 

@@ -4,11 +4,12 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.Service;
  * Created by aman on 23-10-2015 in Galgotias University(mSim).
  */
 
-import android.content.Intent;
+import android.util.Log;
 
-import com.google.android.gms.iid.InstanceIDListenerService;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
 
-public class MyInstanceIDListenerService extends InstanceIDListenerService {
+public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
 
     private static final String TAG = "MyInstanceIDLS";
 
@@ -20,9 +21,15 @@ public class MyInstanceIDListenerService extends InstanceIDListenerService {
     // [START refresh_token]
     @Override
     public void onTokenRefresh() {
-        // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
-        Intent intent = new Intent(this, RegistrationIntentService.class);
-        startService(intent);
+        // Get updated InstanceID token.
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "Refreshed token: " + refreshedToken);
+        // TODO: Implement this method to send any registration to your app's servers.
+        try {
+            RegistrationIntentService.sendRegistrationToServer(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    // [END refresh_token]
+
 }

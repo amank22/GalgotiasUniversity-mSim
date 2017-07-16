@@ -78,6 +78,10 @@ public class FragmentPersonalInfo extends BaseFragment {
 
     private void setProfilePicture() {
         String url = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_IMAGE, "");
+        String gender = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_GENDER_KEY, "Male");
+        if (gender.contains("Female")) {
+            image.setImageResource(R.drawable.ic_avatar_girl);
+        }
         if (!url.equals("")) {
             Picasso picasso = Picasso.with(getContext());
             picasso.setIndicatorsEnabled(false);
@@ -88,11 +92,6 @@ public class FragmentPersonalInfo extends BaseFragment {
                     .transform(new CircleTransform())
                     .priority(Picasso.Priority.HIGH)
                     .into(image);
-        } else {
-            String gender = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_GENDER_KEY, "Male");
-            if (gender.equals("Female")) {
-                image.setImageResource(R.drawable.ic_avatar_girl);
-            }
         }
     }
 
@@ -179,8 +178,12 @@ public class FragmentPersonalInfo extends BaseFragment {
         };
         if (checkPlayServices()) {
             // Start IntentService to register this application with GCM.
-            Intent intent = new Intent(getActivity(), RegistrationIntentService.class);
-            getActivity().startService(intent);
+            try {
+                RegistrationIntentService.sendRegistrationToServer(getActivity());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            RegistrationIntentService.subscribeTopics(getActivity(), null);
         }
     }
 

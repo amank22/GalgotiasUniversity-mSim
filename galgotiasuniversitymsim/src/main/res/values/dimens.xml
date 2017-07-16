@@ -4,6 +4,11 @@
     <dimen name="text_options_item">14sp</dimen>
     <dimen name="corner_radius">0dp</dimen>
     <dimen name="layer_padding">2dp</dimen>
+    <dimen name="grid_4x">4dp</dimen>
+    <dimen name="grid_8x">8dp</dimen>
+    <dimen name="grid_16x">16dp</dimen>
+    <dimen name="grid_32x">32dp</dimen>
+    <dimen name="grid_64x">64dp</dimen>
 
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->

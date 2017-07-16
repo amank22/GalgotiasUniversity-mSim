@@ -1,1 +1,57 @@
-{"project_info":{"project_id":"galgotias-university","project_number":"907209456479","name":"Galgotias University"},"client":[{"client_info":{"mobilesdk_app_id":"1:907209456479:android:6ef6b773ab4b94d6","client_id":"android:com.aman.teenscribblers.galgotiasuniversitymsim","client_type":1,"android_client_info":{"package_name":"com.aman.teenscribblers.galgotiasuniversitymsim"}},"oauth_client":[],"api_key":[],"services":{"analytics_service":{"status":2,"analytics_property":{"tracking_id":"UA-53884473-1"}},"cloud_messaging_service":{"status":2,"apns_config":[]},"appinvite_service":{"status":1,"other_platform_oauth_client":[]},"google_signin_service":{"status":1},"ads_service":{"status":1}}}],"client_info":[],"ARTIFACT_VERSION":"1"}
+{
+  "project_info": {
+    "project_number": "907209456479",
+    "firebase_url": "https://galgotias-university.firebaseio.com",
+    "project_id": "galgotias-university",
+    "storage_bucket": "galgotias-university.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907209456479:android:6ef6b773ab4b94d6",
+        "android_client_info": {
+          "package_name": "com.aman.teenscribblers.galgotiasuniversitymsim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "907209456479-b20bavebb06hqo4vn1f7s407ebh8m5b3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aman.teenscribblers.galgotiasuniversitymsim",
+            "certificate_hash": "c8146205a6ac9124cbd7402bfea32e887c4cb00d"
+          }
+        },
+        {
+          "client_id": "907209456479-0hmit1ogrvk3tjbke3ua1if56rg9udls.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "907209456479-j9101l1m2tjq92k4njmncaii7bas9n8b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDinFVjPrdYGFlGSNWvpGGau1o7-dMWiKc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-53884473-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
