@@ -45,12 +45,13 @@ public class RegistrationIntentService {
      */
     public static void subscribeTopics(Context context, String newTopic) {
         String admno = PrefUtils.getFromPrefs(context, PrefUtils.PREFS_USER_ADMNO_KEY, PrefUtils.DEFAULT_ADMNO);
-        if (newTopic == null) {
+        if (newTopic == null && !PrefUtils.getFromPrefs(context, PrefUtils.ARE_TOKEN_SUBSCRIBED, false)) {
             for (String topic : AppConstants.TOPICS) {
                 if (topic.equals("Placements") && !admno.startsWith("12")) {
                     continue;
                 }
                 FirebaseMessaging.getInstance().subscribeToTopic(topic);
+                PrefUtils.saveToPrefs(context, PrefUtils.ARE_TOKEN_SUBSCRIBED, true);
             }
         } else {
             FirebaseMessaging.getInstance().subscribeToTopic(newTopic);

@@ -16,6 +16,9 @@ public class PrefUtils {
     public static final String DEFAULT_NAME = "";
     public static final String DEFAULT_EMAIL = "";
 
+
+    public static final String ARE_TOKEN_SUBSCRIBED = "is_token_subscribed";
+
     /**
      * Called to save supplied value in shared preferences against given key.
      *
@@ -27,6 +30,13 @@ public class PrefUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final SharedPreferences.Editor editor = prefs.edit();// TODO: 12/07/17 Encrypt the shared preference before adding to file
         editor.putString(key, value);
+        editor.apply();
+    }
+
+    public static void saveToPrefs(Context context, String key, boolean value) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        final SharedPreferences.Editor editor = prefs.edit();// TODO: 12/07/17 Encrypt the shared preference before adding to file
+        editor.putBoolean(key, value);
         editor.apply();
     }
 
@@ -47,6 +57,11 @@ public class PrefUtils {
             e.printStackTrace();
             return defaultValue;
         }
+    }
+
+    public static boolean getFromPrefs(Context context, String key, boolean defaultValue) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPrefs.getBoolean(key, defaultValue);
     }
 
     public static void deleteuser(Context context) {

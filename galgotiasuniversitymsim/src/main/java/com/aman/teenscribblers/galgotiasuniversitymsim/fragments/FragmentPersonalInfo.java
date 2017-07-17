@@ -27,6 +27,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstant
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.PersonalInfoJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.PersonalInfoLocal;
+import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.RegisterUserOnServerJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.InfoParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Service.RegistrationIntentService;
@@ -53,11 +54,9 @@ public class FragmentPersonalInfo extends BaseFragment {
     private View rootview;
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        GCMCalls();
         return inflater.inflate(R.layout.frag_personalinfo, container, false);
     }
 
@@ -120,6 +119,7 @@ public class FragmentPersonalInfo extends BaseFragment {
             Snackbar.make(rootview, event.getData(), Snackbar.LENGTH_INDEFINITE).show();
         } else {
             logUser();
+            GCMCalls();
             GUApp.getJobManager().addJobInBackground(new PersonalInfoLocal(getActivity()));
         }
     }
@@ -142,19 +142,9 @@ public class FragmentPersonalInfo extends BaseFragment {
             GUApp.getJobManager().addJobInBackground(new PersonalInfoJob());
         } else {
             pb.setVisibility(View.GONE);
-            AddGcmRegistrationToPref();
             List<InfoParcel> parsedList = event.getParsedList();
             setAdapter(parsedList);
             setProfilePicture();
-        }
-    }
-
-    void AddGcmRegistrationToPref() {
-        try {
-            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mRegistrationBroadcastReceiver,
-                    new IntentFilter(AppConstants.REGISTRATION_COMPLETE));
-        } catch (Exception e) {
-            e.fillInStackTrace();
         }
     }
 
@@ -164,36 +154,10 @@ public class FragmentPersonalInfo extends BaseFragment {
     }
 
     private void GCMCalls() {
-        //GCM
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(AppConstants.SENT_TOKEN_TO_SERVER, false);
-                if (!sentToken)
-                    Snackbar.make(rootview, "Notification Registration failed.You will not recieve any messages.", Snackbar.LENGTH_LONG).show();
-            }
-        };
+        GUApp.getJobManager().addJobInBackground(new RegisterUserOnServerJob());
         if (checkPlayServices()) {
             // Start IntentService to register this application with GCM.
-            try {
-                RegistrationIntentService.sendRegistrationToServer(getActivity());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             RegistrationIntentService.subscribeTopics(getActivity(), null);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        try {
-            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mRegistrationBroadcastReceiver);
-        } catch (Exception e) {
-            e.fillInStackTrace();
         }
     }
 

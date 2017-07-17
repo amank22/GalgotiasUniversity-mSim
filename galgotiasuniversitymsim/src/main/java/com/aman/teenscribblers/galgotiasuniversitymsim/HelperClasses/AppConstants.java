@@ -36,9 +36,7 @@ public class AppConstants {
     public static final int PRIORITY4 = 4;
     public static final String GroupAttendance = "Attendance";
     public static final String GroupTimeTable = "TimeTable";
-    //GCM
-    public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
-    public static final String REGISTRATION_COMPLETE = "registrationComplete";
+
     public static final String[] TOPICS = {"Admin","TechOnly","StudioD","Placements","BfuBox","Kalakriti"};
     public static String viewstate = "";
     public static String eventvalidate = "";
