@@ -6,11 +6,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.transform.ZoomOutPageTransformer;
@@ -19,16 +23,13 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.transform.ZoomOutPageTran
  * Created by amankapoor on 12/07/17.
  */
 
-public class InformationFragment extends BaseFragment {
+public class InformationFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
 
     private static final int NUM_PAGES = 2;
 
-    private ViewPager mViewPager;
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-    private PagerAdapter mPagerAdapter;
-
+    private LinearLayout pagerIndicator;
+    private ImageView[] dots;
+    int prevPositionOfDot = 0;
 
     @Nullable
     @Override
@@ -39,10 +40,51 @@ public class InformationFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewPager = (ViewPager) view;
-        mPagerAdapter = new InformationAdapter(getChildFragmentManager());
+        final ViewPager mViewPager = (ViewPager) view.findViewById(R.id.viewpager_info);
+        pagerIndicator = (LinearLayout) view.findViewById(R.id.viewPagerCountDots);
         mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        final InformationAdapter mPagerAdapter = new InformationAdapter(getChildFragmentManager());
+        mViewPager.addOnPageChangeListener(this);
         mViewPager.setAdapter(mPagerAdapter);
+        setUiPageViewController();
+    }
+
+
+    private void setUiPageViewController() {
+
+        dots = new ImageView[NUM_PAGES];
+
+        for (int i = 0; i < NUM_PAGES; i++) {
+            dots[i] = new ImageView(getActivity());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.nonselecteditem_dot));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            params.setMargins(4, 0, 4, 0);
+
+            pagerIndicator.addView(dots[i], params);
+        }
+
+        dots[0].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.selecteditem_dot));
+    }
+
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        dots[prevPositionOfDot].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.nonselecteditem_dot));
+        prevPositionOfDot = position;
+        dots[position].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.selecteditem_dot));
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
     /**
@@ -50,7 +92,7 @@ public class InformationFragment extends BaseFragment {
      * sequence.
      */
     private class InformationAdapter extends FragmentStatePagerAdapter {
-        public InformationAdapter(FragmentManager fm) {
+        InformationAdapter(FragmentManager fm) {
             super(fm);
         }
 

@@ -12,6 +12,9 @@
     <string name="title_section3">Time-Table</string>
     <string name="title_section4">Exam Result</string>
     <string name="title_section5">News</string>
+    <string name="title_section6">Contact Us</string>
+    <string name="title_section7">About Us</string>
+    <string name="title_section8">Logout</string>
 
 
     <string name="title_official_info">Official Info</string>
@@ -23,7 +26,6 @@
     <string name="gu_name_two_lines">Galgotias\nUniversity</string>
     <string name="login">Login</string>
     <string name="username">Username</string>
-    <string name="credits">Credits:\nAman Kapoor\n(Developer,Designer)</string>
     <string name="title_activity_news_detail">Check Your News</string>
     <string name="galgotias_university">Galgotias University</string>
 
@@ -42,6 +44,5 @@
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

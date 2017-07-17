@@ -96,6 +96,7 @@ public class HomeActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        drawer.closeDrawer(GravityCompat.START);
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (id == R.id.nav_personal) {
             fragmentManager.beginTransaction()
@@ -129,14 +130,13 @@ public class HomeActivity extends BaseActivity
             } catch (android.content.ActivityNotFoundException ex) {
                 Snackbar.make(frame, "There is no Email Client Installed", Snackbar.LENGTH_LONG).show();
             }
+        } else if (id == R.id.nav_about_us) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, AboutDeveloperFragment.newInstance())
+                    .commit();
+        } else if (id == R.id.nav_logout) {
+            logOutUser();
         }
-//        else if (id == R.id.nav_about_us) {
-//            fragmentManager.beginTransaction()
-//                    .replace(R.id.container, AboutDeveloperFragment.newInstance())
-//                    .commit();
-//        }
-
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -166,28 +166,12 @@ public class HomeActivity extends BaseActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            PrefUtils.deleteuser(HomeActivity.this);
-            GUApp app = GUApp.getInstance();
-            app.clearApplicationData();
-            Intent i = new Intent(HomeActivity.this, StudentLogin.class);
-            startActivity(i);
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    private void logOutUser() {
+        PrefUtils.deleteuser(HomeActivity.this);
+        GUApp app = GUApp.getInstance();
+        app.clearApplicationData();
+        Intent i = new Intent(HomeActivity.this, StudentLogin.class);
+        startActivity(i);
+        finish();
     }
 }

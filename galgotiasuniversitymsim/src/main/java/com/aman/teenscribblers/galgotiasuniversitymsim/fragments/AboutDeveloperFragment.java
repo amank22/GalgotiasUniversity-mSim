@@ -1,15 +1,22 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
 
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 
@@ -18,9 +25,10 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.R;
  * Use the {@link AboutDeveloperFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AboutDeveloperFragment extends Fragment {
+public class AboutDeveloperFragment extends BaseFragment {
 
-    WebView mWebView;
+    private WebView mWebView;
+    private ProgressBar pb;
 
     public AboutDeveloperFragment() {
         // Required empty public constructor
@@ -39,7 +47,8 @@ public class AboutDeveloperFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mWebView = (WebView) view;
+        mWebView = (WebView) view.findViewById(R.id.webView_about);
+        pb = (ProgressBar) view.findViewById(R.id.progressBar_personal);
         WebView mWebView = new WebView(getActivity());
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -57,6 +66,7 @@ public class AboutDeveloperFragment extends Fragment {
         } else {
             mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
+        mWebView.setWebViewClient(new CustomWebClient());
         mWebView.loadUrl("http://galgotiasuniversity.herokuapp.com/about");
         mWebView.restoreState(savedInstanceState);
     }
@@ -77,5 +87,33 @@ public class AboutDeveloperFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mWebView.saveState(outState);
+    }
+
+    private class CustomWebClient extends WebViewClient {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            pb.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            pb.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            super.onReceivedError(view, request, error);
+            AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle("Error").setMessage("There is some error. Please try again later").create();
+            dialog.show();
+        }
+
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            super.onReceivedHttpError(view, request, errorResponse);
+            AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle("Error").setMessage("There is some error. Please try again later").create();
+            dialog.show();
+        }
     }
 }
