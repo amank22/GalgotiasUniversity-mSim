@@ -1,7 +1,6 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -20,12 +19,10 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.Events.AttendanceProccese
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.LoginEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Events.SessionExpiredEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.AttFindParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.AttendanceJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.SimParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
-import com.aman.teenscribblers.galgotiasuniversitymsim.activities.StudentLogin;
 import com.birbit.android.jobqueue.CancelResult;
 import com.birbit.android.jobqueue.TagConstraint;
 
@@ -61,24 +58,10 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
 
     }
 
-    static class ViewHolderMonth {
-        TextView subject;
-        TextView percentage;
-        public TextView present, absent, total;
-        View indcator;
-    }
-
     static class ViewHolderToday {
         TextView subject, timeslot;
         TextView atttype;
         TextView status;
-        View indcator;
-    }
-
-    static class ViewHolderSem {
-        TextView sem;
-        TextView percentage;
-        public TextView present, absent, total;
         View indcator;
     }
 

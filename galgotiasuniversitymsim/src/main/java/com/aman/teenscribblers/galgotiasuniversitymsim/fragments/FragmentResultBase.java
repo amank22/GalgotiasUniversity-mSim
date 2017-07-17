@@ -15,7 +15,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.Adapter.ResultAdapter;
 import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
@@ -34,6 +36,8 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.ResultParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.StudentLogin;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import de.greenrobot.event.Subscribe;
@@ -44,7 +48,7 @@ import static android.R.id.list;
 /**
  * Created by aman on 26-12-2014.
  */
-public class FragmentResultBase extends BaseFragment {
+public class FragmentResultBase extends BaseFragment implements ViewPager.OnPageChangeListener {
 
     private static final String TAG = "Result Fragment Base";
     private ViewPager mViewPager;
@@ -52,7 +56,11 @@ public class FragmentResultBase extends BaseFragment {
     private View rootview;
     private TabLayout tabLayout;
 
+    private TextView textViewCGPA, textViewSGPA, textViewRank, textViewTotalStudents;
+    private ImageView imageViewRank;
+
     private List<String> semesters;
+    private SemesterPagerAdapter semesterPagerAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,6 +74,11 @@ public class FragmentResultBase extends BaseFragment {
         pb = (ProgressBar) view.findViewById(R.id.progressBar_results_tabs);
         mViewPager = (ViewPager) view.findViewById(R.id.results_viewpager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        textViewCGPA = (TextView) view.findViewById(R.id.textView_cgpa);
+        textViewSGPA = (TextView) view.findViewById(R.id.textView_sgpa);
+        textViewRank = (TextView) view.findViewById(R.id.textView_rank);
+        textViewTotalStudents = (TextView) view.findViewById(R.id.textView_total_students);
+        imageViewRank = (ImageView) view.findViewById(R.id.imageView_rank);
         semesters = DbSimHelper.getInstance().getSemestersForResult();
         if (semesters == null || semesters.isEmpty()) {
             GUApp.getJobManager().addJobInBackground(new ResultJob());
@@ -77,9 +90,11 @@ public class FragmentResultBase extends BaseFragment {
 
     void setPagerAdapter() {
         pb.setVisibility(View.GONE);
-        SemesterPagerAdapter semesterPagerAdapter = new SemesterPagerAdapter(getChildFragmentManager());
+        semesterPagerAdapter = new SemesterPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(semesterPagerAdapter);
         tabLayout.setupWithViewPager(mViewPager);
+        mViewPager.addOnPageChangeListener(this);
+        updateHeader(0);
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)
@@ -98,14 +113,7 @@ public class FragmentResultBase extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(LoginEvent event) {
-        if (event.isError()) {
-            PrefUtils.deleteuser(getActivity());
-            GUApp app = GUApp.getInstance();
-            app.clearApplicationData();
-            Intent i = new Intent(getActivity(), StudentLogin.class);
-            startActivity(i);
-            getActivity().finish();
-        } else {
+        if (!event.isError()) {
             GUApp.getJobManager().addJobInBackground(new ResultJob());
         }
     }
@@ -121,10 +129,46 @@ public class FragmentResultBase extends BaseFragment {
         }
     }
 
+    private void updateHeader(int position) {
+        String sem = semesterPagerAdapter.getPageTitle(position).toString();
+        String cgpa = PrefUtils.getFromPrefs(getContext(), (sem + "-" + "CGPA"), "-");
+        String sgpa = PrefUtils.getFromPrefs(getContext(), (sem + "-" + "SGPA"), "-");
+        String rank = PrefUtils.getFromPrefs(getContext(), (sem + "-" + "Rank"), "-");
+        String totalStudents = PrefUtils.getFromPrefs(getContext(), (sem + "-" + "Total No. of Student"), "-");
 
-    public class SemesterPagerAdapter extends FragmentStatePagerAdapter {
+        textViewCGPA.setText(cgpa);
+        textViewSGPA.setText(sgpa);
+        textViewRank.setText(rank);
+        textViewTotalStudents.setText(totalStudents);
+        if (Integer.parseInt(rank) == 1) {
+            imageViewRank.setImageResource(R.drawable.ic_award);
+        } else {
+            imageViewRank.setImageResource(R.drawable.ic_cup);
+        }
+    }
 
-        public SemesterPagerAdapter(FragmentManager fm) {
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        if (semesterPagerAdapter == null) {
+            return;
+        }
+        updateHeader(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+
+    private class SemesterPagerAdapter extends FragmentStatePagerAdapter {
+
+        SemesterPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

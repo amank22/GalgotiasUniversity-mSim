@@ -108,11 +108,6 @@ public class CaptchaDialogFragment extends DialogFragment {
         CurrentlyRunning = false;
         if (event.isError()) {
             loading.setText(event.getReason());
-            PrefUtils.saveToPrefs(getActivity(),
-                    PrefUtils.PREFS_LOGIN_PASSWORD_KEY, "PASSWORD_INCORRECT");
-            Intent i = new Intent(getActivity(), StudentLogin.class);
-            startActivity(i);
-            getActivity().finish();
         } else {
             loading.setText(event.getReason());
             if (getActivity() instanceof StudentLogin) {
