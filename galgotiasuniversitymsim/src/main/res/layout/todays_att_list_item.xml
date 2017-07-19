@@ -2,32 +2,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg">
+    android:background="@color/ts_white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/textView_status"
         android:layout_toStartOf="@+id/textView_status"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView_time_slot"
+            style="@style/CustomStrongFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
             android:text="(P1) 09:15 AM-10:05 AM"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/ts_green"
-            android:textSize="22sp" />
+            android:textColor="@color/ts_grey"
+            android:textSize="18sp" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0.25dp"
-            android:layout_below="@+id/textView_perc"
             android:layout_marginEnd="25dp"
             android:layout_marginStart="25dp"
             android:layout_marginTop="5dp"
-            android:background="@color/ts_grey" />
+            android:background="@color/ts_grey_light" />
+
         <TextView
             android:id="@+id/textView_class_type"
             android:layout_width="match_parent"
@@ -35,8 +38,9 @@
             android:gravity="center"
             android:text="theory"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/ts_purple"
-            android:textSize="26sp" />
+            android:textColor="@color/ts_grey"
+            android:textSize="14sp" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0.25dp"
@@ -44,9 +48,11 @@
             android:layout_marginEnd="25dp"
             android:layout_marginStart="25dp"
             android:layout_marginTop="5dp"
-            android:background="@color/ts_grey" />
+            android:background="@color/ts_grey_light" />
+
         <TextView
             android:id="@+id/textView_subject"
+            style="@style/CustomStrongFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -54,7 +60,7 @@
             android:text="Subject"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/ts_blue"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <TextView
@@ -62,8 +68,8 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/rect_normal"
         android:gravity="center"
         android:padding="5dp"
         android:text="NM"

@@ -1,81 +1,125 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:background="#ffe9e9e9">
 
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/att_swipe_refresh_layout"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/gradient_bg"
+            app:layout_scrollFlags="scroll"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/layout_head">
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ListView
-            android:id="@+id/listView_attendance"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="2dp"
-            android:layout_marginStart="2dp"
-            android:divider="#00000000"
-            android:dividerHeight="5dp" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/layout_head"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:weightSum="4.2">
+            <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/att_swipe_refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/layout_head">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#3c294a"
-            android:gravity="center"
-            android:text="Present"
-            android:textColor="#fff"
-            android:textSize="22sp" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/listView_attendance"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.v4.widget.SwipeRefreshLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#4687ae"
-            android:gravity="center"
-            android:text="Absent"
-            android:textColor="#fff"
-            android:textSize="22sp" />
+            <LinearLayout
+                android:id="@+id/layout_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/gradient_bg"
+                android:paddingBottom="@dimen/grid_8x"
+                android:paddingLeft="@dimen/grid_8x"
+                android:paddingRight="@dimen/grid_8x"
+                android:weightSum="4.2">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#eaad20"
-            android:gravity="center"
-            android:text="Total"
-            android:textColor="#fff"
-            android:textSize="22sp" />
+                <TextView
+                    style="@style/CustomStrongFont"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Present"
+                    android:textColor="@color/ts_white"
+                    android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.2"
-            android:background="#0097ff"
-            android:gravity="center"
-            android:text="Percentage"
-            android:textColor="#fff"
-            android:textSize="22sp" />
-    </LinearLayout>
+                <View
+                    android:layout_width="0.1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/ts_white" />
 
-    <TextView
-        android:id="@+id/textView_att_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@drawable/rect_purple"
-        android:padding="10dp"
-        android:text="Loading..."
-        android:textColor="@color/ts_grey"
-        android:textSize="24sp" />
+                <TextView
+                    style="@style/CustomStrongFont"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Absent"
+                    android:textColor="@color/ts_white"
+                    android:textSize="16sp" />
 
-</RelativeLayout>
+                <View
+                    android:layout_width="0.1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/ts_white" />
+
+                <TextView
+                    style="@style/CustomStrongFont"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Total"
+                    android:textColor="@color/ts_white"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="0.1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/ts_white" />
+
+                <TextView
+                    style="@style/CustomStrongFont"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:gravity="center"
+                    android:text="Percentage"
+                    android:textColor="@color/ts_white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView_att_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/rect_purple"
+                android:padding="10dp"
+                android:text="Loading..."
+                android:textColor="@color/ts_grey"
+                android:textSize="24sp" />
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

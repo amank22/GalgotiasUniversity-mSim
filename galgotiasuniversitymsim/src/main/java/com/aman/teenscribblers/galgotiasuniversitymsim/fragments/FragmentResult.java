@@ -2,25 +2,20 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.Adapter.ResultAdapter;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.InfoEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.LocalErrorEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.ResultSuccessEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.SessionExpiredEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.DbSimHelper;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.ResultJob;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.ResultLocalJob;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.ResultParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.adapter.ResultAdapter;
+import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.LocalErrorEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.ResultSuccessEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.ResultJob;
+import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.ResultLocalJob;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.ResultParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.transform.RecyclerViewMargin;
 
@@ -42,7 +37,7 @@ public class FragmentResult extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frag_results_content, container, false);
+        return LayoutInflater.from(getActivity()).inflate(R.layout.frag_results_content, container, false);
     }
 
     @Override

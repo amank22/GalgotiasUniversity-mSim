@@ -10,13 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.Adapter.PersonalInfoAdapter;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.InfoEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.SessionExpiredEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.OfficialInfoJob;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.OfficialInfoLocal;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.InfoParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.adapter.PersonalInfoAdapter;
+import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.InfoEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.SessionExpiredEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.OfficialInfoJob;
+import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.OfficialInfoLocal;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.InfoParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 
 import java.util.List;

@@ -20,34 +20,22 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listView_timetable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textView_att_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/ts_grey_dark"
+        android:gravity="center"
+        android:padding="2dp"
+        android:text="Loading..."
+        android:textColor="@color/ts_white"
+        android:textSize="12sp" />
 
-            <ListView
-                android:id="@+id/listView_attendance"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="2dp"
-                android:layout_marginStart="2dp" />
-
-            <TextView
-                android:id="@+id/textView_att_loading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="@color/ts_grey_dark"
-                android:gravity="center"
-                android:padding="2dp"
-                android:text="Loading..."
-                android:textColor="@color/ts_white"
-                android:textSize="12sp" />
-
-        </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

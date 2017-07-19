@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.aman.teenscribblers.galgotiasuniversitymsim" >
+    package="com.aman.teenscribblers.galgotiasuniversitymsim">
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,36 +9,26 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <permission
-        android:name="com.aman.teenscribblers.galgotiasuniversitymsim.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="com.aman.teenscribblers.galgotiasuniversitymsim.permission.C2D_MESSAGE" />
 
     <application
-        android:name=".Application.GUApp"
+        android:name=".application.GUApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
 
         <service
-            android:name=".Service.MyFcmListenerService"
-            android:exported="false" >
+            android:name=".service.MyFcmListenerService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".Service.MyInstanceIDListenerService">
+        <service android:name=".service.MyInstanceIDListenerService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
-        </service>
-        <service
-            android:name=".Service.RegistrationIntentService"
-            android:exported="false" >
         </service>
 
         <!-- News Service and BroadCast Reciever -->
@@ -46,30 +36,26 @@
         <activity
             android:name=".activities.StudentLogin"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.NewsActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_news"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:taskAffinity="" >
-        </activity>
+            android:taskAffinity="" />
         <activity
             android:name=".activities.HomeActivity"
-            android:label="@string/title_activity_home" >
-        </activity>
-        <activity
-            android:name=".activities.NewsDetailActivity"
-            android:label="@string/title_activity_news_detail"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:label="@string/title_activity_home" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="083f6fb393aa269d22adb689b652fa6ca6797187" />

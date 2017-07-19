@@ -1,17 +1,13 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,31 +15,19 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.Adapter.ResultAdapter;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.AttendanceErrorEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.InfoEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.LocalErrorEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.LoginEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.ResultSuccessEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.SessionExpiredEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.DbSimHelper;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.ResultJob;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.ResultLocalJob;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.ResultParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.InfoEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.LoginEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.SessionExpiredEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.DbSimHelper;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
+import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.ResultJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
-import com.aman.teenscribblers.galgotiasuniversitymsim.activities.StudentLogin;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
-
-import static android.R.id.list;
 
 /**
  * Created by aman on 26-12-2014.

@@ -1,6 +1,7 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,12 +15,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.CaptchaEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.LoginEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.PrefUtils;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.CaptchaJob;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.LoginJob;
+import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.CaptchaEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.LoginEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
+import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.CaptchaJob;
+import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.LoginJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.HomeActivity;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.StudentLogin;
@@ -35,18 +36,26 @@ import de.greenrobot.event.ThreadMode;
  */
 public class CaptchaDialogFragment extends DialogFragment {
 
-    TextView loading;
-    EditText mCaptchaView;
-    ImageView image;
-    Map<String, String> params;
+    private TextView loading;
+    private EditText mCaptchaView;
+    private ImageView image;
+    private Button logOut;
+    private Map<String, String> params;
     private boolean CurrentlyRunning = false;
     private boolean captchaRunnig = false;
+    private String userName = null;
+    private String password = null;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(false);
+
+        if (getArguments() != null) {
+            userName = getArguments().getString(PrefUtils.PREFS_LOGIN_USERNAME_KEY);
+            password = getArguments().getString(PrefUtils.PREFS_LOGIN_PASSWORD_KEY);
+        }
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View root = inflater.inflate(R.layout.dialog_captcha, null);
@@ -66,6 +75,13 @@ public class CaptchaDialogFragment extends DialogFragment {
         GUApp.getJobManager().addJobInBackground(captchaJob);
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
+        logOut = (Button) root.findViewById(R.id.logout_button);
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GUApp.logoutUser(getActivity());
+            }
+        });
         Button auth = (Button) root.findViewById(R.id.authorize_button);
         auth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,22 +89,31 @@ public class CaptchaDialogFragment extends DialogFragment {
                 if (params == null) {
                     loading.setText("Wait for Captcha loading!");
                 }
-                attemptLogin(params);
+                attemptLogin(params, userName, password);
             }
         });
         builder.setView(root).setCancelable(false);
         return builder.create();
     }
 
-    private void attemptLogin(Map<String, String> params) {
+    private void attemptLogin(Map<String, String> params, String mUsername, String mPassword) {
         if (CurrentlyRunning) {
             loading.setText("Authorization in Progress");
             return;
         }
         CurrentlyRunning = true;
-        String mUsername = PrefUtils.getFromPrefs(getActivity(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, "Username");
-        String mPassword = PrefUtils.getFromPrefs(getActivity(), PrefUtils.PREFS_LOGIN_PASSWORD_KEY, "Password");
+        if (mUsername == null) {
+            mUsername = PrefUtils.getFromPrefs(getActivity(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, null);
+        }
+        if (mPassword == null) {
+            mPassword = PrefUtils.getFromPrefs(getActivity(), PrefUtils.PREFS_LOGIN_PASSWORD_KEY, null);
+        }
         String mCaptcha = mCaptchaView.getText().toString().trim();
+
+        if (mUsername == null || mPassword == null) {
+            GUApp.logoutUser(getActivity());
+            return;
+        }
 
         if (TextUtils.isEmpty(mCaptcha)) {
             loading.setText("Enter Captcha");
@@ -100,6 +125,7 @@ public class CaptchaDialogFragment extends DialogFragment {
             CurrentlyRunning = false;
             return;
         }
+        loading.setText("Please wait...");
         GUApp.getJobManager().addJobInBackground(new LoginJob(mUsername, mPassword, mCaptcha, params, "MainLogin"));
     }
 
@@ -108,9 +134,15 @@ public class CaptchaDialogFragment extends DialogFragment {
         CurrentlyRunning = false;
         if (event.isError()) {
             loading.setText(event.getReason());
+            logOut.setVisibility(View.VISIBLE);
+            if (getActivity() instanceof StudentLogin) {
+                ((StudentLogin) getActivity()).setCurrentlyRunning(false);
+            }
         } else {
             loading.setText(event.getReason());
             if (getActivity() instanceof StudentLogin) {
+                PrefUtils.saveToPrefs(getContext(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, userName);
+                PrefUtils.saveToPrefs(getContext(), PrefUtils.PREFS_LOGIN_PASSWORD_KEY, password);
                 Intent i = new Intent(getActivity(), HomeActivity.class);
                 startActivity(i);
                 getActivity().finish();

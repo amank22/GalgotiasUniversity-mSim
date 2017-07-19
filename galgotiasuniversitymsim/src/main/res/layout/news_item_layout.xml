@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="@drawable/bg"
+    android:background="@color/ts_white"
     android:orientation="vertical">
 
     <ImageView
@@ -14,12 +14,7 @@
         android:minHeight="100dp"
         android:scaleType="center"
         android:src="@drawable/rect_grey" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.2dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:background="@color/ts_grey" />
+
     <TextView
         android:id="@+id/news_item_note"
         style="@style/CustomStrongFont"

@@ -12,12 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.Adapter.NewsRecycleAdapter;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.NewsEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.DbSimHelper;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.NewsDBJob;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.NewsParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.adapter.NewsRecycleAdapter;
+import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.NewsEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.DbSimHelper;
+import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.NewsDBJob;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 
 import java.util.List;

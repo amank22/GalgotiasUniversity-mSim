@@ -28,6 +28,7 @@
     <color name="ts_yellow">#fbc02d</color>
     <color name="ts_blue">#33b5e5</color>
     <color name="ts_purple">#aa66cc</color>
+    <color name="ts_grey_light">#a6a6a6</color>
     <color name="ts_grey">#414141</color>
     <color name="ts_grey_dark">#303030</color>
     <color name="ts_white">#ffffff</color>

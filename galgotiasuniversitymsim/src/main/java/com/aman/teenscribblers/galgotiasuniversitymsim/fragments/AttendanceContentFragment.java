@@ -9,10 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.Adapter.CategoryAdapter;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
+import com.aman.teenscribblers.galgotiasuniversitymsim.adapter.CategoryAdapter;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.AppConstants;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.transform.RecyclerViewMargin;
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
@@ -54,7 +53,7 @@ public class AttendanceContentFragment extends BaseFragment implements DatePicke
         list.addItemDecoration(itemDecoration);
         list.setLayoutManager(linearLayoutManager);
         list.setHasFixedSize(true);
-        CategoryAdapter adapter = new CategoryAdapter(getActivity(), itemTexts, itemIcons);
+        CategoryAdapter adapter = new CategoryAdapter(itemTexts, itemIcons);
         adapter.addItemClickListener(this);
         list.setAdapter(adapter);
     }
@@ -90,7 +89,7 @@ public class AttendanceContentFragment extends BaseFragment implements DatePicke
     }
 
     @Override
-    public void onItemClick(int position, String text, int color) {
+    public void onItemClick(int position, String text) {
         switch (position) {
             case 1:
                 type = AppConstants.ATT_SUBJECT;

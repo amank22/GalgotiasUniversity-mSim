@@ -1,13 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/login_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/form"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/gradient_bg"
         android:padding="20dp">
 
         <TextView
@@ -17,12 +19,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
+            android:gravity="center"
             android:text="@string/gu_name_two_lines"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/ts_white"
             android:textSize="38sp" />
 
         <TextView
+            style="@style/CustomStrongFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/gu_logo_text"
@@ -31,7 +35,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/string_qurux"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/ts_yellow"
+            android:textColor="@color/colorAccent"
             android:textSize="20sp" />
     </RelativeLayout>
 
@@ -41,11 +45,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/ts_white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/grid_16x"
+        android:paddingTop="@dimen/grid_16x">
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/username"
-            style="@style/CustomNormalFont"
+            style="@style/CustomStrongFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -57,12 +63,13 @@
             android:maxLines="1"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/ts_grey"
-            android:textColorHint="@color/ts_grey" />
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:backgroundTint="@color/colorPrimaryDark" />
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/password"
-            style="@style/CustomNormalFont"
+            style="@style/CustomStrongFont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/username"
@@ -74,10 +81,11 @@
             android:maxLines="1"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/ts_grey"
-            android:textColorHint="@color/ts_grey" />
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/colorPrimaryDark"
+            app:backgroundTint="@color/colorPrimaryDark" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/sign_in_button"
             style="@style/CustomNormalFont"
             android:layout_width="wrap_content"
@@ -89,8 +97,9 @@
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/flat_selector"
-            android:text="@string/login" />
+            android:text="@string/login"
+            android:textColor="@color/ts_white"
+            app:backgroundTint="@color/colorPrimaryDark" />
 
     </RelativeLayout>
 </RelativeLayout>

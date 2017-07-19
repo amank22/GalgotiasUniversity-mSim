@@ -1,28 +1,28 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.Application.GUApp;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.AttendanceErrorEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.AttendanceFetchingEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.AttendanceProccesedEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.LoginEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Events.SessionExpiredEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.HelperClasses.AppConstants;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.AttFindParcel;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Jobs.AttendanceJob;
-import com.aman.teenscribblers.galgotiasuniversitymsim.Parcels.SimParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.adapter.AttendanceAdapter;
+import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.AttendanceErrorEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.AttendanceFetchingEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.AttendanceProccesedEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.LoginEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.SessionExpiredEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.AppConstants;
+import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.AttFindParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.AttendanceJob;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.SimParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.aman.teenscribblers.galgotiasuniversitymsim.transform.RecyclerViewMargin;
 import com.birbit.android.jobqueue.CancelResult;
 import com.birbit.android.jobqueue.TagConstraint;
 
@@ -42,10 +42,10 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
     private static final String ARG_TO_DATE = "to_date";
 
     private String type, fromDate, toDate;
-    private ListView list;
+    private RecyclerView list;
     private List<SimParcel> parcel;
     private TextView loading;
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void onRefresh() {
@@ -56,20 +56,6 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
             }
         }, TagConstraint.ALL);
 
-    }
-
-    static class ViewHolderToday {
-        TextView subject, timeslot;
-        TextView atttype;
-        TextView status;
-        View indcator;
-    }
-
-    static class ViewHolderSubj {
-        TextView subject;
-        TextView percentage;
-        public TextView present, absent, total;
-        View indcator;
     }
 
 
@@ -113,7 +99,12 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
         mSwipeRefreshLayout.setColorSchemeResources(R.color.ts_blue, R.color.ts_green, R.color.ts_pink, R.color.ts_red);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setRefreshing(true);
-        list = (ListView) view.findViewById(R.id.listView_attendance);
+        list = (RecyclerView) view.findViewById(R.id.listView_attendance);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        list.setLayoutManager(linearLayoutManager);
+        list.setHasFixedSize(true);
+        RecyclerViewMargin itemDecoration = new RecyclerViewMargin(16, 1);
+        list.addItemDecoration(itemDecoration);
         if (savedInstanceState != null) {
             type = savedInstanceState.getString(ARG_TYPE);
             fromDate = savedInstanceState.getString(ARG_FROM_DATE);
@@ -122,9 +113,9 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
         GUApp.getJobManager().addJobInBackground(new AttFindParcel(type, fromDate, toDate));
     }
 
-    private void uselist() {
+    private void setAdapter() {
         if (getActivity() != null) {
-            list.setAdapter(new CardsAdapter());
+            list.setAdapter(new AttendanceAdapter(getActivity(), type, parcel));
         } else {
             loading.setText(AppConstants.ERROR_CONTENT_FETCH);
         }
@@ -136,120 +127,6 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
         outState.putString(ARG_TYPE, type);
         outState.putString(ARG_FROM_DATE, fromDate);
         outState.putString(ARG_TO_DATE, toDate);
-    }
-
-
-    public class CardsAdapter extends ArrayAdapter {
-        private LayoutInflater mInflater;
-
-        public CardsAdapter() {
-            super(getActivity(), R.layout.attendance_list_item);
-            mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-
-        @Override
-        public int getCount() {
-            return parcel == null ? 0 : parcel.size();
-        }
-
-        @Override
-        public long getItemId(int pos) {
-            return pos;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View row = convertView;
-            switch (type) {
-                case AppConstants.ATT_SUBJECT:
-                    ViewHolderSubj subholder = null;
-                    if (row == null) {
-                        row = mInflater
-                                .inflate(R.layout.attendance_list_item, parent, false);
-                        subholder = new ViewHolderSubj();
-                        subholder.subject = (TextView) row
-                                .findViewById(R.id.textView_subject);
-                        subholder.percentage = (TextView) row
-                                .findViewById(R.id.textView_perc);
-                        subholder.indcator = row.findViewById(R.id.p_indicator);
-
-                        subholder.total = (TextView) row
-                                .findViewById(R.id.textView_total);
-                        subholder.present = (TextView) row
-                                .findViewById(R.id.textView_present);
-                        subholder.absent = (TextView) row
-                                .findViewById(R.id.textView_absent);
-                        row.setTag(subholder);
-                    } else {
-                        subholder = (ViewHolderSubj) row.getTag();
-                    }
-                    // setting text data
-                    if (parcel != null && !parcel.isEmpty()) {
-                        Log.d("GU_DEBUG", "parcel nor null neither empty");
-                        subholder.subject
-                                .setText(parcel.get(position).getSubject());
-                        subholder.percentage.setText(String.valueOf(parcel.get(
-                                position).getPercnt()));
-                        if (parcel.get(position).getPercnt() < 75.0f) {
-                            subholder.indcator.setBackgroundColor(getResources().getColor(R.color.ts_red));
-                        } else {
-                            subholder.indcator.setBackgroundColor(getResources().getColor(R.color.ts_green));
-                        }
-                        subholder.total.setText(String.valueOf(parcel.get(position)
-                                .getTotal()));
-                        subholder.present.setText(String.valueOf(parcel.get(
-                                position).getPresent()));
-                        subholder.absent.setText(String.valueOf(parcel
-                                .get(position).getAbsent()));
-
-                    }
-                    break;
-                case AppConstants.ATT_TODAY:
-                    ViewHolderToday tholder = null;
-                    if (row == null) {
-                        row = mInflater
-                                .inflate(R.layout.todays_att_list_item, parent, false);
-                        tholder = new ViewHolderToday();
-                        tholder.subject = (TextView) row
-                                .findViewById(R.id.textView_subject);
-                        tholder.timeslot = (TextView) row
-                                .findViewById(R.id.textView_time_slot);
-                        tholder.atttype = (TextView) row
-                                .findViewById(R.id.textView_class_type);
-                        tholder.status = (TextView) row
-                                .findViewById(R.id.textView_status);
-                        row.setTag(tholder);
-                    } else {
-                        tholder = (ViewHolderToday) row.getTag();
-                    }
-                    // setting text data
-                    if (parcel != null && !parcel.isEmpty()) {
-                        Log.d("GU_DEBUG", "parcel nor null neither empty");
-                        if (parcel.get(position).getSubject() != null)
-                            tholder.subject.setText(parcel.get(position).getSubject());
-                        if (parcel.get(position).getTimeslot() != null)
-                            tholder.timeslot
-                                    .setText(parcel.get(position).getTimeslot());
-                        if (parcel.get(position).getClasstype() != null)
-                            tholder.atttype
-                                    .setText(parcel.get(position).getClasstype());
-                        if (parcel.get(position).getStatus() != null) {
-                            tholder.status.setText(parcel.get(position).getStatus());
-                            if (parcel.get(position).getStatus().equals("A")) {
-                                tholder.status.setBackgroundColor(getResources().getColor(R.color.ts_red));
-                            } else if (parcel.get(position).getStatus().equals("P")) {
-                                tholder.status.setBackgroundColor(getResources().getColor(R.color.ts_green));
-                            } else {
-                                tholder.status.setBackgroundColor(getResources().getColor(R.color.ts_grey));
-                            }
-                        }
-                    }
-
-                    break;
-            }
-            return row;
-        }
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -293,7 +170,7 @@ public class NewAttendanceFragment extends BaseFragment implements SwipeRefreshL
         if (event.getParcel() != null) {
             loading.setVisibility(View.GONE);
             parcel = event.getParcel();
-            uselist();
+            setAdapter();
         } else if (event.getProccessed().equals("FetchedFromNetwork")) {
             GUApp.getJobManager().addJobInBackground(new AttFindParcel(type, fromDate, toDate));
         }

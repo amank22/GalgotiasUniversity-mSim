@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg">
+    android:background="@color/ts_white">
 
     <TextView
         android:id="@+id/textView_subject"
@@ -15,7 +15,7 @@
         android:text="Subject"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/ts_blue"
-        android:textSize="22sp" />
+        android:textSize="16sp" />
 
 
     <RelativeLayout
@@ -25,15 +25,17 @@
         android:layout_below="@+id/linear_f"
         android:layout_marginEnd="25dp"
         android:layout_marginStart="25dp"
-        android:background="@color/ts_grey_dark" />
+        android:background="@color/ts_grey_light" />
 
 
     <TextView
+        style="@style/CustomStrongFont"
         android:id="@+id/textView_timeslot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/textView_group"
+        android:layout_toRightOf="@+id/textView_group"
         android:background="@color/ts_grey_dark"
         android:gravity="center"
         android:padding="5dp"
@@ -49,6 +51,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/textView_group"
+        android:layout_toRightOf="@+id/textView_group"
         android:orientation="horizontal">
 
         <TextView
@@ -56,11 +59,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="0.7"
             android:gravity="center"
             android:text="Faculty Name"
-            android:textColor="@color/ts_grey_dark"
+            android:textColor="@color/ts_grey"
             android:textSize="18sp" />
 
         <View
@@ -68,18 +72,20 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            android:background="@color/ts_grey_dark" />
+            android:background="@color/ts_grey_light" />
 
         <TextView
             android:id="@+id/textView_hall"
+            style="@style/CustomStrongFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="0.3"
             android:gravity="center"
             android:text="Hall no"
-            android:textColor="@color/ts_grey_dark"
+            android:textColor="@color/ts_grey"
             android:textSize="20sp" />
 
     </LinearLayout>
@@ -88,6 +94,7 @@
         android:id="@+id/textView_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/group_banner"
@@ -98,6 +105,6 @@
         android:paddingTop="20dp"
         android:text="A1"
         android:textColor="@color/ts_white"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
 </RelativeLayout>

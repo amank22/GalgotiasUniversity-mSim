@@ -26,21 +26,11 @@
     <string name="gu_name_two_lines">Galgotias\nUniversity</string>
     <string name="login">Login</string>
     <string name="username">Username</string>
-    <string name="title_activity_news_detail">Check Your News</string>
     <string name="galgotias_university">Galgotias University</string>
 
     <string-array name="attendance_content">
         <item>Today\'s Attendance</item>
         <item>Subjects Attendance</item>
-    </string-array>
-
-    <string-array name="timetable_content">
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
