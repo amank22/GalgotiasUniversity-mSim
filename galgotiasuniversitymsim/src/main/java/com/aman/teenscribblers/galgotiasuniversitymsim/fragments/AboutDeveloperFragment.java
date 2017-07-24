@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -49,7 +48,6 @@ public class AboutDeveloperFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mWebView = (WebView) view.findViewById(R.id.webView_about);
         pb = (ProgressBar) view.findViewById(R.id.progressBar_personal);
-        WebView mWebView = new WebView(getActivity());
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setLoadWithOverviewMode(true);
@@ -57,8 +55,11 @@ public class AboutDeveloperFragment extends BaseFragment {
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(false);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         settings.setDomStorageEnabled(true);
+        settings.setAppCacheMaxSize(1024 * 1024 * 8);
+        settings.setAppCachePath(getActivity().getCacheDir().getPath());
+        settings.setAppCacheEnabled(true);
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         mWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         mWebView.setScrollbarFadingEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -67,8 +68,11 @@ public class AboutDeveloperFragment extends BaseFragment {
             mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
         mWebView.setWebViewClient(new CustomWebClient());
-        mWebView.loadUrl("http://galgotiasuniversity.herokuapp.com/about");
-        mWebView.restoreState(savedInstanceState);
+        if (savedInstanceState != null) {
+            mWebView.restoreState(savedInstanceState);
+        } else {
+            mWebView.loadUrl("http://galgotiasuniversity.herokuapp.com/about");
+        }
     }
 
     @Override
@@ -90,6 +94,12 @@ public class AboutDeveloperFragment extends BaseFragment {
     }
 
     private class CustomWebClient extends WebViewClient {
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            return false;
+        }
+
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
@@ -105,13 +115,6 @@ public class AboutDeveloperFragment extends BaseFragment {
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
-            AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle("Error").setMessage("There is some error. Please try again later").create();
-            dialog.show();
-        }
-
-        @Override
-        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-            super.onReceivedHttpError(view, request, errorResponse);
             AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle("Error").setMessage("There is some error. Please try again later").create();
             dialog.show();
         }

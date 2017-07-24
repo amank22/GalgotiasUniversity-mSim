@@ -12,6 +12,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -28,6 +30,7 @@ import java.util.Map;
 public class MyFcmListenerService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFcmListenerService";
+    private Target pictureTarget;
 
 
     @Override
@@ -80,7 +83,7 @@ public class MyFcmListenerService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
-        if (imageUrl == null) {
+        if (imageUrl == null || imageUrl.isEmpty()) {
             final NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
             bigTextStyle.setBigContentTitle("News from " + from).bigText(message);
             notificationBuilder.setStyle(bigTextStyle);
@@ -90,7 +93,7 @@ public class MyFcmListenerService extends FirebaseMessagingService {
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 
         } else {
-            Picasso.with(this).load(imageUrl).resize(256, 256).into(new Target() {
+            pictureTarget = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                     final NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
@@ -110,6 +113,13 @@ public class MyFcmListenerService extends FirebaseMessagingService {
                 @Override
                 public void onPrepareLoad(Drawable placeHolderDrawable) {
 
+                }
+            };
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Picasso.with(MyFcmListenerService.this).load(imageUrl).resize(256, 256).into(pictureTarget);
                 }
             });
         }

@@ -18,15 +18,16 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
-import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.aman.teenscribblers.galgotiasuniversitymsim.analytics.Analytics;
+import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AboutDeveloperFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AttendanceContentFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentResultBase;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.InformationFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.TimeTableContent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, TimeTableContent.FragmentOpenTimeTable,
@@ -97,27 +98,32 @@ public class HomeActivity extends BaseActivity
         drawer.closeDrawer(GravityCompat.START);
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (id == R.id.nav_personal) {
+            Analytics.selectContent(this, mFirebaseAnalytics, "Info", "Information Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, new InformationFragment())
                     .commit();
         } else if (id == R.id.nav_att) {
+            Analytics.selectContent(this, mFirebaseAnalytics, "Att", "Attendance Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, AttendanceContentFragment.newInstance())
                     .commit();
         } else if (id == R.id.nav_tt) {
+            Analytics.selectContent(this, mFirebaseAnalytics, "tt", "TimeTable Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, TimeTableContent.newInstance())
                     .commit();
         } else if (id == R.id.nav_results) {
+            Analytics.selectContent(this, mFirebaseAnalytics, "Res", "Result Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, new FragmentResultBase())
                     .commit();
         } else if (id == R.id.nav_news) {
+            Analytics.selectContent(this, mFirebaseAnalytics, "News", "News Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, NewsFragment.newInstance())
                     .commit();
         } else if (id == R.id.nav_send) {
-
+            Analytics.selectContent(this, mFirebaseAnalytics, "Msg", "Feedback Tab", "Navigation");
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{"kapoor.aman22@gmail.com"});
@@ -129,30 +135,31 @@ public class HomeActivity extends BaseActivity
                 Snackbar.make(frame, "There is no Email Client Installed", Snackbar.LENGTH_LONG).show();
             }
         } else if (id == R.id.nav_about_us) {
+            Analytics.selectContent(this, mFirebaseAnalytics, "about", "About us Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, AboutDeveloperFragment.newInstance())
                     .commit();
         } else if (id == R.id.nav_logout) {
-            logOutUser();
+            Analytics.selectContent(this, mFirebaseAnalytics, "lgo", "Logout Tab", "Navigation");
+            GUApp.logoutUser(HomeActivity.this);
         }
         return true;
     }
 
     @Override
     public void attopened(Fragment frag, String tag) {
+        Analytics.selectContent(this, mFirebaseAnalytics, "att", tag + " att option", "Attendance");
         afrag = frag;
     }
 
     @Override
     public void onTimeTableOpened(Fragment frag, String tag) {
+        Analytics.selectContent(this, mFirebaseAnalytics, "tt", tag + " tt option", "Timetable");
         tfrag = frag;
     }
 
     @Override
     public void onBackPressed() {
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else
         if (afrag != null && afrag.isVisible()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, AttendanceContentFragment.newInstance()).commit();
         } else if (tfrag != null && tfrag.isVisible()) {
@@ -162,14 +169,5 @@ public class HomeActivity extends BaseActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-    private void logOutUser() {
-        PrefUtils.deleteuser(HomeActivity.this);
-        GUApp app = GUApp.getInstance();
-        app.clearApplicationData();
-        Intent i = new Intent(HomeActivity.this, StudentLogin.class);
-        startActivity(i);
-        finish();
     }
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.adapter.NewsRecycleAdapter;
+import com.aman.teenscribblers.galgotiasuniversitymsim.analytics.Analytics;
 import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.NewsEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.DbSimHelper;
@@ -88,6 +89,7 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                         super.onDismissed(snackbar, event);
                         Log.d(TAG, "OnDismissed:" + event);
                         if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                            Analytics.selectContent(getContext(), mFirebaseAnalytics, String.valueOf(mAdapter.getItemId(viewHolder.getAdapterPosition())), "onDismissed", "News");
 
                             Log.d(TAG, "OnDismissed-ITEMID:" + String.valueOf(mAdapter.getItemId(viewHolder.getAdapterPosition())));
                             boolean result = DbSimHelper.getInstance().deleteNews(String.valueOf(mAdapter.getItemId(viewHolder.getAdapterPosition())));

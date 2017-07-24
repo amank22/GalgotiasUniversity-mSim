@@ -27,6 +27,7 @@ public class RegistrationIntentService {
         String admno = PrefUtils.getFromPrefs(context, PrefUtils.PREFS_USER_ADMNO_KEY, PrefUtils.DEFAULT_ADMNO);
         String name = PrefUtils.getFromPrefs(context, PrefUtils.PREFS_USER_NAME_KEY, PrefUtils.DEFAULT_NAME);
         String email = PrefUtils.getFromPrefs(context, PrefUtils.PREFS_USER_EMAIL_KEY, PrefUtils.DEFAULT_EMAIL);
+        String mobile = PrefUtils.getFromPrefs(context, PrefUtils.PREFS_USER_MOBILE_KEY, PrefUtils.DEFAULT_PHONE);
         if (!admno.equals(PrefUtils.DEFAULT_ADMNO)) {
             cv.put("adm_no", admno);
         } else {
@@ -36,6 +37,8 @@ public class RegistrationIntentService {
             cv.put("name", name);
         if (!email.equals(PrefUtils.DEFAULT_EMAIL))
             cv.put("email", email);
+        if (!mobile.equals(PrefUtils.DEFAULT_PHONE))
+            cv.put("mobile", mobile);
         cv.put("gcm_id", token);
         return IonMethods.postBasicstoServer(cv);
     }

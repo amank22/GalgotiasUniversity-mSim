@@ -11,10 +11,12 @@ public class PrefUtils {
     public static final String PREFS_USER_NAME_KEY = "Name";
     public static final String PREFS_USER_EMAIL_KEY = "Email ID";
     public static final String PREFS_USER_GENDER_KEY = "Gender";
+    public static final String PREFS_USER_MOBILE_KEY = "Phone";
     public static final String PREFS_USER_IMAGE = "__IMAGE__";
     public static final String DEFAULT_ADMNO = "";
     public static final String DEFAULT_NAME = "";
     public static final String DEFAULT_EMAIL = "";
+    public static final String DEFAULT_PHONE = "";
 
 
     public static final String ARE_TOKEN_SUBSCRIBED = "is_token_subscribed";

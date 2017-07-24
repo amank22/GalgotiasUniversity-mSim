@@ -24,6 +24,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.LoginJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.HomeActivity;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.StudentLogin;
+import com.crashlytics.android.answers.Answers;
 
 import java.util.Map;
 
@@ -133,12 +134,14 @@ public class CaptchaDialogFragment extends DialogFragment {
     public void onEventMainThread(LoginEvent event) {
         CurrentlyRunning = false;
         if (event.isError()) {
+            Answers.getInstance().logLogin(new com.crashlytics.android.answers.LoginEvent().putSuccess(false).putCustomAttribute("user", userName));
             loading.setText(event.getReason());
             logOut.setVisibility(View.VISIBLE);
             if (getActivity() instanceof StudentLogin) {
                 ((StudentLogin) getActivity()).setCurrentlyRunning(false);
             }
         } else {
+            Answers.getInstance().logLogin(new com.crashlytics.android.answers.LoginEvent().putSuccess(true).putCustomAttribute("user", userName));
             loading.setText(event.getReason());
             if (getActivity() instanceof StudentLogin) {
                 PrefUtils.saveToPrefs(getContext(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, userName);

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.aman.teenscribblers.galgotiasuniversitymsim.analytics.Analytics;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.LoginEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.CaptchaDialogFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
@@ -52,6 +53,7 @@ public class StudentLogin extends BaseActivity {
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Analytics.selectContent(StudentLogin.this, mFirebaseAnalytics, "login", "Sign in Attempt", "Login");
                 attemptLogin();
             }
         });

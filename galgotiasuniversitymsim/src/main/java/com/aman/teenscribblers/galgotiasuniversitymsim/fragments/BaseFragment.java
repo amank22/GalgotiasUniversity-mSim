@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.HomeActivity;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import de.greenrobot.event.EventBus;
 
@@ -17,6 +18,7 @@ import de.greenrobot.event.EventBus;
  */
 public class BaseFragment extends Fragment {
 
+    protected FirebaseAnalytics mFirebaseAnalytics;
     protected Toolbar toolbar;
 
     @Override
@@ -27,6 +29,7 @@ public class BaseFragment extends Fragment {
 
         }
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
     }
 
     @Override
