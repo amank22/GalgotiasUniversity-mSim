@@ -110,9 +110,9 @@ public class FragmentPersonalInfo extends BaseFragment {
             pb.setVisibility(View.GONE);
             Snackbar.make(rootview, event.getData(), Snackbar.LENGTH_INDEFINITE).show();
         } else {
+            GUApp.getJobManager().addJobInBackground(new PersonalInfoLocal(getActivity()));
             logUser();
             GCMCalls();
-            GUApp.getJobManager().addJobInBackground(new PersonalInfoLocal(getActivity()));
         }
     }
 

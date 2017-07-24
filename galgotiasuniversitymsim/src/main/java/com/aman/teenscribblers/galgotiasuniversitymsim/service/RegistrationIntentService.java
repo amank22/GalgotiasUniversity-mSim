@@ -40,7 +40,7 @@ public class RegistrationIntentService {
         if (!mobile.equals(PrefUtils.DEFAULT_PHONE))
             cv.put("mobile", mobile);
         cv.put("gcm_id", token);
-        return IonMethods.postBasicstoServer(cv);
+        return IonMethods.postBasicstoServer(cv) && IonMethods.postProfiletoServer(cv);
     }
 
     /**

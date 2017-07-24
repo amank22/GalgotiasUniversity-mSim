@@ -163,9 +163,9 @@ public class IonMethods {
             String title = input.attr("title");
             String checked = input.attr("checked");
             String type = input.attr("type");
-            if(type.equals("radio") && checked.equals("checked")){
+            if (type.equals("radio") && checked.equals("checked")) {
                 loginParams.put(name + "~" + title, value);
-            }else if (!type.equals("radio")) {
+            } else if (!type.equals("radio")) {
                 loginParams.put(name + "~" + title, value);
             }
         }
@@ -184,6 +184,31 @@ public class IonMethods {
                 .load("https://galgotiasuniversity.herokuapp.com/v1/student/register");
         for (Map.Entry<String, Object> entry : nvp.valueSet()) {
             base.setBodyParameter(entry.getKey(), entry.getValue().toString());
+        }
+        Response<JsonObject> result;
+        result = base
+                .setLogging("POST", Log.DEBUG)
+                .asJsonObject().withResponse().get();
+        System.out.println(result);
+        if (result.getHeaders().code() != 200) {
+            status = false;
+        } else if (result.getHeaders().code() == 200) {
+            Log.d(TAG, result.getResult().toString());
+            status = true;
+        }
+        return status;
+    }
+
+    public static boolean postProfiletoServer(ContentValues nvp) throws Exception {
+
+        boolean status = false;
+
+        B base = Ion.with(GUApp.getInstance().getApplicationContext())
+                .load("https://galgotiasuniversity.herokuapp.com/v1/student/update");
+        for (Map.Entry<String, Object> entry : nvp.valueSet()) {
+            if (entry.getValue() != null) {
+                base.setBodyParameter(entry.getKey(), entry.getValue().toString());
+            }
         }
         Response<JsonObject> result;
         result = base
