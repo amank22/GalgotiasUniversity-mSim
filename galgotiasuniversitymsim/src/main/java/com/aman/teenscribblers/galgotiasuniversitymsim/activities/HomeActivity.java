@@ -120,7 +120,7 @@ public class HomeActivity extends BaseActivity
 
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
-            i.putExtra(Intent.EXTRA_EMAIL, new String[]{"kapoor.aman22@gmail.com"});
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{"kapoor.aman22@gmail.com","anmol.agarwal2004@yahoo.com"});
             i.putExtra(Intent.EXTRA_SUBJECT, "Report of Bugs,Improvements");
             i.putExtra(Intent.EXTRA_TEXT, "");
             try {

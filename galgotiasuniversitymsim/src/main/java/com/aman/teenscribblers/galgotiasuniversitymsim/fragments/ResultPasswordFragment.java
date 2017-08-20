@@ -42,7 +42,7 @@ public class ResultPasswordFragment extends Fragment {
             public void onClick(View v) {
                 s1=e1.getText().toString();
 
-                if (s1.contentEquals("fineanmol"))
+                if (s1.contentEquals("admin"))
                 {
                     Toast.makeText(getActivity(), "Successfull", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(getActivity(),FragmentResultBase.class);
