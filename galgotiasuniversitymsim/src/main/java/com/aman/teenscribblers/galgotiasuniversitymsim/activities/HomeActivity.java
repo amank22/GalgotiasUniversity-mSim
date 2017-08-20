@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentResultBase;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.ResultPasswordFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
@@ -155,6 +156,8 @@ public class HomeActivity extends BaseActivity
 //        } else
         if (afrag != null && afrag.isVisible()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, AttendanceContentFragment.newInstance()).commit();
+
+
         } else if (tfrag != null && tfrag.isVisible()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, TimeTableContent.newInstance()).commit();
         } else if (!drawer.isDrawerOpen(GravityCompat.START)) {

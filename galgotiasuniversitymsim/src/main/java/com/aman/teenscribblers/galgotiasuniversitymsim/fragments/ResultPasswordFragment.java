@@ -4,6 +4,7 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,17 +37,19 @@ public class ResultPasswordFragment extends Fragment {
         e1=(EditText)rootView.findViewById(R.id.resultpassword);
 
         b1=(Button)rootView.findViewById(R.id.verifybutton);
-        s1=e1.getText().toString();
+
         b1.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
                 s1=e1.getText().toString();
 
-                if (s1.contentEquals("admin"))
+                if (s1.contentEquals("fineanmol"))
                 {
-                    Toast.makeText(getActivity(), "Successfull", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(getActivity(),FragmentResultBase.class);
-                    getActivity().startActivity(i);
+                    Toast.makeText(getActivity(), "Hello Anmol", Toast.LENGTH_SHORT).show();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container,new FragmentResultBase()).commit();
+
 
                 }
                 else
