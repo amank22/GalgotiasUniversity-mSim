@@ -27,6 +27,7 @@
     <string name="login">Login</string>
     <string name="username">Username</string>
     <string name="galgotias_university">Galgotias University</string>
+    <string name="submit_topics">Submit topics</string>
 
     <string-array name="attendance_content">
         <item>Today\'s Attendance</item>

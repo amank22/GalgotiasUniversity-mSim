@@ -65,7 +65,8 @@ public class FragmentResultBase extends BaseFragment implements ViewPager.OnPage
         imageViewRank = (ImageView) view.findViewById(R.id.imageView_rank);
         semesters = DbSimHelper.getInstance().getSemestersForResult();
         if (semesters == null || semesters.isEmpty()) {
-            GUApp.getJobManager().addJobInBackground(new ResultJob());
+            String admNo= PrefUtils.getFromPrefs(getContext(),PrefUtils.PREFS_USER_ADMNO_KEY,"").trim();
+            GUApp.getJobManager().addJobInBackground(new ResultJob(admNo));
         } else {
             setPagerAdapter();
         }
@@ -98,7 +99,8 @@ public class FragmentResultBase extends BaseFragment implements ViewPager.OnPage
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(LoginEvent event) {
         if (!event.isError()) {
-            GUApp.getJobManager().addJobInBackground(new ResultJob());
+            String admNo= PrefUtils.getFromPrefs(getContext(),PrefUtils.PREFS_USER_ADMNO_KEY,"").trim();
+            GUApp.getJobManager().addJobInBackground(new ResultJob(admNo));
         }
     }
 

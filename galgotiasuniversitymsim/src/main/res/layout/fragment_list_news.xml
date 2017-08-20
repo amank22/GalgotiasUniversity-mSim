@@ -33,4 +33,18 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_follow_topics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/grid_16x"
+        android:clickable="true"
+        app:backgroundTint="@color/ts_white"
+        app:layout_anchor="@id/activity_main_swipe_refresh_layout"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_behavior="com.aman.teenscribblers.galgotiasuniversitymsim.behaviors.ScrollAwareFABBehavior"
+        app:pressedTranslationZ="4dp"
+        app:rippleColor="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_add" />
+
 </android.support.design.widget.CoordinatorLayout>

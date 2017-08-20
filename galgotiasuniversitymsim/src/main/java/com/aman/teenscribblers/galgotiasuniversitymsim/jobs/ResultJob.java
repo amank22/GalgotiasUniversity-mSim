@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.InfoEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.SessionExpiredEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.AppConstants;
-import com.aman.teenscribblers.galgotiasuniversitymsim.helper.Connection_detect;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.ConnectionDetector;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.DbSimHelper;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.IonMethods;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
@@ -15,6 +15,8 @@ import com.birbit.android.jobqueue.CancelReason;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.JsonObject;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -32,10 +34,12 @@ import de.greenrobot.event.EventBus;
 public class ResultJob extends Job {
 
     private DbSimHelper dbhelper;
+    private String admNo;
 
-    public ResultJob() {
+    public ResultJob(String admNo) {
         super(new Params(AppConstants.PRIORITY4).requireNetwork());
         dbhelper = DbSimHelper.getInstance();
+        this.admNo = admNo.trim();
     }
 
     @Override
@@ -45,19 +49,26 @@ public class ResultJob extends Job {
 
     @Override
     public void onRun() throws Throwable {
-        if (!Connection_detect.isConnectingToInternet(getApplicationContext())) {
+        if (!ConnectionDetector.isConnectingToInternet(getApplicationContext())) {
             throw new Exception(AppConstants.ERROR_NETWORK);
         }
         String resultInitialData = IonMethods.getString(AppConstants.ResultString);
         List<String> semestersList = parseStringToFindSemesters(resultInitialData);
         dbhelper.deleteResult();
+        JsonObject jsonObject = new JsonObject();
         for (String semester : semestersList) {
             String semResult = GetResutForSemester(semester);
             parseResultForSpecificSemester(semester, semResult);
-            parseResultForCgpaSgpa(semester, semResult);
+            parseResultForCgpaSgpa(semester, semResult, jsonObject);
         }
-//        FileUtil.createFile(getApplicationContext(), AppConstants.FILE_NAME_PERSONAL, parsedInfo);
         EventBus.getDefault().post(new InfoEvent(InfoEvent.TYPE_RESULT, false, null, false));
+        ContentValues contentValues = new ContentValues(2);
+        contentValues.put("result", jsonObject.toString());
+        if (admNo != null && !admNo.isEmpty()) {
+            contentValues.put("adm_no", admNo);
+            contentValues.put("gcm_id", FirebaseInstanceId.getInstance().getToken());
+            IonMethods.postProfiletoServer(contentValues);
+        }
     }
 
     @Override
@@ -86,7 +97,7 @@ public class ResultJob extends Job {
         return 3;
     }
 
-    private void parseResultForSpecificSemester(String semster, String semesterResult) {
+    private void parseResultForSpecificSemester(String semester, String semesterResult) {
         Document doc = Jsoup.parse(semesterResult);
         Elements resultRows = doc.select("table").get(1).select("tbody > tr");
         for (Element resultRow : resultRows) {
@@ -94,24 +105,25 @@ public class ResultJob extends Job {
             if (columns.size() > 1) {
                 String subject = columns.get(1).text();
                 String grade = columns.get(3).text();
-                dbhelper.addNewResult(subject, grade, semster);
+                dbhelper.addNewResult(subject, grade, semester);
             }
         }
-
     }
 
-    private void parseResultForCgpaSgpa(String semster, String semesterResult) {
+    private void parseResultForCgpaSgpa(String semester, String semesterResult, JsonObject jsonBody) {
         Document doc = Jsoup.parse(semesterResult);
         Elements resultRows = doc.select("table").get(2).select("tbody > tr");
+        JsonObject jsonObject = new JsonObject();
         for (Element resultRow : resultRows) {
             Elements columns = resultRow.select("td");
             if (columns.size() > 1) {
                 String name = columns.get(0).text();
                 String value = columns.get(1).select("span").first().text();
-                PrefUtils.saveToPrefs(getApplicationContext(), semster + "-" + name, value);
+                PrefUtils.saveToPrefs(getApplicationContext(), semester + "-" + name, value);
+                jsonObject.addProperty(name.replace(" ", "_").replace(".", "").trim(), value.replace(" ", "_").trim());
             }
         }
-
+        jsonBody.add(semester.replace(" ", "_").trim(), jsonObject);
     }
 
     private List<String> parseStringToFindSemesters(String initialData) throws Exception {

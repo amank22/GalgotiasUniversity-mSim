@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public class Connection_detect {
+public class ConnectionDetector {
 
 	public static boolean isConnectingToInternet(Context c) {
 		ConnectivityManager connectivity = (ConnectivityManager) c

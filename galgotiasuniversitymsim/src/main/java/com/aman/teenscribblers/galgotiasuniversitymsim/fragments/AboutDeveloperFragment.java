@@ -16,6 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 
@@ -115,8 +116,12 @@ public class AboutDeveloperFragment extends BaseFragment {
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
-            AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle("Error").setMessage("There is some error. Please try again later").create();
-            dialog.show();
+            try {
+                AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle("Error").setMessage("There is some error. Please try again later").create();
+                dialog.show();
+            }catch (Exception e){
+                Toast.makeText(getContext(),"There is some error. Please try again later",Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

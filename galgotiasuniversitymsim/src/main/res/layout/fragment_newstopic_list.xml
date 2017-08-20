@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/gradient_bg"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="Follow Topics" />
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/news_topic_list"
+        android:name="com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsTopicListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_newstopic" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/button_topic_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/grid_16x"
+        android:clickable="true"
+        app:backgroundTint="@color/ts_white"
+        app:layout_anchor="@id/news_topic_list"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_behavior="com.aman.teenscribblers.galgotiasuniversitymsim.behaviors.ScrollAwareFABBehavior"
+        app:pressedTranslationZ="4dp"
+        app:rippleColor="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_done" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_news_topics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+</android.support.design.widget.CoordinatorLayout>

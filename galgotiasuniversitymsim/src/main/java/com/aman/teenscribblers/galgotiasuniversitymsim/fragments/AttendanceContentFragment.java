@@ -60,6 +60,9 @@ public class AttendanceContentFragment extends BaseFragment implements DatePicke
 
     protected void replaceToAttendance(String fromDate, String toDate) {
         frag = NewAttendanceFragment.newInstance(type, fromDate, toDate);
+        if(getActivity()==null){
+            return;
+        }
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, frag, "attendance")
                 .commit();
         flisten.attopened(frag, type);

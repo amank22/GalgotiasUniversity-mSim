@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.CaptchaEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.AppConstants;
-import com.aman.teenscribblers.galgotiasuniversitymsim.helper.Connection_detect;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.ConnectionDetector;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.IonMethods;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
@@ -29,7 +29,7 @@ public class CaptchaJob extends Job {
 
     @Override
     public void onRun() throws Throwable {
-        if (!Connection_detect.isConnectingToInternet(getApplicationContext())) {
+        if (!ConnectionDetector.isConnectingToInternet(getApplicationContext())) {
             throw new Exception(AppConstants.ERROR_NETWORK);
         }
         CaptchaEvent captchaEvent = IonMethods.simCaptcha();

@@ -26,6 +26,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AttendanceConte
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentResultBase;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.InformationFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsFragment;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsTopicListFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.TimeTableContent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 
@@ -126,11 +127,11 @@ public class HomeActivity extends BaseActivity
             Analytics.selectContent(this, mFirebaseAnalytics, "Msg", "Feedback Tab", "Navigation");
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
-            i.putExtra(Intent.EXTRA_EMAIL, new String[]{"kapoor.aman22@gmail.com"});
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{"kapoor.aman22@gmail.com", "anmol.agarwal2004@yahoo.com"});
             i.putExtra(Intent.EXTRA_SUBJECT, "Report of Bugs,Improvements");
             i.putExtra(Intent.EXTRA_TEXT, "");
             try {
-                startActivity(Intent.createChooser(i, "Contact Us"));
+                startActivity(Intent.createChooser(i, "Mail Us"));
             } catch (android.content.ActivityNotFoundException ex) {
                 Snackbar.make(frame, "There is no Email Client Installed", Snackbar.LENGTH_LONG).show();
             }
@@ -160,7 +161,10 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (afrag != null && afrag.isVisible()) {
+        NewsTopicListFragment followTopics = (NewsTopicListFragment) getSupportFragmentManager().findFragmentByTag(NewsFragment.FOLLOW_TOPIC_TAG);
+        if (followTopics != null) {
+            followTopics.onBackPressed();
+        } else if (afrag != null && afrag.isVisible()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, AttendanceContentFragment.newInstance()).commit();
         } else if (tfrag != null && tfrag.isVisible()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, TimeTableContent.newInstance()).commit();

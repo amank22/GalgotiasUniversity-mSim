@@ -24,7 +24,6 @@ public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed token: " + refreshedToken);
-        // TODO: Implement this method to send any registration to your app's servers.
         try {
             RegistrationIntentService.sendRegistrationToServer(this);
         } catch (Exception e) {

@@ -2,9 +2,11 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.application;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.aman.teenscribblers.galgotiasuniversitymsim.BuildConfig;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.StudentLogin;
@@ -117,5 +119,9 @@ public class GUApp extends Application {
                 .consumerKeepAlive(120)//wait 2 minute
                 .build();
         jobManager = new JobManager(configuration);
+    }
+
+    public static boolean isDebug() {
+        return BuildConfig.DEBUG;
     }
 }

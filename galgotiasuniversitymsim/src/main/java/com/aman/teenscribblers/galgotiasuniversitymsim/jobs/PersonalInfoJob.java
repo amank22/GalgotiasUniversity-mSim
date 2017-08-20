@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.InfoEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.SessionExpiredEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.AppConstants;
-import com.aman.teenscribblers.galgotiasuniversitymsim.helper.Connection_detect;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.ConnectionDetector;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.FileUtil;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.IonMethods;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
@@ -15,6 +15,7 @@ import com.birbit.android.jobqueue.CancelReason;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,7 +40,7 @@ public class PersonalInfoJob extends Job {
 
     @Override
     public void onRun() throws Throwable {
-        if (!Connection_detect.isConnectingToInternet(getApplicationContext())) {
+        if (!ConnectionDetector.isConnectingToInternet(getApplicationContext())) {
             throw new Exception(AppConstants.ERROR_NETWORK);
         }
         String infoData = IonMethods.getString(AppConstants.PersonalInfoString);
@@ -98,9 +99,10 @@ public class PersonalInfoJob extends Job {
     }
 
     private void sendProfileDataToServer(ContentValues serverCv) {
-        String admNo = serverCv.getAsString(PrefUtils.PREFS_USER_ADMNO_KEY);
+        String admNo = serverCv.getAsString(PrefUtils.PREFS_USER_ADMNO_KEY).trim();
         serverCv.remove(PrefUtils.PREFS_USER_ADMNO_KEY);
         serverCv.put("adm_no", admNo);
+        serverCv.put("gcm_id", FirebaseInstanceId.getInstance().getToken());
         try {
             IonMethods.postProfiletoServer(serverCv);
         } catch (Exception e) {

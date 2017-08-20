@@ -10,7 +10,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.events.AttendanceFetching
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.AttendanceProccesedEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.SessionExpiredEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.AppConstants;
-import com.aman.teenscribblers.galgotiasuniversitymsim.helper.Connection_detect;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.ConnectionDetector;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.DbSimHelper;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.IonMethods;
 import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.SubjectParcel;
@@ -60,7 +60,7 @@ public class AttendanceJob extends Job {
 
     @Override
     public void onRun() throws Throwable {
-        if (!Connection_detect.isConnectingToInternet(getApplicationContext())) {
+        if (!ConnectionDetector.isConnectingToInternet(getApplicationContext())) {
             throw new Exception(AppConstants.ERROR_NETWORK);
         }
 

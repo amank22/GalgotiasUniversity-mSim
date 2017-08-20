@@ -354,7 +354,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
 
     public List<String> getTimeTableDays() {
         List<String> list = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cur = db.rawQuery("Select DISTINCT " + colDay + " FROM " + TimeTableTableName + " ORDER BY " + colID + " DESC", null);
         // looping through all rows and adding to list
         if (cur.moveToLast()) {
@@ -386,7 +386,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
 
     public List<ResultParcel> getResults(String semester) {
         List<ResultParcel> list = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cur = db.rawQuery("Select * FROM " + ResultTableName
                 + " WHERE " + colSem + "='" + semester + "'", null);
         // looping through all rows and adding to list
@@ -403,13 +403,13 @@ public class DbSimHelper extends SQLiteOpenHelper {
 
     public List<NewsParcel> getAllNews() {
         List<NewsParcel> list = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cur = db.rawQuery("Select * FROM " + NewsTableName + " ORDER BY "
                 + colID, null);
         // looping through all rows and adding to list
         if (cur.moveToLast()) {
             do {
-                Log.d("Database", "id=" + cur.getInt(0) + ":note=" + cur.getString(1) + ":imageUrl=" + cur.getString(2));
+//                Log.d("Database", "id=" + cur.getInt(0) + ":note=" + cur.getString(1) + ":imageUrl=" + cur.getString(2));
                 list.add(new NewsParcel(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3)));
             } while (cur.moveToPrevious());
         }

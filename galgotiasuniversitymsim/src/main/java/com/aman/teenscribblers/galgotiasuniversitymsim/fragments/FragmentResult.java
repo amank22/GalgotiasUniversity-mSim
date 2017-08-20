@@ -13,6 +13,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.adapter.ResultAdapter;
 import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.LocalErrorEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.ResultSuccessEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.ResultJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.ResultLocalJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.ResultParcel;
@@ -75,7 +76,8 @@ public class FragmentResult extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(final LocalErrorEvent event) {
-        GUApp.getJobManager().addJobInBackground(new ResultJob());
+        String admNo= PrefUtils.getFromPrefs(getContext(),PrefUtils.PREFS_USER_ADMNO_KEY,"").trim();
+        GUApp.getJobManager().addJobInBackground(new ResultJob(admNo));
     }
 
     private void setAdapter(List<ResultParcel> parsedList) {

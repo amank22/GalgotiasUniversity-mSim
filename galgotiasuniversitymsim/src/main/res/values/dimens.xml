@@ -5,6 +5,7 @@
     <dimen name="grid_4x">4dp</dimen>
     <dimen name="grid_8x">8dp</dimen>
     <dimen name="grid_16x">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
