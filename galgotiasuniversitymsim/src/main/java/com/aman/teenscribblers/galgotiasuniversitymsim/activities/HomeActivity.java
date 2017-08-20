@@ -19,11 +19,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.ResultPasswordFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AboutDeveloperFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AttendanceContentFragment;
-import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentResultBase;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.InformationFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.TimeTableContent;
@@ -110,7 +110,7 @@ public class HomeActivity extends BaseActivity
                     .commit();
         } else if (id == R.id.nav_results) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, new FragmentResultBase())
+                    .replace(R.id.container, new ResultPasswordFragment())
                     .commit();
         } else if (id == R.id.nav_news) {
             fragmentManager.beginTransaction()
