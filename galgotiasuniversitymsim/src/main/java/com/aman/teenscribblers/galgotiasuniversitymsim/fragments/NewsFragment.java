@@ -146,7 +146,7 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         int cx = position[0] + view.getWidth() / 2;
         int cy = position[1] + view.getHeight() / 2;
         final NewsTopicListFragment fragment = NewsTopicListFragment.newInstance(cx, cy);
-        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(FOLLOW_TOPIC_TAG).replace(R.id.container, fragment, FOLLOW_TOPIC_TAG).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(FOLLOW_TOPIC_TAG).add(R.id.container, fragment, FOLLOW_TOPIC_TAG).commit();
     }
 
 

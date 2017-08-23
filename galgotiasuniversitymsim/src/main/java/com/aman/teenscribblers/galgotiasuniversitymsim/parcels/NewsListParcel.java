@@ -55,8 +55,14 @@ public class NewsListParcel {
         private String name;
         @SerializedName("email")
         private String email;
+        @SerializedName("profile_pic")
+        private String profilePic;
         @SerializedName("follows")
         private boolean follows;
+
+        public String getProfilePic() {
+            return profilePic;
+        }
 
         public String getId() {
             return id;

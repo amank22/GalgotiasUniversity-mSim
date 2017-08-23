@@ -15,11 +15,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.helper.DbSimHelper;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.NewsActivity;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.DbSimHelper;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.squareup.picasso.Picasso;
@@ -38,21 +37,20 @@ public class MyFcmListenerService extends FirebaseMessagingService {
         String from = remoteMessage.getFrom();
         Map data = remoteMessage.getData();
 
+        String id = data.containsKey("id") ? data.get("id").toString() : null;
         String message = data.containsKey("message") ? data.get("message").toString() : null;
         String imageUrl = data.containsKey("image") ? data.get("image").toString() : null;
         String systemMsg = data.containsKey("systemmsg") ? data.get("systemmsg").toString() : null;
         String author = from.replace("/topics/", "");
-        Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
-        Log.d(TAG, "ImageUrl: " + imageUrl);
-        Log.d(TAG, "SystemMessage: " + systemMsg);
         if (systemMsg != null && !systemMsg.equals("true")) {
-            DbSimHelper.getInstance().addnewnews(message, imageUrl, author);
-            /*
-              In some cases it may be useful to show a notification indicating to the user
-              that a message was received.
-             */
-            sendNotification(message, imageUrl, author);
+            if (id == null) {
+                return;
+            }
+            try {
+                DbSimHelper.getInstance().addnewnews(id, message, imageUrl, author);
+                sendNotification(message, imageUrl, author);
+            } catch (Exception ignore) {
+            }
         } else if (systemMsg != null) {
             assert message != null;
             String[] newTopics = message.split(",");

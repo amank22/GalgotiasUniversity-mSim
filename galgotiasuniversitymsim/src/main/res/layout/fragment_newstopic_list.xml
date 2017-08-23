@@ -27,7 +27,6 @@
         android:name="com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsTopicListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="48dp"
         app:layoutManager="LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/item_newstopic" />

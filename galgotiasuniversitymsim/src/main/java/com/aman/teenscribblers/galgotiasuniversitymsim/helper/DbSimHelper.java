@@ -231,13 +231,14 @@ public class DbSimHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addnewnews(String note, String url, String author) {
+    public void addnewnews(String id, String note, String url, String author) throws Exception{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
+        cv.put(colID, id);
         cv.put(colNote, note);
         cv.put(colImageUrl, url);
         cv.put(colAuthor, author);
-        db.insert(NewsTableName, colNote, cv);
+        db.insertOrThrow(NewsTableName, colNote, cv);
         db.close();
     }
 

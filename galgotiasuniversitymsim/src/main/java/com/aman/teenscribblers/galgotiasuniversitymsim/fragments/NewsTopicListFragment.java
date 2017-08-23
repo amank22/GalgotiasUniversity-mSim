@@ -9,16 +9,15 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -205,8 +204,6 @@ public class NewsTopicListFragment extends BaseFragment {
     }
 
     private void AddTopicOnServer(final View view, final String admNo, final List<String> follow, final List<String> unfollow) {
-        String token = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "AddTopicOnServer: " + token);
         IonMethods.followTopics(admNo, FirebaseInstanceId.getInstance().getToken(), follow, unfollow, new FutureCallback<Response<JsonObject>>() {
             @Override
             public void onCompleted(Exception e, Response<JsonObject> result) {
@@ -248,7 +245,7 @@ public class NewsTopicListFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(NewsTopicEvent event) {
         if (event.getTopics() != null) {
-            mAdapter = new NewsTopicAdapter(event.getTopics(), mListener);
+            mAdapter = new NewsTopicAdapter(getActivity(), event.getTopics(), mListener);
             recyclerView.setAdapter(mAdapter);
             loader.setVisibility(View.GONE);
             for (NewsListParcel.NewsTopics topic : event.getTopics()) {
@@ -283,18 +280,6 @@ public class NewsTopicListFragment extends BaseFragment {
         });
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        if (context instanceof OnListFragmentInteractionListener) {
-//            mListener = (OnListFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnListFragmentInteractionListener");
-//        }
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -309,7 +294,12 @@ public class NewsTopicListFragment extends BaseFragment {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    getActivity().getSupportFragmentManager().popBackStack();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            getActivity().getSupportFragmentManager().beginTransaction().remove(NewsTopicListFragment.this).commitNowAllowingStateLoss();
+                        }
+                    }, 200);
                 }
             });
         } else {
