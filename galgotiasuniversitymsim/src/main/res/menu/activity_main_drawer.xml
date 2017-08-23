@@ -22,13 +22,14 @@
             android:icon="@drawable/ic_result"
             android:title="@string/title_section4" />
         <item
+            android:id="@+id/nav_seatingplan"
+            android:icon="@drawable/ic_seat"
+            android:title="@string/title_section9" />
+        <item
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_news"
             android:title="@string/title_section5" />
-        <item
-            android:id="@+id/nav_seatingplan"
-            android:icon="@drawable/ic_news"
-            android:title="@string/title_section9" />
+
     </group>
 
     <group
