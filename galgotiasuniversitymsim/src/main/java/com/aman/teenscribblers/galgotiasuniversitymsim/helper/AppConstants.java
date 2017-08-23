@@ -12,9 +12,12 @@ public class AppConstants {
     public static final String PersonalInfoString = "http://182.71.87.38/iSIM/Student/Course";
     public static final String OfficialInfoString = "http://182.71.87.38/iSIM/Student/StudentOfficial";
     public static final String StudentImagebase = "http://182.71.87.38/iSIM/studentimages/";
+    public static final String SeatingPlanString = "http://182.71.87.38/ISIM/Student/frmStdSeatingPlan";
+    public static final String AdmitCardString = "http://182.71.87.38/ISIM/Student/frmAdmitcard";
     public static final String captchaurl = "http://182.71.87.38/iSIM/Student/capimage";
     public static final String PERSONAL_HEADING = "~Heading~";
     public static final String OFFICIAL_HEADING = "~Heading~";
+    public static final String SEATING_HEADING = "~Heading~";
     public static final String ATT_TODAY = "Today Attendance";
     public static final String ATT_SUBJECT = "Subject Wise Attendance";
 //    public static final String ATT_DATE = "Date Wise";
@@ -22,6 +25,7 @@ public class AppConstants {
     public static final String FILE_NAME_DATE = "dateAtt";
     public static final String FILE_NAME_PERSONAL = "personal.txt";
     public static final String FILE_NAME_OFFICIAL = "official.txt";
+    public static final String FILE_NAME_SEATING = "seating.txt";
     public static final String FILE_NAME_TODAY = "todayAtt";
     public static final String ERROR_SESSION_EXPIRED = "Sorry,Your Session has expired.Let's Start again..";
     public static final String ERROR_CONTENT_FETCH = "Sorry,We encountered some error.Let's try again.";

@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentResultBase;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.ResultPasswordFragment;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.SeatFragment;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.SeatingPlanFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AboutDeveloperFragment;
@@ -117,7 +119,12 @@ public class HomeActivity extends BaseActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, NewsFragment.newInstance())
                     .commit();
-        } else if (id == R.id.nav_send) {
+        }
+        else if (id == R.id.nav_seatingplan) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container,new SeatFragment())
+                    .commit();
+        }else if (id == R.id.nav_send) {
 
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");

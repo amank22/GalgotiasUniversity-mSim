@@ -12,6 +12,7 @@ public class InfoEvent {
     public static final String TYPE_PERSONAL = "type_personal";
     public static final String TYPE_OFFICIAL = "type_official";
     public static final String TYPE_RESULT = "type_result";
+    public static final String TYPE_SEATING = "type_seating";
 
     private String data;
     private String type;
