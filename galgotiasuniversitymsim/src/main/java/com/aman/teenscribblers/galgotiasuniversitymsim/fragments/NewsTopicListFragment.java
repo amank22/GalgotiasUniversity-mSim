@@ -17,6 +17,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,7 +120,7 @@ public class NewsTopicListFragment extends BaseFragment {
         Context context = view.getContext();
         recyclerView = (RecyclerView) view.findViewById(R.id.news_topic_list);
         loader = view.findViewById(R.id.progressBar_news_topics);
-        recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
         admNo = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, "").trim();
         GUApp.getJobManager().addJobInBackground(new NewsTopicsJob(admNo));
         buttontopicsubmit.setOnClickListener(new View.OnClickListener() {

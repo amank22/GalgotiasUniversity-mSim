@@ -2,6 +2,7 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -49,15 +50,13 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
         @Override
         public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            Snackbar.make(mSwipeRefreshLayout, "News will be deleted forever", Snackbar.LENGTH_LONG).setCallback(new Snackbar.Callback() {
+            Snackbar.make(mSwipeRefreshLayout, "News will be deleted forever", Snackbar.LENGTH_LONG).addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
                 @Override
-                public void onDismissed(Snackbar snackbar, int event) {
-                    super.onDismissed(snackbar, event);
+                public void onDismissed(Snackbar transientBottomBar, int event) {
+                    super.onDismissed(transientBottomBar, event);
                     Log.d(TAG, "OnDismissed:" + event);
                     if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
                         Analytics.selectContent(getContext(), mFirebaseAnalytics, String.valueOf(mAdapter.getItemId(viewHolder.getAdapterPosition())), "onDismissed", "News");
-
-                        Log.d(TAG, "OnDismissed-ITEMID:" + String.valueOf(mAdapter.getItemId(viewHolder.getAdapterPosition())));
                         boolean result = DbSimHelper.getInstance().deleteNews(String.valueOf(mAdapter.getItemId(viewHolder.getAdapterPosition())));
                         if (result)
                             GUApp.getJobManager().addJobInBackground(new NewsDBJob());
@@ -65,7 +64,6 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                         mAdapter.notifyDataSetChanged();
                     }
                 }
-
             }).setAction("Undo", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -124,9 +122,9 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 //                    }
 //                })
 //        );
-        if(parcel==null) {
+        if (parcel == null) {
             GUApp.getJobManager().addJobInBackground(new NewsDBJob());
-        }else{
+        } else {
             mSwipeRefreshLayout.setRefreshing(false);
             uselist();
         }
@@ -170,12 +168,6 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             mRecyclerView.setAdapter(mAdapter);
         }
     }
-
-//    @Override
-//    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//        Snackbar.make(mSwipeRefreshLayout, parcel.get(i).getNote(), Snackbar.LENGTH_LONG).show();
-////        AlertDialogManager.showAlertDialog(getActivity(), parcel.get(i).getNote(), "News Section", parcel.get(i).getImage_url());
-//    }
 
     @Override
     public void onRefresh() {

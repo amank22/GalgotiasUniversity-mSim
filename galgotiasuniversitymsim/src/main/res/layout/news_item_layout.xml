@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:background="@color/ts_white"
     android:orientation="vertical">
 
     <ImageView
+        android:layout_marginTop="@dimen/grid_8x"
         android:id="@+id/news_item_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,5 +28,8 @@
         android:text="@string/news_string_note"
         android:textColor="@color/ts_grey_dark" />
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@color/ts_grey_dark" />
 </LinearLayout>
