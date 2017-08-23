@@ -47,7 +47,7 @@ public class ResultPasswordFragment extends Fragment {
 
                 if (s1.contentEquals("fineanmol"))
                 {
-                    Toast.makeText(getActivity(), "Hello Anmol", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Password Accepted", Toast.LENGTH_SHORT).show();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container,new FragmentResultBase()).commit();
 
 
