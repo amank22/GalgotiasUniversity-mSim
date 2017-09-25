@@ -1,7 +1,0 @@
-<resources>
-
-
-    <!-- Strings related to login -->
-    <string name="prompt_password">Password</string>
-
-</resources>

@@ -19,8 +19,14 @@ import android.support.v4.app.NotificationCompat;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.NewsActivity;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.DbSimHelper;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.IonMethods;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsTopicsParcel;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Response;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -37,20 +43,31 @@ public class MyFcmListenerService extends FirebaseMessagingService {
         String from = remoteMessage.getFrom();
         Map data = remoteMessage.getData();
 
-        String id = data.containsKey("id") ? data.get("id").toString() : null;
-        String message = data.containsKey("message") ? data.get("message").toString() : null;
-        String imageUrl = data.containsKey("image") ? data.get("image").toString() : null;
+        final String id = data.containsKey("id") ? data.get("id").toString() : null;
+        String topicId = data.containsKey("topicid") ? data.get("userid").toString() : null;
+        final String message = data.containsKey("message") ? data.get("message").toString() : null;
+        final String imageUrl = data.containsKey("image") ? data.get("image").toString() : null;
         String systemMsg = data.containsKey("systemmsg") ? data.get("systemmsg").toString() : null;
-        String author = from.replace("/topics/", "");
+        final String author = from.replace("/topics/", "");
         if (systemMsg != null && !systemMsg.equals("true")) {
             if (id == null) {
                 return;
             }
-            try {
-                DbSimHelper.getInstance().addnewnews(id, message, imageUrl, author);
-                sendNotification(message, imageUrl, author);
-            } catch (Exception ignore) {
+            String admNo = PrefUtils.getFromPrefs(this, PrefUtils.PREFS_LOGIN_USERNAME_KEY, null);
+            if (admNo == null) {
+                return;
             }
+            String gcmId = FirebaseInstanceId.getInstance().getToken();
+            IonMethods.getNewsSpecificTopic(topicId, admNo, gcmId, new FutureCallback<Response<NewsTopicsParcel>>() {
+                @Override
+                public void onCompleted(Exception e, Response<NewsTopicsParcel> result) {
+                    try {
+                        DbSimHelper.getInstance().addnewnews(id, message, imageUrl, author);
+                        sendNotification(message, imageUrl, author);
+                    } catch (Exception ignore) {
+                    }
+                }
+            });
         } else if (systemMsg != null) {
             assert message != null;
             String[] newTopics = message.split(",");

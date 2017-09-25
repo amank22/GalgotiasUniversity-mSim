@@ -16,7 +16,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,7 +31,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.events.NewsTopicEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.IonMethods;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.NewsTopicsJob;
-import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsListParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsTopicsParcel;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonObject;
@@ -249,7 +248,7 @@ public class NewsTopicListFragment extends BaseFragment {
             mAdapter = new NewsTopicAdapter(getActivity(), event.getTopics(), mListener);
             recyclerView.setAdapter(mAdapter);
             loader.setVisibility(View.GONE);
-            for (NewsListParcel.NewsTopics topic : event.getTopics()) {
+            for (NewsTopicsParcel.NewsTopics topic : event.getTopics()) {
                 selectedMap.put(topic.getName(), topic.isFollows());
             }
         } else if (event.getError().contains("User not Valid")) {
@@ -319,6 +318,6 @@ public class NewsTopicListFragment extends BaseFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(NewsListParcel.NewsTopics item);
+        void onListFragmentInteraction(NewsTopicsParcel.NewsTopics item);
     }
 }

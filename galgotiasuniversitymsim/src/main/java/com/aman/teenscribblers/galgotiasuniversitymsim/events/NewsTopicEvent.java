@@ -1,6 +1,6 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.events;
 
-import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsListParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsTopicsParcel;
 
 import java.util.List;
 
@@ -11,14 +11,14 @@ import java.util.List;
 public class NewsTopicEvent {
 
     private String error;
-    private List<NewsListParcel.NewsTopics> topics;
+    private List<NewsTopicsParcel.NewsTopics> topics;
 
     public NewsTopicEvent(String error) {
         this.error = error;
         this.topics = null;
     }
 
-    public NewsTopicEvent(List<NewsListParcel.NewsTopics> topics) {
+    public NewsTopicEvent(List<NewsTopicsParcel.NewsTopics> topics) {
         this.topics = topics;
         this.error = null;
     }
@@ -27,7 +27,7 @@ public class NewsTopicEvent {
         return error;
     }
 
-    public List<NewsListParcel.NewsTopics> getTopics() {
+    public List<NewsTopicsParcel.NewsTopics> getTopics() {
         return topics;
     }
 }

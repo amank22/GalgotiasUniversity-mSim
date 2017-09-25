@@ -25,11 +25,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-
-import static android.media.CamcorderProfile.get;
 
 /**
  * Created by aman on 19-02-2015.
@@ -102,16 +101,24 @@ public class AttendanceJob extends Job {
     private void addToDatabase(String value, String pageData) throws Exception {
         //MCPH1_SCPH_GVSubject MCPH1_SCPH_gvDailyAttendence1
         if (!value.equals("Today Attendance")) {
+            HashMap<String, String> colorCodes = parseColorCode(pageData);
+            // TODO: 26/09/17 All Color codes and corrosponding texts here. 
             Elements rows = parseDoc(pageData, "MCPH1_SCPH_GVSubject");
             dbhelper.deletesubj();
             for (Element row : rows) {
                 Elements values = row.select("td span");
                 String semester = values.get(3).text();
                 String subject = values.get(4).text();
-                int present = Integer.parseInt(values.get(5).text());
-                int absent = Integer.parseInt(values.get(6).text());
-                int total = Integer.parseInt(values.get(7).text());
-                float percentage = Float.valueOf(values.get(8).text());
+                // TODO: 26/09/17 Here in gcet only status is there so need to removed these 4 values and add a status
+                String status = row.select("td").last().attr("bgcolor");
+                String statusText = colorCodes.get(status);
+                // TODO: 26/09/17 Here is the text which can be shown to student 
+                // TODO: 26/09/17 Can add new field to database to store this text and color 
+                // TODO: 26/09/17 After storing get this color and text and show in recyclerview of @AttendanceContentFragment 
+                int present = 0;
+                int absent = 0;
+                int total = 0;
+                float percentage = 0;
                 SubjectParcel subjectParcel = new SubjectParcel(semester, subject, present, absent, total, percentage);
                 dbhelper.addnewsubj(subjectParcel, String.format("%s-%s", startDate, endDate));
             }
@@ -187,7 +194,34 @@ public class AttendanceJob extends Job {
         return 3;
     }
 
-    Elements parseDoc(String s, String tableid) throws Exception {
+    private HashMap<String, String> parseColorCode(String s) throws Exception {
+        HashMap<String, String> colorsMap = new HashMap<>();
+        String tableid = "table.font-size11";
+        Document doc = Jsoup.parse(s);
+        Elements table = doc.select("table." + tableid + " > tbody > tr");
+        if (table.isEmpty()) {
+            throw new Exception(AppConstants.ERROR_NO_CONTENT);
+        }
+        Element row = table.first();
+        Elements colors = row.select("td > span");
+        Elements values = row.select("td > strong");
+        if (values.size() != colors.size()) {
+            throw new Exception(AppConstants.ERROR_NO_CONTENT);
+        }
+        for (int i = 0; i < values.size(); i++) {
+            String colorRaw = colors.get(i).select("*[style*='background-color']").toString();
+            String[] split = colorRaw.split("#");
+            if (split.length <= 1) {
+                throw new Exception(AppConstants.ERROR_NO_CONTENT);
+            }
+            String color = "#" + split[1].substring(0, 6);
+            String value = values.get(i).html();
+            colorsMap.put(color, value);
+        }
+        return colorsMap;
+    }
+
+    private Elements parseDoc(String s, String tableid) throws Exception {
         Document doc = Jsoup.parse(s);
         Elements table = doc.select("table#" + tableid + " > tbody > tr").not(".top-heading");
         if (table.isEmpty()) {

@@ -8,7 +8,7 @@ import java.util.List;
  * Created by amankapoor on 05/08/17.
  */
 
-public class NewsListParcel {
+public class NewsTopicsParcel {
 
     /**
      * error : false
@@ -22,11 +22,17 @@ public class NewsListParcel {
     private String result;
     @SerializedName("topics")
     private List<NewsTopics> topics;
+    @SerializedName("topic")
+    private NewsTopics specificTopic;
     @SerializedName("status")
     private int status;
 
     public List<NewsTopics> getTopics() {
         return topics;
+    }
+
+    public NewsTopics getSpecificTopic() {
+        return specificTopic;
     }
 
     public boolean getError() {

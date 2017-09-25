@@ -1,23 +1,23 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.helper;
 
 public class AppConstants {
-    public static final String BaseUrl = "http://182.71.87.38/";
-    public static final String ERROR_BASE_URL = "http://182.71.87.38/ISIM/msg.htm";
-    public static final String LoginString = "http://182.71.87.38/iSIM/Login";
-    public static final String HomeString = "http://182.71.87.38/iSIM/Home";
-    public static final String AttendanceString = "http://182.71.87.38/iSIM/Student/TodayAttendence";
-    public static final String AlertString = "http://182.71.87.38/iSIM/Student/Alerts";
-    public static final String TimeTableString = "http://182.71.87.38/iSIM/Student/TimeTable";
-    public static final String ResultString = "http://182.71.87.38/iSIM/Student/ExamResult";
-    public static final String PersonalInfoString = "http://182.71.87.38/iSIM/Student/Course";
-    public static final String OfficialInfoString = "http://182.71.87.38/iSIM/Student/StudentOfficial";
-    public static final String StudentImagebase = "http://182.71.87.38/iSIM/studentimages/";
-    public static final String captchaurl = "http://182.71.87.38/iSIM/Student/capimage";
+    public static final String BaseUrl = "http://182.71.87.38/ISIM/";
+    public static final String BaseUrlGCT = "http://122.160.168.157/isimgc/";
+    public static final String ERROR_BASE_URL = BaseUrlGCT + "msg.htm";
+    public static final String LoginString = BaseUrlGCT + "Login";
+    public static final String HomeString = BaseUrlGCT + "Home";
+    public static final String AttendanceString = BaseUrlGCT + "Student/TodayAttendence";
+    public static final String AlertString = BaseUrlGCT + "Student/Alerts";
+    public static final String TimeTableString = BaseUrlGCT + "Student/TimeTable";
+    public static final String ResultString = BaseUrlGCT + "Student/ExamResult";
+    public static final String PersonalInfoString = BaseUrlGCT + "Student/Course";
+    public static final String OfficialInfoString = BaseUrlGCT + "Student/StudentOfficial";
+    public static final String captchaurl = BaseUrlGCT + "Student/capimage";
     public static final String PERSONAL_HEADING = "~Heading~";
     public static final String OFFICIAL_HEADING = "~Heading~";
     public static final String ATT_TODAY = "Today Attendance";
     public static final String ATT_SUBJECT = "Subject Wise Attendance";
-//    public static final String ATT_DATE = "Date Wise";
+    //    public static final String ATT_DATE = "Date Wise";
     public static final String FILE_NAME_SUBJECT = "subjectsAtt";
     public static final String FILE_NAME_DATE = "dateAtt";
     public static final String FILE_NAME_PERSONAL = "personal.txt";
@@ -37,7 +37,7 @@ public class AppConstants {
     public static final String GroupAttendance = "Attendance";
     public static final String GroupTimeTable = "TimeTable";
 
-    public static final String[] TOPICS = {"Admin","TechOnly","StudioD","Placements","BfuBox","Kalakriti"};
+    public static final String[] TOPICS = {"Admin", "TechOnly", "StudioD", "Placements", "BfuBox", "Kalakriti"};
     public static String viewstate = "";
     public static String eventvalidate = "";
     public static String viewStateGenerator = "";

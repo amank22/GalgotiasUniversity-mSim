@@ -17,6 +17,9 @@
     <string name="title_section8">Logout</string>
 
 
+    <!-- Strings related to login -->
+    <string name="prompt_password">Password</string>
+
     <string name="title_official_info">Official Info</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

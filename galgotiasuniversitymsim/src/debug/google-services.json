@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "217888408945",
+    "firebase_url": "https://gu-msim.firebaseio.com",
+    "project_id": "gu-msim",
+    "storage_bucket": "gu-msim.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217888408945:android:4c8f79f61ab4cb42",
+        "android_client_info": {
+          "package_name": "com.aman.teenscribblers.galgotiasuniversitymsim.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217888408945-f5p37rai9upvqd5mrsct7u830s7n4317.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aman.teenscribblers.galgotiasuniversitymsim.debug",
+            "certificate_hash": "777b913f2732298b67f4710e9938e69dded69acb"
+          }
+        },
+        {
+          "client_id": "217888408945-0rgu5uef6a09hrgfhq66vcnuvr2nh4h9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0N0H0wsjVUyKOtHM_gHx6tZol1djSQyU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217888408945-0rgu5uef6a09hrgfhq66vcnuvr2nh4h9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

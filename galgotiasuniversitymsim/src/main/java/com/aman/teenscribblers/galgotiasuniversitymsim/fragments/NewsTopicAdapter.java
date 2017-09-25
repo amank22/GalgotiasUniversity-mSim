@@ -17,24 +17,24 @@ import android.widget.TextView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsTopicListFragment.OnListFragmentInteractionListener;
-import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsListParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsTopicsParcel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class NewsTopicAdapter extends RecyclerView.Adapter<NewsTopicAdapter.ViewHolder> {
 
-    private final List<NewsListParcel.NewsTopics> mTopics;
+    private final List<NewsTopicsParcel.NewsTopics> mTopics;
     private final OnListFragmentInteractionListener mListener;
     private final ArrayMap<String, Boolean> selectedMap;
     private final Context mContext;
 
-    public NewsTopicAdapter(Context context, List<NewsListParcel.NewsTopics> topics, OnListFragmentInteractionListener listener) {
+    public NewsTopicAdapter(Context context, List<NewsTopicsParcel.NewsTopics> topics, OnListFragmentInteractionListener listener) {
         mTopics = topics;
         mContext = context;
         mListener = listener;
         selectedMap = new ArrayMap<>(topics.size());
-        for (NewsListParcel.NewsTopics topic : topics) {
+        for (NewsTopicsParcel.NewsTopics topic : topics) {
             selectedMap.put(topic.getName(), topic.isFollows());
         }
     }
@@ -93,7 +93,7 @@ public class NewsTopicAdapter extends RecyclerView.Adapter<NewsTopicAdapter.View
         public final ImageView mImage;
         public final ImageView mCheckMark;
         public final View mOverlay;
-        public NewsListParcel.NewsTopics mItem;
+        public NewsTopicsParcel.NewsTopics mItem;
 
         public ViewHolder(View view) {
             super(view);

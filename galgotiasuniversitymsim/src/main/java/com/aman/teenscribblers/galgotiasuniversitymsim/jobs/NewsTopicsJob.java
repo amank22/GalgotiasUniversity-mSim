@@ -7,7 +7,7 @@ import android.util.Log;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.NewsTopicEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.AppConstants;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.IonMethods;
-import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsListParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsTopicsParcel;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
@@ -39,11 +39,11 @@ public class NewsTopicsJob extends Job {
     public void onRun() throws Throwable {
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d("News", "AddTopicOnServer: " + token);
-        NewsListParcel newsTopicParcel = IonMethods.getNewsTopicLists(admNo, FirebaseInstanceId.getInstance().getToken());
+        NewsTopicsParcel newsTopicParcel = IonMethods.getNewsTopicLists(admNo, FirebaseInstanceId.getInstance().getToken());
         if (newsTopicParcel.getError()) {
             EventBus.getDefault().post(new NewsTopicEvent(newsTopicParcel.getResult()));
         } else {
-            final List<NewsListParcel.NewsTopics> topics = newsTopicParcel.getTopics();
+            final List<NewsTopicsParcel.NewsTopics> topics = newsTopicParcel.getTopics();
             EventBus.getDefault().post(new NewsTopicEvent(topics));
         }
     }

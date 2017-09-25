@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.CaptchaEvent;
-import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsListParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsTopicsParcel;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -190,7 +190,7 @@ public class IonMethods {
         }
         Response<JsonObject> result;
         result = base
-                .setLogging("POST", Log.DEBUG)
+                .setLogging("postBasicstoServer", Log.DEBUG)
                 .asJsonObject().withResponse().get();
         System.out.println(result);
         if (result.getHeaders().code() != 200) {
@@ -215,7 +215,7 @@ public class IonMethods {
         }
         Response<JsonObject> result;
         result = base
-                .setLogging("POST", Log.DEBUG)
+                .setLogging("postProfiletoServer", Log.DEBUG)
                 .asJsonObject().withResponse().get();
         if (result.getHeaders().code() != 200) {
             status = false;
@@ -226,7 +226,7 @@ public class IonMethods {
         return status;
     }
 
-    public static void postProfiletoServer(ContentValues nvp, FutureCallback<Response<JsonObject>> callback){
+    public static void postProfiletoServer(ContentValues nvp, FutureCallback<Response<JsonObject>> callback) {
         B base = Ion.with(GUApp.getInstance().getApplicationContext())
                 .load("https://galgotiasuniversity.herokuapp.com/v1/student/update");
         for (Map.Entry<String, Object> entry : nvp.valueSet()) {
@@ -234,11 +234,11 @@ public class IonMethods {
                 base.setBodyParameter(entry.getKey().trim(), entry.getValue().toString().trim());
             }
         }
-        base.setLogging("POST", Log.DEBUG)
+        base.setLogging("postProfiletoServer", Log.DEBUG)
                 .asJsonObject().withResponse().setCallback(callback);
     }
 
-    public static NewsListParcel getNewsTopicLists(String admissionNo, String gcmId) throws Exception {
+    public static NewsTopicsParcel getNewsTopicLists(String admissionNo, String gcmId) throws Exception {
 
         B base = Ion.with(GUApp.getInstance().getApplicationContext())
                 .load("https://galgotiasuniversity.herokuapp.com/v1/topics");
@@ -246,17 +246,32 @@ public class IonMethods {
         base.setBodyParameter("adm_no", admissionNo);
         base.setBodyParameter("gcm_id", gcmId);
         if (GUApp.isDebug()) {
-            base.setLogging("POST", Log.DEBUG);
+            base.setLogging("getNewsTopicLists", Log.DEBUG);
         }
-        Response<NewsListParcel> result;
+        Response<NewsTopicsParcel> result;
         result = base
-                .as(NewsListParcel.class).withResponse()
+                .as(NewsTopicsParcel.class).withResponse()
                 .get();
         if (result.getHeaders().code() == 200) {
             return result.getResult();
         } else {
             throw new Exception(result.getResult().getResult());
         }
+    }
+
+    public static void getNewsSpecificTopic(String topicId, String admissionNo, String gcmId,
+                                            FutureCallback<Response<NewsTopicsParcel>> callback) {
+
+        B base = Ion.with(GUApp.getInstance().getApplicationContext())
+                .load("https://galgotiasuniversity.herokuapp.com/v1/topic/read");
+
+        base.setBodyParameter("adm_no", admissionNo);
+        base.setBodyParameter("gcm_id", gcmId);
+        base.setBodyParameter("topic_id", topicId);
+        if (GUApp.isDebug()) {
+            base.setLogging("getNewsSpecificTopic", Log.DEBUG);
+        }
+        base.as(NewsTopicsParcel.class).withResponse().setCallback(callback);
     }
 
     public static void followTopics(String admissionNo, String gcmId, List<String> topics, List<String> unfollows,

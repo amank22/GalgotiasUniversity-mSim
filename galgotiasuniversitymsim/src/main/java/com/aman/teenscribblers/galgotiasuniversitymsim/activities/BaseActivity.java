@@ -26,7 +26,6 @@ public abstract class BaseActivity extends AppCompatActivity{
         setContentView(getLayoutResource());
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
     }
 
     protected abstract int getLayoutResource();

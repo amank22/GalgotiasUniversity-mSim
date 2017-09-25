@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GU mSim D</string>
+    <string name="title_activity_home">GU mSim Debug</string>
+
+    <string name="string_qurux">QURUX</string>
+    <string name="gu_name_two_lines">Galgotias\nUniversity\n Debug</string>
+
+</resources>
