@@ -41,6 +41,7 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
     @Override
     public void onBindViewHolder(final NewsRecycleAdapter.ViewHolder holder, int position) {
         holder.mTextView.setText(parcel.get(position).getNote());
+        holder.mTextAuthor.setText(parcel.get(position).getAuthor());
         String url = parcel.get(position).getImage_url();
         if (url == null || url.equals("")) {
             holder.mImageView.setVisibility(View.GONE);
@@ -81,7 +82,7 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
     public int getItemCount() {
         return (parcel == null) ? 0 : parcel.size();
     }
-    
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -89,11 +90,13 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
+        public TextView mTextAuthor;
         public ImageView mImageView;
 
         public ViewHolder(View v) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.news_item_note);
+            mTextAuthor = (TextView) v.findViewById(R.id.news_item_author);
             mImageView = (ImageView) v.findViewById(R.id.news_item_image);
         }
     }

@@ -1,35 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
+    <TextView
+        android:id="@+id/news_item_author"
+        style="@style/CustomStrongFont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/grid_16x"
+        android:layout_marginStart="@dimen/grid_16x"
         android:layout_marginTop="@dimen/grid_8x"
+        android:drawablePadding="@dimen/grid_4x"
+        android:drawableLeft="@drawable/ic_avatar_admin"
+        android:drawableStart="@drawable/ic_avatar_admin"
+        android:textColor="#000"
+        android:textSize="18sp"
+        tools:text="Admin" />
+
+    <ImageView
         android:id="@+id/news_item_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/grid_8x"
         android:contentDescription="@string/news_string_image"
         android:minHeight="100dp"
-        android:scaleType="center"
+        android:scaleType="centerCrop"
         android:src="@drawable/rect_grey" />
 
     <TextView
         android:id="@+id/news_item_note"
-        style="@style/CustomStrongFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="@dimen/grid_4x"
+        android:layout_marginLeft="@dimen/grid_16x"
+        android:layout_marginRight="@dimen/grid_16x"
+        android:layout_marginTop="@dimen/grid_8x"
+        android:autoLink="all"
         android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="3"
-        android:padding="10dp"
+        android:linksClickable="true"
         android:text="@string/news_string_note"
-        android:textColor="@color/ts_grey_dark" />
+        android:textColor="@color/ts_grey_dark"
+        android:textIsSelectable="true" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.2dp"
-        android:background="@color/ts_grey_dark" />
+        android:background="@color/ts_grey_dark"
+        android:visibility="invisible"/>
 </LinearLayout>

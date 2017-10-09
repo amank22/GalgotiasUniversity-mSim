@@ -57,7 +57,6 @@ public class NewsTopicListFragment extends BaseFragment {
     private static final String TAG = NewsTopicListFragment.class.getCanonicalName();
     private static final String ARG_CLICK_X = "click_x";
     private static final String ARG_CLICK_Y = "click_y";
-    private static final int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
     private ProgressBar loader;
@@ -101,13 +100,17 @@ public class NewsTopicListFragment extends BaseFragment {
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            startRevealAnimation(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    doOnViewCreated(view);
-                }
-            });
+            try {
+                startRevealAnimation(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        doOnViewCreated(view);
+                    }
+                });
+            } catch (Exception e) {
+                doOnViewCreated(view);
+            }
         } else {
             doOnViewCreated(view);
         }
