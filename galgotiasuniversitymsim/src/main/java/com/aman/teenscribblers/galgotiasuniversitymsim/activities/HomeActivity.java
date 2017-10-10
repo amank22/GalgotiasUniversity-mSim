@@ -102,27 +102,27 @@ public class HomeActivity extends BaseActivity
             Analytics.selectContent(this, mFirebaseAnalytics, "Info", "Information Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, new InformationFragment())
-                    .commit();
+                    .commitAllowingStateLoss();
         } else if (id == R.id.nav_att) {
             Analytics.selectContent(this, mFirebaseAnalytics, "Att", "Attendance Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, AttendanceContentFragment.newInstance())
-                    .commit();
+                    .commitAllowingStateLoss();
         } else if (id == R.id.nav_tt) {
             Analytics.selectContent(this, mFirebaseAnalytics, "tt", "TimeTable Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, TimeTableContent.newInstance())
-                    .commit();
+                    .commitAllowingStateLoss();
         } else if (id == R.id.nav_results) {
             Analytics.selectContent(this, mFirebaseAnalytics, "Res", "Result Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, new FragmentResultBase())
-                    .commit();
+                    .commitAllowingStateLoss();
         } else if (id == R.id.nav_news) {
             Analytics.selectContent(this, mFirebaseAnalytics, "News", "News Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, NewsFragment.newInstance())
-                    .commit();
+                    .commitAllowingStateLoss();
         } else if (id == R.id.nav_send) {
             Analytics.selectContent(this, mFirebaseAnalytics, "Msg", "Feedback Tab", "Navigation");
             Intent i = new Intent(Intent.ACTION_SEND);
@@ -139,7 +139,7 @@ public class HomeActivity extends BaseActivity
             Analytics.selectContent(this, mFirebaseAnalytics, "about", "About us Tab", "Navigation");
             fragmentManager.beginTransaction()
                     .replace(R.id.container, AboutDeveloperFragment.newInstance())
-                    .commit();
+                    .commitAllowingStateLoss();
         } else if (id == R.id.nav_logout) {
             Analytics.selectContent(this, mFirebaseAnalytics, "lgo", "Logout Tab", "Navigation");
             GUApp.logoutUser(HomeActivity.this);

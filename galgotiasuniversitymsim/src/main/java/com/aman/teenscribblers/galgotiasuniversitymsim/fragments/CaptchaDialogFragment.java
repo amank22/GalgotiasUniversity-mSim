@@ -133,9 +133,6 @@ public class CaptchaDialogFragment extends DialogFragment {
     public void onEventMainThread(LoginEvent event) {
         CurrentlyRunning = false;
         if (event.isError()) {
-            if (userName != null) {
-                Answers.getInstance().logLogin(new com.crashlytics.android.answers.LoginEvent().putSuccess(false).putCustomAttribute("user", userName));
-            }
             loading.setText(event.getReason());
             logOut.setVisibility(View.VISIBLE);
             if (getActivity() instanceof StudentLogin) {

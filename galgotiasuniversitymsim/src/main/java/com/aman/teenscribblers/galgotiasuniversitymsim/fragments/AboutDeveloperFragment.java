@@ -119,8 +119,9 @@ public class AboutDeveloperFragment extends BaseFragment {
             try {
                 AlertDialog dialog = new AlertDialog.Builder(getActivity()).setTitle("Error").setMessage("There is some error. Please try again later").create();
                 dialog.show();
-            }catch (Exception e){
-                Toast.makeText(getContext(),"There is some error. Please try again later",Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                if (getContext() != null)
+                    Toast.makeText(getContext(), "There is some error. Please try again later", Toast.LENGTH_LONG).show();
             }
         }
     }
