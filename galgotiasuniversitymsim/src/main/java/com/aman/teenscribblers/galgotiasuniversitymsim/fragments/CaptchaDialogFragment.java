@@ -1,7 +1,6 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -43,7 +42,7 @@ public class CaptchaDialogFragment extends DialogFragment {
     private Button logOut;
     private Map<String, String> params;
     private boolean CurrentlyRunning = false;
-    private boolean captchaRunnig = false;
+    private boolean captchaRunning = false;
     private String userName = null;
     private String password = null;
 
@@ -66,7 +65,7 @@ public class CaptchaDialogFragment extends DialogFragment {
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!captchaRunnig) {
+                if (!captchaRunning) {
                     final CaptchaJob captchaJob = new CaptchaJob("MainLogin");
                     GUApp.getJobManager().addJobInBackground(captchaJob);
                 }
@@ -143,17 +142,22 @@ public class CaptchaDialogFragment extends DialogFragment {
                 ((StudentLogin) getActivity()).setCurrentlyRunning(false);
             }
         } else {
-            if (userName != null) {
-                Answers.getInstance().logLogin(new com.crashlytics.android.answers.LoginEvent().putSuccess(true).putCustomAttribute("user", userName));
-            }
             loading.setText(event.getReason());
             if (getActivity() instanceof StudentLogin) {
+                if (userName != null) {
+                    Answers.getInstance().logLogin(new com.crashlytics.android.answers.LoginEvent().putSuccess(true).putCustomAttribute("user", userName)
+                            .putCustomAttribute("type", "new"));
+                }
                 PrefUtils.saveToPrefs(getContext(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, userName);
                 PrefUtils.saveToPrefs(getContext(), PrefUtils.PREFS_LOGIN_PASSWORD_KEY, password);
                 Intent i = new Intent(getActivity(), HomeActivity.class);
                 startActivity(i);
                 getActivity().finish();
             } else {
+                if (userName != null) {
+                    Answers.getInstance().logLogin(new com.crashlytics.android.answers.LoginEvent().putSuccess(true).putCustomAttribute("user", userName)
+                            .putCustomAttribute("type", "existing"));
+                }
                 getDialog().dismiss();
             }
         }
@@ -161,7 +165,7 @@ public class CaptchaDialogFragment extends DialogFragment {
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEventMainThread(final CaptchaEvent event) {
-        captchaRunnig = false;
+        captchaRunning = false;
         if (event.getBitmap() == null) {
             loading.setText(event.getErrorMsg() + "\nTap on Image to reload.");
         } else {
