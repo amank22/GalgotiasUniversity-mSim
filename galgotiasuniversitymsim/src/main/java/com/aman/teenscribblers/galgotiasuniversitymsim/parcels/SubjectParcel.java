@@ -10,6 +10,8 @@ public class SubjectParcel implements Parcelable {
 
     private String semester;
     private String subject;
+    private String colorCode;
+    private String colorText;
     private int present;
     private int absent;
     private int total;
@@ -22,6 +24,29 @@ public class SubjectParcel implements Parcelable {
         this.absent = absent;
         this.total = total;
         this.percentage = percentage;
+    }
+
+    public SubjectParcel(String semester, String subject, String colorCode, String colorText) {
+        this.semester = semester;
+        this.subject = subject;
+        this.colorCode = colorCode;
+        this.colorText = colorText;
+    }
+
+    public String getColorCode() {
+        return colorCode;
+    }
+
+    public String getColorText() {
+        return colorText;
+    }
+
+    public void setColorCode(String colorCode) {
+        this.colorCode = colorCode;
+    }
+
+    public void setColorText(String colorText) {
+        this.colorText = colorText;
     }
 
     public int getPresent() {
@@ -79,24 +104,28 @@ public class SubjectParcel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.semester);
+        dest.writeString(this.subject);
+        dest.writeString(this.colorCode);
+        dest.writeString(this.colorText);
         dest.writeInt(this.present);
         dest.writeInt(this.absent);
         dest.writeInt(this.total);
         dest.writeFloat(this.percentage);
-        dest.writeString(this.subject);
-        dest.writeString(this.semester);
     }
 
     protected SubjectParcel(Parcel in) {
+        this.semester = in.readString();
+        this.subject = in.readString();
+        this.colorCode = in.readString();
+        this.colorText = in.readString();
         this.present = in.readInt();
         this.absent = in.readInt();
         this.total = in.readInt();
         this.percentage = in.readFloat();
-        this.subject = in.readString();
-        this.semester = in.readString();
     }
 
-    public static final Creator<SubjectParcel> CREATOR = new Creator<SubjectParcel>() {
+    public static final Parcelable.Creator<SubjectParcel> CREATOR = new Parcelable.Creator<SubjectParcel>() {
         public SubjectParcel createFromParcel(Parcel source) {
             return new SubjectParcel(source);
         }

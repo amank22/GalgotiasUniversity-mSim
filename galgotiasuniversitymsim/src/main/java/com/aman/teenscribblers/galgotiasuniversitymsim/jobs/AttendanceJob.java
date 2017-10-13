@@ -119,7 +119,7 @@ public class AttendanceJob extends Job {
                 int absent = 0;
                 int total = 0;
                 float percentage = 0;
-                SubjectParcel subjectParcel = new SubjectParcel(semester, subject, present, absent, total, percentage);
+                SubjectParcel subjectParcel = new SubjectParcel(semester, subject, status, statusText);
                 dbhelper.addnewsubj(subjectParcel, String.format("%s-%s", startDate, endDate));
             }
         } else {
@@ -215,9 +215,11 @@ public class AttendanceJob extends Job {
                 throw new Exception(AppConstants.ERROR_NO_CONTENT);
             }
             String color = "#" + split[1].substring(0, 6);
-            String value = values.get(i).html();
+            String value = values.get(i).html().replace(":", "");
             colorsMap.put(color, value);
         }
+        colorsMap.put("Red", "Less than 45");
+        colorsMap.put("Pink", "Between 45 and 59.99");
         return colorsMap;
     }
 

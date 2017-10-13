@@ -2,7 +2,7 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.helper;
 
 public class AppConstants {
     public static final String BaseUrl = "http://182.71.87.38/ISIM/";
-    public static final String BaseUrlGCT = "http://122.160.168.157/isimgc/";
+    public static final String BaseUrlGCT = "http://43.250.253.66/isimgc/";
     public static final String ERROR_BASE_URL = BaseUrlGCT + "msg.htm";
     public static final String LoginString = BaseUrlGCT + "Login";
     public static final String HomeString = BaseUrlGCT + "Home";
