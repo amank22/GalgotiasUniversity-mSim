@@ -91,6 +91,11 @@ public class HomeActivity extends BaseActivity
         return R.layout.activity_home;
     }
 
+    @Override
+    protected void doBeforeLayout() {
+
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

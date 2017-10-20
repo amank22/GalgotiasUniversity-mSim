@@ -22,6 +22,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        doBeforeLayout();
         Fabric.with(this,new Crashlytics());
         setContentView(getLayoutResource());
         // Obtain the FirebaseAnalytics instance.
@@ -30,6 +31,8 @@ public abstract class BaseActivity extends AppCompatActivity{
     }
 
     protected abstract int getLayoutResource();
+
+    protected abstract void doBeforeLayout();
 
     @Override
     protected void attachBaseContext(Context newBase) {

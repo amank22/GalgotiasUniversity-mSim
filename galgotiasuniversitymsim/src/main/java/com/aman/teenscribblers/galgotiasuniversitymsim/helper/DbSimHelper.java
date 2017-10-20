@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.util.SparseArray;
+import android.util.SparseLongArray;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsParcel;
@@ -66,6 +68,8 @@ public class DbSimHelper extends SQLiteOpenHelper {
     static final String colNote = "note";
     static final String colImageUrl = "image_url";
     static final String colAuthor = "author";
+    static final String colAuthorEmail = "a_email";
+    static final String colAuthorPic = "a_pic";
 
     /*for Results Table*/
     static final String colGrade = "grade";
@@ -108,10 +112,10 @@ public class DbSimHelper extends SQLiteOpenHelper {
 
     static final String Newssql = "CREATE TABLE " + NewsTableName + " ("
             + colID + " INTEGER PRIMARY KEY, " + colNote + " TEXT, "
-            + colImageUrl + " TEXT, " + colAuthor
+            + colImageUrl + " TEXT, " + colAuthor + " TEXT, " + colAuthorEmail + " TEXT, " + colAuthorPic
             + " TEXT);";
     private static final String TAG = "DBHelperClass";
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 19;
     private static DbSimHelper mInstance = null;
 
     private DbSimHelper(Context context) {
@@ -231,15 +235,39 @@ public class DbSimHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addnewnews(String id, String note, String url, String author) throws Exception{
+    public void addnewnews(String id, String note, String url, String author, String authorEmail, String authorPic) throws Exception {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(colID, id);
         cv.put(colNote, note);
         cv.put(colImageUrl, url);
         cv.put(colAuthor, author);
+        cv.put(colAuthorEmail, authorEmail);
+        cv.put(colAuthorPic, authorPic);
         db.insertOrThrow(NewsTableName, colNote, cv);
         db.close();
+    }
+
+    public List<NewsParcel> addnewnews(List<NewsParcel> parcelList) throws Exception {
+        SQLiteDatabase db = this.getWritableDatabase();
+        List<NewsParcel> insertedElementsList = new ArrayList<>();
+        db.beginTransaction();
+        for (NewsParcel parcel : parcelList) {
+            ContentValues cv = new ContentValues();
+            cv.put(colID, parcel.id);
+            cv.put(colNote, parcel.note);
+            cv.put(colImageUrl, parcel.getImage_url());
+            cv.put(colAuthor, parcel.author);
+            cv.put(colAuthorEmail, parcel.authorEmail);
+            cv.put(colAuthorPic, parcel.authorPic);
+            long d = db.insertWithOnConflict(NewsTableName, colNote, cv, SQLiteDatabase.CONFLICT_IGNORE);
+            if (d != -1)
+                insertedElementsList.add(parcel);
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        return insertedElementsList;
     }
 
     // int getArticlesCount() {
@@ -411,7 +439,7 @@ public class DbSimHelper extends SQLiteOpenHelper {
         if (cur.moveToLast()) {
             do {
 //                Log.d("Database", "id=" + cur.getInt(0) + ":note=" + cur.getString(1) + ":imageUrl=" + cur.getString(2));
-                list.add(new NewsParcel(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3)));
+                list.add(new NewsParcel(cur.getInt(0), cur.getString(1), cur.getString(2), cur.getString(3), cur.getString(4), cur.getString(5)));
             } while (cur.moveToPrevious());
         }
         // closing connection
@@ -425,6 +453,11 @@ public class DbSimHelper extends SQLiteOpenHelper {
         Log.d(TAG, id);
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(NewsTableName, colID + "=" + id, null) > 0;
+    }
+
+    public boolean deleteAllNews() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(NewsTableName, null, null) > 0;
     }
 
 

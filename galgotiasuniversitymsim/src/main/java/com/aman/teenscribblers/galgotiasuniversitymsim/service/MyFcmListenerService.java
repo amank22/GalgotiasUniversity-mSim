@@ -14,22 +14,24 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.NewsActivity;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.DbSimHelper;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.GlideApp;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.Map;
 
 public class MyFcmListenerService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFcmListenerService";
-    private Target pictureTarget;
+    private SimpleTarget<Bitmap> target;
 
 
     @Override
@@ -41,13 +43,15 @@ public class MyFcmListenerService extends FirebaseMessagingService {
         String message = data.containsKey("message") ? data.get("message").toString() : null;
         String imageUrl = data.containsKey("image") ? data.get("image").toString() : null;
         String systemMsg = data.containsKey("systemmsg") ? data.get("systemmsg").toString() : null;
+        String aEmail = data.containsKey("a_email") ? data.get("a_email").toString() : null;
+        String aPic = data.containsKey("a_pic") ? data.get("a_pic").toString() : null;
         String author = from.replace("/topics/", "");
         if (systemMsg != null && !systemMsg.equals("true")) {
             if (id == null) {
                 return;
             }
             try {
-                DbSimHelper.getInstance().addnewnews(id, message, imageUrl, author);
+                DbSimHelper.getInstance().addnewnews(id, message, imageUrl, author, aEmail, aPic);
                 sendNotification(message, imageUrl, author);
             } catch (Exception ignore) {
             }
@@ -91,9 +95,10 @@ public class MyFcmListenerService extends FirebaseMessagingService {
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 
         } else {
-            pictureTarget = new Target() {
+            Handler handler = new Handler(Looper.getMainLooper());
+            target = new SimpleTarget<Bitmap>() {
                 @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                public void onResourceReady(Bitmap bitmap, Transition<? super Bitmap> transition) {
                     final NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
                     bigPictureStyle.setSummaryText(message).setBigContentTitle("News from " + from).bigPicture(bitmap);
                     notificationBuilder.setStyle(bigPictureStyle);
@@ -104,20 +109,15 @@ public class MyFcmListenerService extends FirebaseMessagingService {
                 }
 
                 @Override
-                public void onBitmapFailed(Drawable errorDrawable) {
+                public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                    super.onLoadFailed(errorDrawable);
                     sendNotification(message, null, from);
                 }
-
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                }
             };
-            Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Picasso.with(MyFcmListenerService.this).load(imageUrl).resize(256, 256).into(pictureTarget);
+                    GlideApp.with(MyFcmListenerService.this).asBitmap().load(imageUrl).into(target);
                 }
             });
         }

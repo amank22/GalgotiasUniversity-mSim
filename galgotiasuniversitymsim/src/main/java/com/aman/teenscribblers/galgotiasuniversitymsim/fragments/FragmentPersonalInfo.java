@@ -12,22 +12,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.adapter.PersonalInfoAdapter;
 import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.InfoEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.SessionExpiredEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.GlideApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.PersonalInfoJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.PersonalInfoLocal;
 import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.RegisterUserOnServerJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.InfoParcel;
-import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.service.RegistrationIntentService;
-import com.aman.teenscribblers.galgotiasuniversitymsim.transform.CircleTransform;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -74,14 +75,9 @@ public class FragmentPersonalInfo extends BaseFragment {
             image.setImageResource(R.drawable.ic_avatar_girl);
         }
         if (!url.equals("")) {
-            Picasso picasso = Picasso.with(getContext());
-            picasso.setIndicatorsEnabled(false);
-            picasso.load(url)
-                    .noPlaceholder()
-                    .centerInside()
-                    .resize(400, 400)
-                    .transform(new CircleTransform())
-                    .priority(Picasso.Priority.HIGH)
+            GlideApp.with(this)
+                    .load(url)
+                    .transforms(new FitCenter(), new CircleCrop())
                     .into(image);
         }
     }

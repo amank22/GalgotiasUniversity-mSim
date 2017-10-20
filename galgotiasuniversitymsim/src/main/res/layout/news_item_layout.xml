@@ -1,54 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/news_item_author"
-        style="@style/CustomStrongFont"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/grid_16x"
-        android:layout_marginStart="@dimen/grid_16x"
-        android:layout_marginTop="@dimen/grid_8x"
-        android:drawablePadding="@dimen/grid_4x"
-        android:drawableLeft="@drawable/ic_avatar_admin"
-        android:drawableStart="@drawable/ic_avatar_admin"
-        android:textColor="#000"
-        android:textSize="18sp"
-        tools:text="Admin" />
+        android:clickable="true"
+        android:foreground="?selectableItemBackground"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView_news_author"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="@dimen/grid_16x"
+            android:layout_marginStart="@dimen/grid_16x"
+            android:layout_marginTop="@dimen/grid_16x"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_avatar_admin" />
+
+        <TextView
+            android:id="@+id/news_item_author"
+            style="@style/CustomStrongFont"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/grid_8x"
+            android:layout_marginLeft="@dimen/grid_8x"
+            android:layout_marginRight="@dimen/grid_8x"
+            android:layout_marginTop="0dp"
+            android:textColor="#000"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView_news_author"
+            app:layout_constraintLeft_toRightOf="@+id/imageView_news_author"
+            app:layout_constraintTop_toTopOf="@+id/imageView_news_author"
+            app:layout_constraintVertical_bias="0.611"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1"
+            tools:layout_constraintTop_creator="1"
+            tools:text="Admin" />
+
+        <ImageButton
+            android:id="@+id/button_news_mail_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:paddingLeft="@dimen/grid_16x"
+            android:paddingRight="@dimen/grid_16x"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView_news_author"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView_news_author"
+            app:srcCompat="@drawable/ic_contact" />
+    </android.support.constraint.ConstraintLayout>
 
     <ImageView
         android:id="@+id/news_item_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:layout_marginTop="@dimen/grid_8x"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/news_string_image"
-        android:minHeight="100dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/rect_grey" />
+        android:minHeight="150dp"
+        android:src="@drawable/rect_grey"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_news_author"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <TextView
         android:id="@+id/news_item_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/grid_4x"
         android:layout_marginLeft="@dimen/grid_16x"
         android:layout_marginRight="@dimen/grid_16x"
         android:layout_marginTop="@dimen/grid_8x"
-        android:autoLink="all"
         android:ellipsize="end"
         android:linksClickable="true"
-        android:text="@string/news_string_note"
+        android:autoLink="all"
+        android:textIsSelectable="true"
+        android:textColorLink="@color/colorPrimary"
         android:textColor="@color/ts_grey_dark"
-        android:textIsSelectable="true" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_editor_absoluteY="464dp"
+        tools:text="@string/news_string_note" />
 
     <View
+        android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="0.2dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="@dimen/grid_8x"
         android:background="@color/ts_grey_dark"
-        android:visibility="invisible"/>
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/news_item_note"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
 </LinearLayout>

@@ -1,5 +1,8 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
@@ -13,30 +16,41 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.aman.teenscribblers.galgotiasuniversitymsim.activities.FullScreenImageActivity;
 import com.aman.teenscribblers.galgotiasuniversitymsim.adapter.NewsRecycleAdapter;
 import com.aman.teenscribblers.galgotiasuniversitymsim.analytics.Analytics;
 import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.NewsEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.DbSimHelper;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.EndlessRecyclerViewScrollListener;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.IonMethods;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.NewsDBJob;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsListParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsParcel;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Response;
 
+import java.util.Collections;
 import java.util.List;
 
 import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
-public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, NewsRecycleAdapter.NewsClickListener {
 
     private static final String TAG = "NEWSFRAGMENT";
     public static final String FOLLOW_TOPIC_TAG = "followtopic";
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private NewsRecycleAdapter mAdapter;
     private FloatingActionButton mFollowButton;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private List<NewsParcel> parcel = null;
 
     private ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
@@ -106,29 +120,32 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
-        //Adding onclick listener
-        // TODO: 04/07/17 Removed to make app run. Need to done. Important
-//        mRecyclerView.addOnItemTouchListener(
-//                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(View view, int position) {
-//                        Intent newsIntent = new Intent(getActivity(), NewsDetailActivity.class);
-//                        newsIntent.putExtra("newsContent", parcel.get(position));
-//                        getActivity().startActivity(newsIntent);
-//                    }
-//                })
-//        );
+        final EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                int lastId = mAdapter.getLastElementId();
+                if (lastId == -1) {
+                    return;
+                }
+                startNetworkCall();
+            }
+
+            @Override
+            public void onScrollChange(RecyclerView view, int newState) {
+
+            }
+        };
+        // Pagination
+        mRecyclerView.addOnScrollListener(scrollListener);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         if (parcel == null) {
             GUApp.getJobManager().addJobInBackground(new NewsDBJob());
         } else {
             mSwipeRefreshLayout.setRefreshing(false);
-            uselist();
         }
-
+        uselist();
+        startNetworkCall();
         mFollowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,6 +154,65 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         });
 
     }
+
+    private void startNetworkCall() {
+        mSwipeRefreshLayout.setRefreshing(true);
+        final String admNo = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, "").trim();
+        String fcmId = FirebaseInstanceId.getInstance().getToken();
+        IonMethods.getNewsLists(admNo, fcmId, mAdapter.getItemCount(), new FutureCallback<Response<NewsListParcel>>() {
+            @Override
+            public void onCompleted(Exception e, Response<NewsListParcel> result) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                if (e != null) {
+                    Snackbar.make(mSwipeRefreshLayout, getString(R.string.error_news), Snackbar.LENGTH_LONG).show();
+                    Log.d(TAG, "onCompleted: " + e.getMessage());
+                    return;
+                }
+                NewsListParcel listParcel = result.getResult();
+                if (listParcel.getStatus() == 400 && listParcel.getResult().equals("User not Valid")) {
+                    updateGcmOnServer(admNo);
+                    return;
+                }
+                if (listParcel.isError()) {
+                    Snackbar.make(mSwipeRefreshLayout, getString(R.string.error_news), Snackbar.LENGTH_LONG).show();
+                    Log.d(TAG, "onCompleted: " + listParcel);
+                    return;
+                }
+                List<NewsParcel> newsList = listParcel.getNews();
+                if (newsList == null || newsList.isEmpty()) {
+                    return;
+                }
+                try {
+                    List<NewsParcel> insertedElementsList = DbSimHelper.getInstance().addnewnews(newsList);
+//                    Collections.reverse(insertedElementsList);
+                    mAdapter.insertElements(insertedElementsList);
+                } catch (Exception e1) {
+                    Log.d(TAG, "onCompleted: " + e1.getMessage());
+                }
+
+            }
+        });
+    }
+
+    private void updateGcmOnServer(final String admNo) {
+        ContentValues serverCv = new ContentValues();
+        serverCv.put("adm_no", admNo);
+        serverCv.put("gcm_id", FirebaseInstanceId.getInstance().getToken());
+        IonMethods.postProfiletoServer(serverCv, new FutureCallback<Response<JsonObject>>() {
+            @Override
+            public void onCompleted(Exception e, Response<JsonObject> result) {
+                if (e != null) {
+                    Log.d(TAG, "onCompleted: " + e.getMessage());
+                } else if (!result.getResult().get("error").getAsBoolean()) {
+                    startNetworkCall();
+                } else {
+//                    loader.setVisibility(View.GONE);
+                    Log.d(TAG, "onCompleted: Failed to update fcm");
+                }
+            }
+        });
+    }
+
 
     private void openFollowTopicsFragment(View view) {
         int[] position = new int[2];
@@ -152,10 +228,8 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void onEventMainThread(NewsEvent event) {
         mSwipeRefreshLayout.setRefreshing(false);
         if (event.isError()) {
-            //      AlertDialogManager.showAlertDialog(getActivity(), event.getResult() + "--" + lid);
             Snackbar.make(mSwipeRefreshLayout, event.getResult(), Snackbar.LENGTH_LONG).show();
         } else {
-            //   AlertDialogManager.showAlertDialog(getActivity(), event.getResult());
             parcel = event.getParcel();
             uselist();
 
@@ -164,13 +238,51 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     private void uselist() {
         if (getActivity() != null) {
-            mAdapter = new NewsRecycleAdapter(parcel, getActivity());
+            mAdapter = new NewsRecycleAdapter(parcel, getActivity(), this);
             mRecyclerView.setAdapter(mAdapter);
         }
     }
 
     @Override
     public void onRefresh() {
-        GUApp.getJobManager().addJobInBackground(new NewsDBJob());
+        DbSimHelper.getInstance().deleteAllNews();
+        mAdapter.removeAllElements();
+        startNetworkCall();
+    }
+
+    @Override
+    public void onImageClick(ImageView imageView, NewsParcel parcel) {
+        startPhotoActivity(imageView, parcel);
+    }
+
+    private void startPhotoActivity(ImageView imageView, NewsParcel parcel) {
+
+        if (getActivity() == null) {
+            return;
+        }
+
+        Intent intent = new Intent(getActivity(), FullScreenImageActivity.class);
+        int location[] = new int[2];
+
+        imageView.getLocationOnScreen(location);
+        intent.putExtra("left", location[0]);
+        intent.putExtra("top", location[1]);
+        intent.putExtra("height", imageView.getHeight());
+        intent.putExtra("width", imageView.getWidth());
+        intent.putExtra("url", parcel.getImage_url());
+
+        startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
+
+    }
+
+    @Override
+    public void onMailClick(View view, NewsParcel parcel) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", parcel.authorEmail, null));
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{parcel.authorEmail});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Mail from mSim News");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Regarding news:\n" + parcel.getNote() + "\n");
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 }

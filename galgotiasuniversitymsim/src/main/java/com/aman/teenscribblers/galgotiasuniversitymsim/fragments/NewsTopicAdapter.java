@@ -17,24 +17,24 @@ import android.widget.TextView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsTopicListFragment.OnListFragmentInteractionListener;
-import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsListParcel;
-import com.squareup.picasso.Picasso;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.GlideApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsTopicListParcel;
 
 import java.util.List;
 
 public class NewsTopicAdapter extends RecyclerView.Adapter<NewsTopicAdapter.ViewHolder> {
 
-    private final List<NewsListParcel.NewsTopics> mTopics;
+    private final List<NewsTopicListParcel.NewsTopics> mTopics;
     private final OnListFragmentInteractionListener mListener;
     private final ArrayMap<String, Boolean> selectedMap;
     private final Context mContext;
 
-    public NewsTopicAdapter(Context context, List<NewsListParcel.NewsTopics> topics, OnListFragmentInteractionListener listener) {
+    public NewsTopicAdapter(Context context, List<NewsTopicListParcel.NewsTopics> topics, OnListFragmentInteractionListener listener) {
         mTopics = topics;
         mContext = context;
         mListener = listener;
         selectedMap = new ArrayMap<>(topics.size());
-        for (NewsListParcel.NewsTopics topic : topics) {
+        for (NewsTopicListParcel.NewsTopics topic : topics) {
             selectedMap.put(topic.getName(), topic.isFollows());
         }
     }
@@ -61,7 +61,11 @@ public class NewsTopicAdapter extends RecyclerView.Adapter<NewsTopicAdapter.View
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mTopics.get(position);
         holder.mContentView.setText(holder.mItem.getName());
-        Picasso.with(mContext).load(holder.mItem.getProfilePic()).noFade().into(holder.mImage);
+        GlideApp.with(mContext)
+                .asBitmap()
+                .load(holder.mItem.getProfilePic())
+                .into(holder.mImage);
+//        Picasso.with(mContext).load(holder.mItem.getProfilePic()).noFade().into(holder.mImage);
         handleCheckedState(holder);
     }
 
@@ -93,7 +97,7 @@ public class NewsTopicAdapter extends RecyclerView.Adapter<NewsTopicAdapter.View
         public final ImageView mImage;
         public final ImageView mCheckMark;
         public final View mOverlay;
-        public NewsListParcel.NewsTopics mItem;
+        public NewsTopicListParcel.NewsTopics mItem;
 
         public ViewHolder(View view) {
             super(view);

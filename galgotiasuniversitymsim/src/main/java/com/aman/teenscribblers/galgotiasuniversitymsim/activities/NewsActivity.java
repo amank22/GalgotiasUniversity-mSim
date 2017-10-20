@@ -17,4 +17,9 @@ public class NewsActivity extends BaseActivity {
     protected int getLayoutResource() {
         return R.layout.activity_news;
     }
+
+    @Override
+    protected void doBeforeLayout() {
+
+    }
 }

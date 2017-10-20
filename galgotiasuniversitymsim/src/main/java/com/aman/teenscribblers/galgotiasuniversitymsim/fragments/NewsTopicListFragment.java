@@ -31,7 +31,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.events.NewsTopicEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.IonMethods;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.NewsTopicsJob;
-import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsListParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsTopicListParcel;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonObject;
@@ -251,7 +251,7 @@ public class NewsTopicListFragment extends BaseFragment {
             mAdapter = new NewsTopicAdapter(getActivity(), event.getTopics(), mListener);
             recyclerView.setAdapter(mAdapter);
             loader.setVisibility(View.GONE);
-            for (NewsListParcel.NewsTopics topic : event.getTopics()) {
+            for (NewsTopicListParcel.NewsTopics topic : event.getTopics()) {
                 selectedMap.put(topic.getName(), topic.isFollows());
             }
         } else if (event.getError().contains("User not Valid")) {
@@ -325,6 +325,6 @@ public class NewsTopicListFragment extends BaseFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(NewsListParcel.NewsTopics item);
+        void onListFragmentInteraction(NewsTopicListParcel.NewsTopics item);
     }
 }

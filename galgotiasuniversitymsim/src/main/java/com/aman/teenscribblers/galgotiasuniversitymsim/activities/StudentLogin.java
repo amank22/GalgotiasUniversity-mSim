@@ -37,6 +37,11 @@ public class StudentLogin extends BaseActivity {
     }
 
     @Override
+    protected void doBeforeLayout() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         container = (RelativeLayout) findViewById(R.id.login_container);
