@@ -1,5 +1,6 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
+import com.aman.teenscribblers.galgotiasuniversitymsim.activities.FullScreenImageActivity;
 import com.aman.teenscribblers.galgotiasuniversitymsim.adapter.PersonalInfoAdapter;
 import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.InfoEvent;
@@ -23,6 +25,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.PersonalInfoJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.PersonalInfoLocal;
 import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.RegisterUserOnServerJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.InfoParcel;
+import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsParcel;
 import com.aman.teenscribblers.galgotiasuniversitymsim.service.RegistrationIntentService;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
@@ -69,7 +72,7 @@ public class FragmentPersonalInfo extends BaseFragment {
     }
 
     private void setProfilePicture() {
-        String url = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_IMAGE, "");
+        final String url = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_IMAGE, "");
         String gender = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_USER_GENDER_KEY, "Male");
         if (gender.contains("Female")) {
             image.setImageResource(R.drawable.ic_avatar_girl);
@@ -79,7 +82,35 @@ public class FragmentPersonalInfo extends BaseFragment {
                     .load(url)
                     .transforms(new FitCenter(), new CircleCrop())
                     .into(image);
+
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startPhotoActivity(image, url);
+                }
+            });
         }
+    }
+
+    private void startPhotoActivity(ImageView imageView, String url) {
+
+        if (getActivity() == null) {
+            return;
+        }
+
+        Intent intent = new Intent(getActivity(), FullScreenImageActivity.class);
+        int location[] = new int[2];
+
+        imageView.getLocationOnScreen(location);
+        intent.putExtra("left", location[0]);
+        intent.putExtra("top", location[1]);
+        intent.putExtra("height", imageView.getHeight());
+        intent.putExtra("width", imageView.getWidth());
+        intent.putExtra("url", url);
+
+        startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MainThread)
