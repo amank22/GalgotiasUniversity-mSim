@@ -1,6 +1,7 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.adapter;
 
 import android.content.Context;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,8 @@ import android.widget.TextView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.GlideApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.TextViewLinkHandler;
 import com.aman.teenscribblers.galgotiasuniversitymsim.parcels.NewsParcel;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.CenterInside;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
@@ -26,14 +27,52 @@ import java.util.List;
 public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.ViewHolder> {
 
     private static final String TAG = "NEWSADAPTER";
-    private List<NewsParcel> parcel;
+    private SortedList<NewsParcel> parcel;
     private Context context;
 
     private NewsClickListener newsClickListener;
 
 
-    public NewsRecycleAdapter(List<NewsParcel> parcel, Context c, NewsClickListener newsClickListener) {
-        this.parcel = parcel;
+    public NewsRecycleAdapter(Context c, NewsClickListener newsClickListener) {
+        this.parcel = new SortedList<>(NewsParcel.class, new SortedList.Callback<NewsParcel>() {
+
+            @Override
+            public void onInserted(int position, int count) {
+                notifyItemRangeInserted(position, count);
+            }
+
+            @Override
+            public void onRemoved(int position, int count) {
+                notifyItemRangeRemoved(position, count);
+            }
+
+            @Override
+            public void onMoved(int fromPosition, int toPosition) {
+                notifyItemMoved(fromPosition, toPosition);
+            }
+
+            @Override
+            public int compare(NewsParcel o1, NewsParcel o2) {
+                Integer first = o1.getId();
+                Integer second = o2.getId();
+                return -first.compareTo(second);
+            }
+
+            @Override
+            public void onChanged(int position, int count) {
+                notifyItemRangeChanged(position, count);
+            }
+
+            @Override
+            public boolean areContentsTheSame(NewsParcel oldItem, NewsParcel newItem) {
+                return oldItem.equals(newItem);
+            }
+
+            @Override
+            public boolean areItemsTheSame(NewsParcel item1, NewsParcel item2) {
+                return item1.getId() == item2.getId();
+            }
+        });
         context = c;
         this.newsClickListener = newsClickListener;
     }
@@ -48,6 +87,7 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
     @Override
     public void onBindViewHolder(final NewsRecycleAdapter.ViewHolder holder, int position) {
         holder.mTextView.setText(parcel.get(position).getNote());
+        holder.mTextView.setMovementMethod(holder.textViewLinkHandler);
         holder.mTextAuthor.setText(parcel.get(position).getAuthor());
         String url = parcel.get(position).getImage_url();
         String authorImageUrl = parcel.get(position).getAuthorPic();
@@ -92,29 +132,28 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
     }
 
     public void insertElements(List<NewsParcel> newParcels) {
-        if (parcel == null) {
-            parcel = new ArrayList<>();
-        }
         if (newParcels == null || newParcels.isEmpty()) {
             return;
         }
-        int oldSize = parcel.size();
-        parcel.addAll(newParcels);
-        notifyItemRangeInserted(oldSize, newParcels.size());
+        parcel.beginBatchedUpdates();
+        for (NewsParcel newParcel : newParcels) {
+            parcel.add(newParcel);
+        }
+        parcel.endBatchedUpdates();
     }
 
     public int getLastElementId() {
-        if (parcel == null || parcel.isEmpty()) {
+        if (parcel == null || parcel.size() == 0) {
             return -1;
         }
         return parcel.get(0).getId();
     }
 
     public void removeAllElements() {
-        if (parcel == null || parcel.isEmpty()) {
+        if (parcel == null || parcel.size() == 0) {
             return;
         }
-        parcel = null;
+        parcel.clear();
         notifyDataSetChanged();
     }
 
@@ -122,12 +161,15 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
         void onImageClick(ImageView imageView, NewsParcel parcel);
 
         void onMailClick(View view, NewsParcel parcel);
+
+        void onLinkClick(View view, NewsParcel parcel, String url);
     }
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextViewLinkHandler textViewLinkHandler;
         // each data item is just a string in this case
         public TextView mTextView;
         public TextView mTextAuthor;
@@ -135,7 +177,7 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
         public ImageView mAuthorImageView;
         public ImageButton mAuthorMailButton;
 
-        public ViewHolder(View v, final NewsClickListener newsClickListener, final List<NewsParcel> parcel) {
+        public ViewHolder(View v, final NewsClickListener newsClickListener, final SortedList<NewsParcel> parcel) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.news_item_note);
             mTextAuthor = (TextView) v.findViewById(R.id.news_item_author);
@@ -159,6 +201,15 @@ public class NewsRecycleAdapter extends RecyclerView.Adapter<NewsRecycleAdapter.
                     }
                 }
             });
+
+            textViewLinkHandler = new TextViewLinkHandler() {
+                @Override
+                public void onLinkClick(String url) {
+                    if (newsClickListener != null) {
+                        newsClickListener.onLinkClick(mTextView, parcel.get(getAdapterPosition()), url);
+                    }
+                }
+            };
         }
     }
 

@@ -29,6 +29,7 @@
     <string name="galgotias_university">Galgotias University</string>
     <string name="submit_topics">Submit topics</string>
     <string name="error_news">There is some error getting news</string>
+    <string name="failed_to_open_link">Failed to open link</string>
 
     <string-array name="attendance_content">
         <item>Today\'s Attendance</item>

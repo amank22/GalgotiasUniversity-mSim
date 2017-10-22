@@ -20,10 +20,10 @@ android {
     buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "com.aman.teenscribblers.galgotiasuniversitymsim"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 26
-        versionCode 14
-        versionName "4.0"
+        versionCode 15
+        versionName "4.1"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -52,10 +52,11 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.0.2'
     compile 'com.google.android.gms:play-services-base:11.0.2'
     compile 'com.borax12.materialdaterangepicker:library:1.7'
+    compile 'com.android.support:customtabs:26.0.0-alpha1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.bumptech.glide:glide:4.2.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
-    compile "com.github.bumptech.glide:okhttp3-integration:4.2.0"
+    compile 'com.github.bumptech.glide:okhttp3-integration:4.2.0'
     compile 'com.github.githubwing:DragPhotoView:1.0.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
 }
 apply plugin: 'com.google.gms.google-services'

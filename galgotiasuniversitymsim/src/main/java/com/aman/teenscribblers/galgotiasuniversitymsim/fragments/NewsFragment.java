@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.FullScreenImageActivity;
@@ -36,7 +39,6 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Response;
 
-import java.util.Collections;
 import java.util.List;
 
 import de.greenrobot.event.Subscribe;
@@ -89,13 +91,6 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         }
     };
 
-
-    public NewsFragment() {
-    }
-
-    public static NewsFragment newInstance() {
-        return new NewsFragment();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -155,11 +150,19 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     }
 
+    public NewsFragment() {
+    }
+
+    public static NewsFragment newInstance() {
+        return new NewsFragment();
+    }
+
     private void startNetworkCall() {
         mSwipeRefreshLayout.setRefreshing(true);
         final String admNo = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, "").trim();
         String fcmId = FirebaseInstanceId.getInstance().getToken();
-        IonMethods.getNewsLists(admNo, fcmId, mAdapter.getItemCount(), new FutureCallback<Response<NewsListParcel>>() {
+        final int page = mAdapter.getItemCount();
+        IonMethods.getNewsLists(admNo, fcmId, page, new FutureCallback<Response<NewsListParcel>>() {
             @Override
             public void onCompleted(Exception e, Response<NewsListParcel> result) {
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -174,7 +177,9 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     return;
                 }
                 if (listParcel.isError()) {
-                    Snackbar.make(mSwipeRefreshLayout, getString(R.string.error_news), Snackbar.LENGTH_LONG).show();
+                    if (mAdapter.getItemCount() == 0) {
+                        Snackbar.make(mSwipeRefreshLayout, getString(R.string.error_news), Snackbar.LENGTH_LONG).show();
+                    }
                     Log.d(TAG, "onCompleted: " + listParcel);
                     return;
                 }
@@ -184,7 +189,6 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 }
                 try {
                     List<NewsParcel> insertedElementsList = DbSimHelper.getInstance().addnewnews(newsList);
-//                    Collections.reverse(insertedElementsList);
                     mAdapter.insertElements(insertedElementsList);
                 } catch (Exception e1) {
                     Log.d(TAG, "onCompleted: " + e1.getMessage());
@@ -238,8 +242,9 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     private void uselist() {
         if (getActivity() != null) {
-            mAdapter = new NewsRecycleAdapter(parcel, getActivity(), this);
+            mAdapter = new NewsRecycleAdapter(getActivity(), this);
             mRecyclerView.setAdapter(mAdapter);
+            mAdapter.insertElements(parcel);
         }
     }
 
@@ -284,5 +289,29 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Mail from mSim News");
         emailIntent.putExtra(Intent.EXTRA_TEXT, "Regarding news:\n" + parcel.getNote() + "\n");
         startActivity(Intent.createChooser(emailIntent, "Send email..."));
+    }
+
+    @Override
+    public void onLinkClick(View view, NewsParcel parcel, String url) {
+        try {
+            final Uri uri = Uri.parse(url);
+            try {
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setToolbarColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+                builder.addDefaultShareMenuItem();
+                builder.setInstantAppsEnabled(true);
+                builder.setShowTitle(true);
+                CustomTabsIntent customTabsIntent = builder.build();
+                customTabsIntent.launchUrl(getActivity(), uri);
+            } catch (Exception e) {
+                Intent intent = new Intent(Intent.ACTION_VIEW)
+                        .setData(uri)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "onLinkClick: " + e.getMessage());
+            Toast.makeText(getActivity(), R.string.failed_to_open_link, Toast.LENGTH_LONG).show();
+        }
     }
 }
