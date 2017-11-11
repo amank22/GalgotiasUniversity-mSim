@@ -28,7 +28,6 @@
     <string name="login">Login</string>
     <string name="username">Admission Number</string>
     <string name="galgotias_university">Galgotias University</string>
-    <string name="submit_topics">Submit topics</string>
     <string name="error_news">There is some error getting news</string>
     <string name="failed_to_open_link">Failed to open link</string>
     <string name="enter_the_captcha">Enter the Captcha</string>
