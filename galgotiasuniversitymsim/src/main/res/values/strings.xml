@@ -10,8 +10,9 @@
     <string name="title_section1">My Info</string>
     <string name="title_section2">Attendance</string>
     <string name="title_section3">Time-Table</string>
-    <string name="title_section4">Exam Result</string>
+    <string name="title_section4">Result</string>
     <string name="title_section5">News</string>
+    <string name="title_section_exam">Seating Plan</string>
     <string name="title_section6">Mail Us</string>
     <string name="title_section7">About Us</string>
     <string name="title_section8">Logout</string>

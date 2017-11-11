@@ -89,12 +89,13 @@ public class PersonalInfoJob extends Job {
                     serverCv.put(keyPair[0].trim(), keyPair[1].trim());
             }
         }
-        sendProfileDataToServer(serverCv);
         Element image = doc.select(".collegelogo1 img").first();
         if (image != null) {
             String src = AppConstants.BaseUrl + image.attr("src");
             PrefUtils.saveToPrefs(getApplicationContext(), PrefUtils.PREFS_USER_IMAGE, src);
+            serverCv.put("image", src);
         }
+        sendProfileDataToServer(serverCv);
         return sb.toString();
     }
 

@@ -34,6 +34,7 @@
         android:background="@color/ts_grey_dark"
         android:gravity="center"
         android:padding="2dp"
+        android:layout_gravity="bottom"
         android:text="Loading..."
         android:textColor="@color/ts_white"
         android:textSize="12sp" />

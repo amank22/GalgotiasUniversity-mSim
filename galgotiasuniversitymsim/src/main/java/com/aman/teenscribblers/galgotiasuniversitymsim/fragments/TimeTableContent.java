@@ -12,11 +12,14 @@ import android.widget.TextView;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.adapter.CategoryAdapter;
 import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
+import com.aman.teenscribblers.galgotiasuniversitymsim.events.LocalErrorEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.LoginEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.SessionExpiredEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.TimeTableStartEvent;
 import com.aman.teenscribblers.galgotiasuniversitymsim.events.TimeTableSuccessEvent;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.AppConstants;
 import com.aman.teenscribblers.galgotiasuniversitymsim.helper.DbSimHelper;
+import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.SeatingPlanJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.jobs.TimeTableJob;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.transform.RecyclerViewMargin;
@@ -106,6 +109,19 @@ public class TimeTableContent extends BaseFragment implements CategoryAdapter.On
         }
     }
 
+
+    @SuppressWarnings("UnusedDeclaration")
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onEventMainThread(LocalErrorEvent event) {
+        loading.setVisibility(View.VISIBLE);
+        loading.setText(event.getResponse());
+        switch (event.getResponse()) {
+            case AppConstants.ERROR_CONTENT_FETCH:
+                loading.setText(AppConstants.ERROR_TIME_TABLE);
+                break;
+        }
+
+    }
 
     @SuppressWarnings("UnusedDeclaration")
     @Subscribe(threadMode = ThreadMode.MainThread)

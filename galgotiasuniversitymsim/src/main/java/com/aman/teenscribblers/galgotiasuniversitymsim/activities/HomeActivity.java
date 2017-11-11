@@ -24,6 +24,7 @@ import com.aman.teenscribblers.galgotiasuniversitymsim.application.GUApp;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AboutDeveloperFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.AttendanceContentFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentResultBase;
+import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.FragmentSeatingPlan;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.InformationFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsFragment;
 import com.aman.teenscribblers.galgotiasuniversitymsim.fragments.NewsTopicListFragment;
@@ -123,6 +124,11 @@ public class HomeActivity extends BaseActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, new FragmentResultBase())
                     .commitAllowingStateLoss();
+        } else if (id == R.id.nav_exam) {
+            Analytics.selectContent(this, mFirebaseAnalytics, "Exam", "Exam Tab", "Navigation");
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, FragmentSeatingPlan.newInstance())
+                    .commitAllowingStateLoss();
         } else if (id == R.id.nav_news) {
             Analytics.selectContent(this, mFirebaseAnalytics, "News", "News Tab", "Navigation");
             fragmentManager.beginTransaction()
@@ -130,16 +136,7 @@ public class HomeActivity extends BaseActivity
                     .commitAllowingStateLoss();
         } else if (id == R.id.nav_send) {
             Analytics.selectContent(this, mFirebaseAnalytics, "Msg", "Feedback Tab", "Navigation");
-            Intent i = new Intent(Intent.ACTION_SEND);
-            i.setType("message/rfc822");
-            i.putExtra(Intent.EXTRA_EMAIL, new String[]{"kapoor.aman22@gmail.com", "anmol.agarwal2004@yahoo.com"});
-            i.putExtra(Intent.EXTRA_SUBJECT, "Report of Bugs,Improvements");
-            i.putExtra(Intent.EXTRA_TEXT, "");
-            try {
-                startActivity(Intent.createChooser(i, "Mail Us"));
-            } catch (android.content.ActivityNotFoundException ex) {
-                Snackbar.make(frame, "There is no Email Client Installed", Snackbar.LENGTH_LONG).show();
-            }
+            sendFeedBackMail();
         } else if (id == R.id.nav_about_us) {
             Analytics.selectContent(this, mFirebaseAnalytics, "about", "About us Tab", "Navigation");
             fragmentManager.beginTransaction()
@@ -150,6 +147,19 @@ public class HomeActivity extends BaseActivity
             GUApp.logoutUser(HomeActivity.this);
         }
         return true;
+    }
+
+    private void sendFeedBackMail() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"kapoor.aman22@gmail.com", "anmol.agarwal2004@yahoo.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Report of Bugs,Improvements");
+        i.putExtra(Intent.EXTRA_TEXT, "");
+        try {
+            startActivity(Intent.createChooser(i, "Mail Us"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Snackbar.make(frame, "There is no Email Client Installed", Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override
