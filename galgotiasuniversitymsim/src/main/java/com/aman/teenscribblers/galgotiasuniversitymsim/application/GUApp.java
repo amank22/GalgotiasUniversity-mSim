@@ -2,14 +2,13 @@ package com.aman.teenscribblers.galgotiasuniversitymsim.application;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
 import com.aman.teenscribblers.galgotiasuniversitymsim.BuildConfig;
-import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.aman.teenscribblers.galgotiasuniversitymsim.R;
 import com.aman.teenscribblers.galgotiasuniversitymsim.activities.StudentLogin;
+import com.aman.teenscribblers.galgotiasuniversitymsim.helper.PrefUtils;
 import com.birbit.android.jobqueue.JobManager;
 import com.birbit.android.jobqueue.config.Configuration;
 import com.birbit.android.jobqueue.log.CustomLogger;

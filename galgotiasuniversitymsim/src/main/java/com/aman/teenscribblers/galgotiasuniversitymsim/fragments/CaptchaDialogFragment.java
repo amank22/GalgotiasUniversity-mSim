@@ -1,6 +1,7 @@
 package com.aman.teenscribblers.galgotiasuniversitymsim.fragments;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -51,7 +52,6 @@ public class CaptchaDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(false);
-
         if (getArguments() != null) {
             userName = getArguments().getString(PrefUtils.PREFS_LOGIN_USERNAME_KEY);
             password = getArguments().getString(PrefUtils.PREFS_LOGIN_PASSWORD_KEY);
@@ -79,6 +79,7 @@ public class CaptchaDialogFragment extends DialogFragment {
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 GUApp.logoutUser(getActivity());
             }
         });
@@ -87,7 +88,7 @@ public class CaptchaDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (params == null) {
-                    loading.setText("Wait for Captcha loading!");
+                    loading.setText(R.string.wait_captcha_warning);
                 }
                 attemptLogin(params, userName, password);
             }
@@ -98,7 +99,7 @@ public class CaptchaDialogFragment extends DialogFragment {
 
     private void attemptLogin(Map<String, String> params, String mUsername, String mPassword) {
         if (CurrentlyRunning) {
-            loading.setText("Authorization in Progress");
+            loading.setText(R.string.captcha_login_in_progess);
             return;
         }
         CurrentlyRunning = true;
@@ -116,16 +117,16 @@ public class CaptchaDialogFragment extends DialogFragment {
         }
 
         if (TextUtils.isEmpty(mCaptcha)) {
-            loading.setText("Enter Captcha");
+            loading.setText(R.string.enter_captcha);
             CurrentlyRunning = false;
             return;
         }
         if (mCaptcha.length() != 3) {
-            loading.setText("Captcha should be of length 3");
+            loading.setText(R.string.captcha_length_error);
             CurrentlyRunning = false;
             return;
         }
-        loading.setText("Please wait...");
+        loading.setText(R.string.please_wait);
         GUApp.getJobManager().addJobInBackground(new LoginJob(mUsername, mPassword, mCaptcha, params, "MainLogin"));
     }
 
@@ -142,8 +143,7 @@ public class CaptchaDialogFragment extends DialogFragment {
             loading.setText(event.getReason());
             if (getActivity() instanceof StudentLogin) {
                 if (userName != null) {
-                    Answers.getInstance().logLogin(new com.crashlytics.android.answers.LoginEvent().putSuccess(true).putCustomAttribute("user", userName)
-                            .putCustomAttribute("type", "new"));
+                    Answers.getInstance().logSignUp(new com.crashlytics.android.answers.SignUpEvent().putSuccess(true).putCustomAttribute("user", userName));
                 }
                 PrefUtils.saveToPrefs(getContext(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, userName);
                 PrefUtils.saveToPrefs(getContext(), PrefUtils.PREFS_LOGIN_PASSWORD_KEY, password);
@@ -152,8 +152,7 @@ public class CaptchaDialogFragment extends DialogFragment {
                 getActivity().finish();
             } else {
                 if (userName != null) {
-                    Answers.getInstance().logLogin(new com.crashlytics.android.answers.LoginEvent().putSuccess(true).putCustomAttribute("user", userName)
-                            .putCustomAttribute("type", "existing"));
+                    Answers.getInstance().logLogin(new com.crashlytics.android.answers.LoginEvent().putSuccess(true).putCustomAttribute("user", userName));
                 }
                 getDialog().dismiss();
             }
@@ -164,9 +163,9 @@ public class CaptchaDialogFragment extends DialogFragment {
     public void onEventMainThread(final CaptchaEvent event) {
         captchaRunning = false;
         if (event.getBitmap() == null) {
-            loading.setText(event.getErrorMsg() + "\nTap on Image to reload.");
+            loading.setText(String.format("%s\nTap on Image to reload.", event.getErrorMsg()));
         } else {
-            loading.setText("Enter Captcha to authorize");
+            loading.setText(R.string.enter_captcha_error);
             image.setImageBitmap(event.getBitmap());
             params = event.getParams();
         }
@@ -176,6 +175,9 @@ public class CaptchaDialogFragment extends DialogFragment {
     public void onDestroyView() {
         super.onDestroyView();
         CurrentlyRunning = false;
+        if (getActivity() instanceof StudentLogin) {
+            ((StudentLogin) getActivity()).setCurrentlyRunning(false);
+        }
     }
 
     @Override

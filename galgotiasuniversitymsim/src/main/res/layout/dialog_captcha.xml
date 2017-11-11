@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:hint="Enter the Captcha"
+        android:hint="@string/enter_the_captcha"
         android:textColor="@color/colorAccent" />
 
     <LinearLayout
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:text="Authorize"
+            android:text="@string/authorize"
             android:textColor="@color/ts_white"
             app:backgroundTint="@color/ts_blue" />
 
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/grid_8x"
         android:gravity="center"
-        android:text="Captcha is loading"
+        android:text="@string/captcha_is_loading"
         android:textColor="@color/ts_grey_dark"
         android:textSize="14sp" />
 
@@ -73,6 +73,18 @@
         android:layout_height="0.1dp"
         android:layout_marginBottom="@dimen/grid_8x"
         android:background="@color/ts_grey_light" />
+
+
+    <TextView
+        android:id="@+id/captcha_hint"
+        style="@style/CustomStrongFont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/grid_8x"
+        android:gravity="center"
+        android:text="@string/you_can_tap_on_captcha_to_refresh_it"
+        android:textColor="@color/ts_grey_light"
+        android:textSize="12sp" />
 
 
 </LinearLayout>

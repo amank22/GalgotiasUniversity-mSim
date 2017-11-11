@@ -11,7 +11,7 @@
     <string name="title_section2">Attendance</string>
     <string name="title_section3">Time-Table</string>
     <string name="title_section4">Result</string>
-    <string name="title_section5">News</string>
+    <string name="title_section5">News (Beta)</string>
     <string name="title_section_exam">Seating Plan</string>
     <string name="title_section6">Mail Us</string>
     <string name="title_section7">About Us</string>
@@ -26,17 +26,25 @@
     <string name="string_qurux">QURUX</string>
     <string name="gu_name_two_lines">Galgotias\nUniversity</string>
     <string name="login">Login</string>
-    <string name="username">Username</string>
+    <string name="username">Admission Number</string>
     <string name="galgotias_university">Galgotias University</string>
     <string name="submit_topics">Submit topics</string>
     <string name="error_news">There is some error getting news</string>
     <string name="failed_to_open_link">Failed to open link</string>
+    <string name="enter_the_captcha">Enter the Captcha</string>
+    <string name="captcha_is_loading">Captcha is loading</string>
+    <string name="you_can_tap_on_captcha_to_refresh_it">You can tap on captcha to refresh it</string>
+    <string name="authorize">Authorize</string>
+    <string name="captcha_login_in_progess">Authorization in Progress</string>
+    <string name="enter_captcha">Enter Captcha</string>
+    <string name="captcha_length_error">Captcha should be of length 3</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="enter_captcha_error">Enter Captcha to authorize</string>
+    <string name="wait_captcha_warning">Wait until captcha is loaded</string>
 
     <string-array name="attendance_content">
         <item>Today\'s Attendance</item>
         <item>Subjects Attendance</item>
     </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

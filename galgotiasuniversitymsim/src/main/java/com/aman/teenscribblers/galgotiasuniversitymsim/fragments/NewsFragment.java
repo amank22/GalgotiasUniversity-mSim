@@ -90,6 +90,7 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
         }
     };
+    private Snackbar newtworkSnackBar;
 
 
     @Override
@@ -158,6 +159,9 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
     private void startNetworkCall() {
+        if (getActivity() == null) return;
+        newtworkSnackBar = Snackbar.make(mRecyclerView, "Updating news", Snackbar.LENGTH_INDEFINITE);
+        newtworkSnackBar.show();
         mSwipeRefreshLayout.setRefreshing(true);
         final String admNo = PrefUtils.getFromPrefs(getContext(), PrefUtils.PREFS_LOGIN_USERNAME_KEY, "").trim();
         String fcmId = FirebaseInstanceId.getInstance().getToken();
@@ -166,6 +170,9 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             @Override
             public void onCompleted(Exception e, Response<NewsListParcel> result) {
                 mSwipeRefreshLayout.setRefreshing(false);
+                if (newtworkSnackBar.isShown()) {
+                    newtworkSnackBar.dismiss();
+                }
                 if (e != null) {
                     Snackbar.make(mSwipeRefreshLayout, getString(R.string.error_news), Snackbar.LENGTH_LONG).show();
                     Log.d(TAG, "onCompleted: " + e.getMessage());
@@ -232,7 +239,11 @@ public class NewsFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void onEventMainThread(NewsEvent event) {
         mSwipeRefreshLayout.setRefreshing(false);
         if (event.isError()) {
-            Snackbar.make(mSwipeRefreshLayout, event.getResult(), Snackbar.LENGTH_LONG).show();
+            if (!newtworkSnackBar.isShown()) {
+                Snackbar.make(mSwipeRefreshLayout, event.getResult(), Snackbar.LENGTH_LONG).show();
+            }else {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
         } else {
             parcel = event.getParcel();
             uselist();
